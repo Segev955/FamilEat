@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318587056904",
+    "project_id": "famileat-54d8a",
+    "storage_bucket": "famileat-54d8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318587056904:android:2ee9cbfc3568d8b88c72bd",
+        "android_client_info": {
+          "package_name": "com.example.famileat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318587056904-p99uvlmign10cav6r19i9rg7f726ua9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK67qSlWKMtIptM8iPdNtZ_YOUiYtr730"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318587056904-p99uvlmign10cav6r19i9rg7f726ua9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
