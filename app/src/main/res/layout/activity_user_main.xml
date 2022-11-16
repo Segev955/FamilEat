@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg4"
-    tools:context=".MainActivity">
+    tools:context=".StartActivity">
 
     <TextView
         android:id="@+id/hello"
@@ -17,6 +17,16 @@
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hello"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/purple_700"
+        android:text="Log out"
+        android:textSize="15dp" />
 
 
 </RelativeLayout>
