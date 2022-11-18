@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                     HashMap<String,Object> map= new HashMap<String,Object>();
                     map.put("username",username);
                     map.put("email",email);
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(username).child("Personal Details").setValue(map);
+//                    FirebaseDatabase.getInstance().getReference().child("Users").child(username).child("Personal Details").setValue(map);
                     Toast.makeText(RegisterActivity.this, username + " registered successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, UserMainActivity.class));
                 }
