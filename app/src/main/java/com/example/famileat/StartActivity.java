@@ -1,12 +1,12 @@
 package com.example.famileat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,11 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class StartActivity extends AppCompatActivity {
-    private EditText email;
-    private EditText password;
+    private EditText text_email;
+    private EditText text_password;
     private Button login;
     private Button register;
 
@@ -44,8 +45,8 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        text_email = findViewById(R.id.email);
+        text_password = findViewById(R.id.password);
         login = findViewById(R.id.signin);
 
         auth = FirebaseAuth.getInstance();
@@ -61,15 +62,28 @@ public class StartActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String txt_email= email.getText().toString();
-                String txt_password= password.getText().toString();
+                String email= text_email.getText().toString();
+                String password= text_password.getText().toString();
 
-                if (TextUtils.isEmpty(txt_email))
-                    Toast.makeText(StartActivity.this,"Please enter email.",Toast.LENGTH_SHORT).show();
-                else if (TextUtils.isEmpty(txt_password))
-                    Toast.makeText(StartActivity.this,"Please enter password.",Toast.LENGTH_SHORT).show();
-                else
-                    registerUser(txt_email,txt_password);
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(StartActivity.this, "Please enter email.", Toast.LENGTH_SHORT).show();
+                    text_email.requestFocus();
+                }
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(StartActivity.this, "Please enter valid email.", Toast.LENGTH_SHORT).show();
+                    text_email.requestFocus();
+                }
+                else if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(StartActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
+                    text_password.requestFocus();
+                }
+                else if (password.length() < 6) {
+                    Toast.makeText(StartActivity.this, "Please enter at least 6 characters.", Toast.LENGTH_SHORT).show();
+                    text_password.requestFocus();
+                }
+                else {
+                    loginUser(email, password);
+                }
             }
         });
         register = findViewById(R.id.register);
@@ -97,7 +111,7 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1234  ){
+        if(requestCode == 1234){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
@@ -115,33 +129,33 @@ public class StartActivity extends AppCompatActivity {
                         }
                     }
                 });
-//                navigateToSecondActivity();
             } catch (ApiException e) {
                 System.out.println("expt: " + e);
                 Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         }
     }
+//.............................................................................................
 
-    void navigateToSecondActivity(){
-        finish();
-        Intent intent = new Intent(StartActivity.this,UserMainActivity.class);
-        startActivity(intent);
-    }
+    private void loginUser(String email, String password) {
+        auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    private void registerUser(String email, String password) {
-        auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(StartActivity.this, new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(StartActivity.this, UserMainActivity.class));
-                finish();
-            }
-        }).addOnFailureListener(StartActivity.this,new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(StartActivity.this, "Wrong email or password!", Toast.LENGTH_SHORT).show();
-                System.out.println("Login problem: "+e.getMessage());
+                    if (user.isEmailVerified()) {
+                        Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(StartActivity.this, UserMainActivity.class));
+                    }
+                    else {
+                        user.sendEmailVerification();
+                        Toast.makeText(StartActivity.this, "Check your email to verify  ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(StartActivity.this, "Wrong email or password!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
