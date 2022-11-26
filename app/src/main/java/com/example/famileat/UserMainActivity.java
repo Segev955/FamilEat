@@ -28,12 +28,18 @@ public class UserMainActivity extends AppCompatActivity {
         Toast.makeText(UserMainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this,gso);
-        email = findViewById(R.id.email);
+        email = findViewById(R.id.name);
+//        name = findViewById(R.id.username);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account!=null) {
             String personEmail = account.getEmail();
-            email.setText(personEmail);
+            String personName = account.getDisplayName();
+            email.setText(personName);
+        }
+        else {
+            String name1 = "new guy";
+            email.setText(name1);
         }
 
         logout = findViewById(R.id.logout);
