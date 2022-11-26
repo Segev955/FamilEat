@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "318587056904",
-    "project_id": "famileat-54d8a",
-    "storage_bucket": "famileat-54d8a.appspot.com"
+    "project_number": "941257933979",
+    "project_id": "famileat-27f4b",
+    "storage_bucket": "famileat-27f4b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:318587056904:android:2ee9cbfc3568d8b88c72bd",
+        "mobilesdk_app_id": "1:941257933979:android:2746c51e8beb09b067b23e",
         "android_client_info": {
           "package_name": "com.example.famileat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "318587056904-p99uvlmign10cav6r19i9rg7f726ua9i.apps.googleusercontent.com",
+          "client_id": "941257933979-aidmtlg9uicdodu4ola4vddsdp9i3d28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.famileat",
+            "certificate_hash": "eb02ad7547a0da82f4ca42bd6a90491405805bf3"
+          }
+        },
+        {
+          "client_id": "941257933979-p0nmsd78mofd8m8pm46a2bu1jv0omlph.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBK67qSlWKMtIptM8iPdNtZ_YOUiYtr730"
+          "current_key": "AIzaSyBZO8TxoEs5eOwC0-_54hN1Y0GyqtDSz_Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "318587056904-p99uvlmign10cav6r19i9rg7f726ua9i.apps.googleusercontent.com",
+              "client_id": "941257933979-p0nmsd78mofd8m8pm46a2bu1jv0omlph.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

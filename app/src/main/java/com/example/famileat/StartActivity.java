@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
 
-    private GoogleSignInOptions gso;
+//    private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
     ImageView google_b;
 
@@ -49,10 +49,14 @@ public class StartActivity extends AppCompatActivity {
         login = findViewById(R.id.signin);
 
         auth = FirebaseAuth.getInstance();
-
+        //Google Sign in: .........................................
         google_b = findViewById(R.id.googleb);
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        GoogleSignInOptions  gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
         gsc = GoogleSignIn.getClient(this,gso);
+        // ........................................................
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +80,7 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(n);
             }
         });
-
+// Google ...................................................................
         google_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,13 +91,13 @@ public class StartActivity extends AppCompatActivity {
 
     void signIn() {
         Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent, 1000);
+        startActivityForResult(signInIntent, 1234);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000){
+        if(requestCode == 1234  ){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
@@ -111,8 +115,9 @@ public class StartActivity extends AppCompatActivity {
                         }
                     }
                 });
-                navigateToSecondActivity();
+//                navigateToSecondActivity();
             } catch (ApiException e) {
+                System.out.println("expt: " + e);
                 Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         }
