@@ -1,5 +1,6 @@
 package com.example.famileat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,11 +15,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserMainActivity extends AppCompatActivity {
     private Button logout;
-    private GoogleSignInOptions gso;
-    private GoogleSignInClient gsc;
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String ID;
+
     TextView name,email;
 
     @Override
@@ -26,22 +35,8 @@ public class UserMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
         Toast.makeText(UserMainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this,gso);
-        name = findViewById(R.id.name);
-//        name = findViewById(R.id.username);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account!=null) {
-            String personEmail = account.getEmail();
-            String personName = account.getDisplayName();
-            name.setText(personName);
-        }
-        else {
-            String name1 = "new guy";
-            name.setText(name1);
-        }
-
+        //logout .................................................
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +44,31 @@ public class UserMainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(UserMainActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(UserMainActivity.this, StartActivity.class));
+            }
+        });
+        //........................................................
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        ID = user.getUid();
+
+        final TextView fullname_text = (TextView) findViewById(R.id.name);
+
+        reference.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User profile = snapshot.getValue(User.class);
+                if (profile != null) {
+                    String fullname = profile.fullName;
+                    String email = profile.email;
+
+                    fullname_text.setText(fullname);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

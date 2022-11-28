@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -84,9 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    System.out.println("ddddddddddddddddddddddddddddd");
                                     if (task.isSuccessful()) {
                                         Toast.makeText(RegisterActivity.this, fullName + " registered successfully!", Toast.LENGTH_SHORT).show();
+                                        FirebaseUser user2 = FirebaseAuth.getInstance().getCurrentUser();
+                                        user2.sendEmailVerification();
+                                        Intent n = new Intent(getApplicationContext(),StartActivity.class);
+                                        startActivity(n);
                                     } else {
                                         Toast.makeText(RegisterActivity.this, " Registration failed!", Toast.LENGTH_SHORT).show();
 

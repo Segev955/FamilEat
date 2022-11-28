@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,7 +34,7 @@ public class StartActivity extends AppCompatActivity {
     private EditText text_email;
     private EditText text_password;
     private Button login;
-    private Button register;
+    private TextView register, forgotPass;
 
     private FirebaseAuth auth;
 
@@ -86,7 +87,8 @@ public class StartActivity extends AppCompatActivity {
                 }
             }
         });
-        register = findViewById(R.id.register);
+        register = (TextView) findViewById(R.id.register);
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +96,16 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(n);
             }
         });
+
+        forgotPass = (TextView) findViewById(R.id.forgotPass);
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent n = new Intent(getApplicationContext(),ForgotPass.class);
+                startActivity(n);
+            }
+        });
+
 // Google ...................................................................
         google_b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +119,7 @@ public class StartActivity extends AppCompatActivity {
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent, 1234);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
