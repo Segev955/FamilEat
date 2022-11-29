@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "995619244084",
+    "firebase_url": "https://famileat-97a2f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "famileat-97a2f",
+    "storage_bucket": "famileat-97a2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995619244084:android:4a3abc7f525e88b0862261",
+        "android_client_info": {
+          "package_name": "com.example.famileat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995619244084-4mnmebqp5uhjnrh38pr7khc2emeba45l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiwGeLqMsCauoSyOL_rcvfn90GYxVJX74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995619244084-4mnmebqp5uhjnrh38pr7khc2emeba45l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

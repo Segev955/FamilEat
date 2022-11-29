@@ -159,7 +159,7 @@ public class StartActivity extends AppCompatActivity {
 
                     if (user.isEmailVerified()) {
                         Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(StartActivity.this, UserMainActivity.class));
+                        startActivity(new Intent(StartActivity.this, SubmitDinner.class));
                     }
                     else {
                         user.sendEmailVerification();

@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/register"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="-30dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="#30ffffff"
@@ -70,11 +70,74 @@
         android:inputType="textPassword"
         android:textSize="20dp" />
 
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_margin="10dp"
+        android:background="#30ffffff"
+        android:drawableLeft="@drawable/ic_baseline_date_range_24"
+        android:drawablePadding="10dp"
+        android:hint="Choose Date (dd/mm/yyyy)"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/gendertxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_margin="30dp"
+        android:text="Gender:"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gend"
+        android:layout_below="@id/date"
+        android:layout_marginRight="60dp"
+        android:gravity="center">
+
+        <RadioGroup
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date">
+
+            <RadioButton
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:background="#30ffffff"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_below="@id/date"/>
+
+            <RadioButton
+                android:id="@+id/female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:background="#30ffffff"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_below="@id/date"/>
+        </RadioGroup>
+    </LinearLayout>
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password"
+        android:layout_below="@id/gend"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:backgroundTint="@color/purple_700"
@@ -111,7 +174,7 @@
             android:src="@drawable/fb"/>
 
     </LinearLayout>
-    
+
 <!--    <ProgressBar-->
 <!--        android:id="@+id/progressBar"-->
 <!--        android:layout_width="wrap_content"-->
