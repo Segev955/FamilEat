@@ -21,8 +21,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -134,7 +132,7 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), HostMainActivity.class);
                             startActivity(intent);
                         }
                         else {

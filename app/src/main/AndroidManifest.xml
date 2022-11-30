@@ -16,9 +16,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamilEat"
         tools:targetApi="31">
-        <meta-data android:name="com.google.android.geo.API_KEY"
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".GuestMainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAJL0vq5lK1irwx3MnTQC49eoULraVckwA" />
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
@@ -43,7 +60,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".UserMainActivity"
+            android:name=".HostMainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

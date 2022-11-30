@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.text.DateFormat;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -15,11 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+import classes.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,8 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,8 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText text_fullName;
     private EditText text_email;
     private EditText text_date;
-    private RadioGroup radio;
-    private RadioButton radioButton;
+    private RadioGroup radio_gender;
+    private RadioGroup radio_type;
+    private RadioButton gender_r;
+    private RadioButton type_r;
     private Button signup;
 
 //    private ProgressBar progressBar;
@@ -55,7 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
         text_password = findViewById(R.id.password);
         text_date = findViewById(R.id.date);
         signup = findViewById(R.id.signup);
-        radio = findViewById(R.id.gender);
+        radio_gender = findViewById(R.id.gender);
+        radio_type = findViewById(R.id.type);
 
 
         auth = FirebaseAuth.getInstance();
@@ -91,7 +90,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = text_email.getText().toString();
                 String password = text_password.getText().toString();
                 String date = text_date.getText().toString();
-                int gender = radio.getCheckedRadioButtonId();
+                int select_gender = radio_gender.getCheckedRadioButtonId();
+                int select_type = radio_type.getCheckedRadioButtonId();
+
 
                 if (TextUtils.isEmpty(fullName)) {
                     Toast.makeText(RegisterActivity.this, "Please enter full name.", Toast.LENGTH_SHORT).show();
@@ -113,12 +114,20 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Please enter date (dd/mm/yyyy).", Toast.LENGTH_SHORT).show();
                     text_password.requestFocus();
                 }
-                else if (gender == -1) {
+                else if (select_gender == -1) {
                     Toast.makeText(RegisterActivity.this, "Please choose gender.", Toast.LENGTH_SHORT).show();
-                    radio.requestFocus();
+                    radio_gender.requestFocus();
+                }
+                else if (select_type == -1) {
+                    Toast.makeText(RegisterActivity.this, "Please choose if you want to be Host or Guest.", Toast.LENGTH_SHORT).show();
+                    radio_gender.requestFocus();
                 }
                 else {
-                    registerUser(fullName, email, password , date, gender);
+                    gender_r = (RadioButton) findViewById(select_gender);
+                    type_r = (RadioButton) findViewById(select_type);
+                    String gender = gender_r.getText().toString();
+                    String type = type_r.getText().toString();
+                    registerUser(fullName, email, password , date, gender, type);
                 }
 
             }
@@ -126,12 +135,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
     //...................................................................
 
-    private void registerUser(String fullName, String email, String password, String date, int gender) {
+    private void registerUser(String fullName, String email, String password, String date, String gender, String type) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    User user = new User(fullName, email, date, gender);
+                    User user = new User(fullName, email, date, gender, type);
                     FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
