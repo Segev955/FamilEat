@@ -141,6 +141,7 @@ public class StartActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(getApplicationContext(), HostMainActivity.class);
                             startActivity(intent);
@@ -148,6 +149,7 @@ public class StartActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(StartActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
             } catch (ApiException e) {
@@ -185,7 +187,7 @@ public class StartActivity extends AppCompatActivity {
                                     else
                                         startActivity(new Intent(StartActivity.this, GuestMainActivity.class));
                                     Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-
+                                    finish();
                                 }
                             }
 

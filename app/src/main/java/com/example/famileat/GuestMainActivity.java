@@ -42,6 +42,7 @@ public class GuestMainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(GuestMainActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(GuestMainActivity.this, StartActivity.class));
+                finish();
             }
         });
         //........................................................
