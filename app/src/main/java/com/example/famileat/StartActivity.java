@@ -54,6 +54,8 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         text_email = findViewById(R.id.email);
         text_password = findViewById(R.id.password);
+        text_email.setText("salishar2@gmail.com");
+        text_password.setText("12345678");
         login = findViewById(R.id.signin);
 
         auth = FirebaseAuth.getInstance();

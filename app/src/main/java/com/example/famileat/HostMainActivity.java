@@ -21,8 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import classes.User;
 
 public class HostMainActivity extends AppCompatActivity {
-    private Button logout;
-    private Button editprofile;
+    private Button logout, editprofile, new_meal;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
@@ -42,6 +41,15 @@ public class HostMainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(HostMainActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(HostMainActivity.this, StartActivity.class));
+            }
+        });
+        //........................................................
+        //new meal............................................
+        new_meal = findViewById(R.id.new_meal);
+        new_meal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HostMainActivity.this, SubmitDinner.class));
             }
         });
         //........................................................

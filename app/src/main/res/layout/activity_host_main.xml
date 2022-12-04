@@ -32,10 +32,20 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/edit_profile"
+        android:id="@+id/new_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/purple_700"
+        android:text="new meal"
+        android:textSize="15dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_meal"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:backgroundTint="@color/purple_700"
