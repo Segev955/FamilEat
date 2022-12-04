@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -18,12 +19,16 @@ public class SubmitDinner extends AppCompatActivity {
 
     private Button location;
     private TextView location_text;
+    private NumberPicker amont_t;
     int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_dinner);
+        amont_t = findViewById(R.id.amount_p);
+        amont_t.setMinValue(0);
+        amont_t.setMaxValue(500);
 
         location = findViewById(R.id.location);
 

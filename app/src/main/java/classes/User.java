@@ -51,6 +51,12 @@ public class User {
         return this.type;
     }
 
+    public void editProfile(String fullName, String date, String gender) {
+        this.fullName = fullName;
+        this.date = date;
+        this.gender = gender;
+    }
+
 
 
 }
