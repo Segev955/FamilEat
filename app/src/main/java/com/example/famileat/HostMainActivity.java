@@ -22,10 +22,10 @@ import classes.User;
 
 public class HostMainActivity extends AppCompatActivity {
     private Button logout;
+    private Button editprofile;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
-
     TextView name,email;
 
     @Override
@@ -45,7 +45,15 @@ public class HostMainActivity extends AppCompatActivity {
             }
         });
         //........................................................
-
+        //edit profile............................................
+        editprofile = findViewById(R.id.edit_profile);
+        editprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HostMainActivity.this, EditProfileActivity.class));
+            }
+        });
+        //........................................................
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         ID = user.getUid();

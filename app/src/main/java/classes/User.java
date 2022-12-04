@@ -20,6 +20,11 @@ public class User {
         return this.fullName;
     }
 
+    public void setFullName(String fullname)
+    {
+        this.fullName=fullname;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -28,8 +33,18 @@ public class User {
         return this.date;
     }
 
+    public void setDate(String date)
+    {
+        this.date=date;
+    }
+
     public String getGender() {
         return this.gender;
+    }
+
+    public void setGender(String gender)
+    {
+        this.gender=gender;
     }
 
     public String getType() {

@@ -112,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else if (TextUtils.isEmpty(date)) {
                     Toast.makeText(RegisterActivity.this, "Please enter date (dd/mm/yyyy).", Toast.LENGTH_SHORT).show();
-                    text_password.requestFocus();
+                    text_date.requestFocus();
                 }
                 else if (select_gender == -1) {
                     Toast.makeText(RegisterActivity.this, "Please choose gender.", Toast.LENGTH_SHORT).show();

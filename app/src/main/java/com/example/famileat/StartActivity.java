@@ -27,13 +27,21 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import classes.User;
 
 public class StartActivity extends AppCompatActivity {
     private EditText text_email;
     private EditText text_password;
     private Button login;
     private TextView register, forgotPass;
-
+    private DatabaseReference reference;
+    private String ID;
     private FirebaseAuth auth;
 
 //    private GoogleSignInOptions gso;
@@ -156,8 +164,30 @@ public class StartActivity extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     if (user.isEmailVerified()) {
-                        Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(StartActivity.this, SubmitDinner.class));
+                        reference = FirebaseDatabase.getInstance().getReference("Users");
+                        ID = user.getUid();
+                        reference.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User profile = snapshot.getValue(User.class);
+                                if (profile != null) {
+                                    if (profile.getType().equals("Host"))
+                                        startActivity(new Intent(StartActivity.this, HostMainActivity.class));
+                                    else
+                                        startActivity(new Intent(StartActivity.this, GuestMainActivity.class));
+                                    Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+
+                        });
                     }
                     else {
                         user.sendEmailVerification();
