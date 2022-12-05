@@ -2,16 +2,17 @@ package classes;
 
 public class Dinner {
 
-    private String title, date, time, address;
+    private String title, date, time, address, details;
     private int amount, kosher;
 
-    public Dinner(String title, String date, String time, String address, int amount, int kosher) {
+    public Dinner(String title, String date, String time, String address, int amount, int kosher, String details) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.address = address;
         this.amount = amount;
         this.kosher = kosher;
+        this.details = details;
 
     }
 
@@ -61,6 +62,14 @@ public class Dinner {
 
     public void setKosher(int kosher) {
         this.kosher = kosher;
+    }
+
+    public String getDetails() {
+        return this.details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
 }
