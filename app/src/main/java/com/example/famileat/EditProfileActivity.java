@@ -102,7 +102,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = dayOfMonth + "/" + month + "/" + year;
+                String date = dayOfMonth + "/" + (month+1) + "/" + year;
                 text_date.setText(date);
             }
         };
@@ -118,12 +118,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 int select_gender = radio_gender.getCheckedRadioButtonId();
 
 
-                if (TextUtils.isEmpty(fullName)) {
-                    Toast.makeText(EditProfileActivity.this, "Please enter full name.", Toast.LENGTH_SHORT).show();
-                    text_fullName.requestFocus();
-                }
-                else if (TextUtils.isEmpty(date)) {
-                    Toast.makeText(EditProfileActivity.this, "Please enter date (dd/mm/yyyy).", Toast.LENGTH_SHORT).show();
+                if (!User.check_fullName(fullName).equals("accept")) {
+                    Toast.makeText(EditProfileActivity.this, User.check_fullName(fullName), Toast.LENGTH_SHORT).show();
+                    text_fullName.requestFocus();}
+                else if (!User.check_date(date).equals("accept")) {
+                    Toast.makeText(EditProfileActivity.this, User.check_date(date), Toast.LENGTH_SHORT).show();
                     text_date.requestFocus();
                 }
                 else if (select_gender == -1) {

@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = dayOfMonth + "/" + month + "/" + year;
+                String date = dayOfMonth + "/" + (month+1) + "/" + year;
                 text_date.setText(date);
             }
         };
@@ -94,24 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
                 int select_type = radio_type.getCheckedRadioButtonId();
 
 
-                if (TextUtils.isEmpty(fullName)) {
-                    Toast.makeText(RegisterActivity.this, "Please enter full name.", Toast.LENGTH_SHORT).show();
+                if (!User.check_fullName(fullName).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, User.check_fullName(fullName), Toast.LENGTH_SHORT).show();
                     text_fullName.requestFocus();
-                } else if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(RegisterActivity.this, "Please enter email.", Toast.LENGTH_SHORT).show();
+                } else if (!User.check_email(email).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, User.check_email(email), Toast.LENGTH_SHORT).show();
                     text_email.requestFocus();
-                } else if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(RegisterActivity.this, "Please enter password.", Toast.LENGTH_SHORT).show();
+                } else if (!User.check_pass(password).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, User.check_pass(password), Toast.LENGTH_SHORT).show();
                     text_password.requestFocus();
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Toast.makeText(RegisterActivity.this, "Please enter valid email.", Toast.LENGTH_SHORT).show();
-                    text_email.requestFocus();
-                } else if (password.length() < 6) {
-                    Toast.makeText(RegisterActivity.this, "Please enter at least 6 characters.", Toast.LENGTH_SHORT).show();
-                    text_password.requestFocus();
-                }
-                else if (TextUtils.isEmpty(date)) {
-                    Toast.makeText(RegisterActivity.this, "Please enter date (dd/mm/yyyy).", Toast.LENGTH_SHORT).show();
+                } else if (!User.check_date(date).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, User.check_date(date), Toast.LENGTH_SHORT).show();
                     text_date.requestFocus();
                 }
                 else if (select_gender == -1) {
