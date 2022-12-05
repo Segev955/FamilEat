@@ -1,10 +1,14 @@
 package com.example.famileat;
 
+import static com.example.famileat.StartActivity.SHARED_PREFS;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +32,9 @@ public class GuestMainActivity extends AppCompatActivity {
     private String ID;
     TextView name,email;
 
+    private boolean backPressed = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +46,14 @@ public class GuestMainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("remember", "false");
+                editor.apply();
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(GuestMainActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(GuestMainActivity.this, StartActivity.class));
-                finish();
+//                finish();
             }
         });
         //........................................................
@@ -79,4 +90,22 @@ public class GuestMainActivity extends AppCompatActivity {
             }
         });
     }
+    //Press twice "back" for exit .............................................................
+    @Override
+    public void onBackPressed() {
+        if (backPressed) {
+            super.onBackPressed();
+            return;
+        }
+        Toast.makeText(this,"Press 'back' again to exit", Toast.LENGTH_SHORT).show();
+        backPressed = true;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressed = false;
+            }
+        }, 2000);
+    }
+    //..........................................................................................
 }

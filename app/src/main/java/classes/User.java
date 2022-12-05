@@ -15,6 +15,9 @@ public class User {
 
     private String fullName, email, date, gender, type;
 
+    public User() {
+
+    }
     public User(String fullName, String email, String date, String gender, String type) {
         this.fullName = fullName;
         this.email = email;
@@ -23,13 +26,13 @@ public class User {
         this.type = type;
     }
 
+
     public String getFullName() {
         return this.fullName;
     }
 
-    public void setFullName(String fullname)
-    {
-        this.fullName=fullname;
+    public void setFullName(String fullname) {
+        this.fullName = fullname;
     }
 
     public String getEmail() {
@@ -40,18 +43,16 @@ public class User {
         return this.date;
     }
 
-    public void setDate(String date)
-    {
-        this.date=date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getGender() {
         return this.gender;
     }
 
-    public void setGender(String gender)
-    {
-        this.gender=gender;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getType() {
@@ -63,6 +64,7 @@ public class User {
             return "Please enter full name.";
         return "accept";
     }
+
     public static String check_email(String email) {
         if (TextUtils.isEmpty(email))
             return "Please enter email.";
@@ -70,6 +72,7 @@ public class User {
             return "Please enter valid email.";
         return "accept";
     }
+
     public static String check_pass(String password) {
         if (TextUtils.isEmpty(password))
             return "Please enter password.";
@@ -77,14 +80,15 @@ public class User {
             return "Please enter at least 6 characters.";
         return "accept";
     }
+
     public static String check_date(String date) {
-        int minage=16;
+        int minage = 16;
         if (TextUtils.isEmpty(date))
             return "Please enter date (dd/mm/yyyy).";
-        String[] splited=date.split("/");
-        if(splited.length!=3)
+        String[] splited = date.split("/");
+        if (splited.length != 3)
             return "Please ender valid date (dd/mm/yyyy)";
-        int day,month,year;
+        int day, month, year;
         try {
             day = Integer.parseInt(splited[0]);
             month = Integer.parseInt(splited[1]);
@@ -92,26 +96,23 @@ public class User {
         } catch (NumberFormatException nfe) {
             return "Date must be numbers (dd/mm/yyyy)";
         }
-        int nowy=2023,nowm=1,nowd=1;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            nowy= LocalDate.now().getYear();
-            nowm= LocalDate.now().getMonth().getValue();
-            nowd= LocalDate.now().getDayOfMonth();
+        int nowy = 2023, nowm = 1, nowd = 1;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            nowy = LocalDate.now().getYear();
+            nowm = LocalDate.now().getMonth().getValue();
+            nowd = LocalDate.now().getDayOfMonth();
         }
-        if (nowy-120>year||year>nowy)
+        if (nowy - 120 > year || year > nowy)
             return "Year not valid";
-        if(month<1||month>12)
+        if (month < 1 || month > 12)
             return "Month not valid";
-        if(day<1||day>31||(day==31&&(month==4||month==6||month==9||month==11))||(month==2&&(day>29||(day==29&&(year%4!=0||(year%100==0&&year%400!=0))))))
+        if (day < 1 || day > 31 || (day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) || (month == 2 && (day > 29 || (day == 29 && (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0))))))
             return "Day not valid";
-        if(year>nowy-minage||(year==nowy-minage &&(month<nowm||(month==nowm&&day<nowd))))
-            return "Minimum age for using this app is "+minage+".";
+        if (year > nowy - minage || (year == nowy - minage && (month < nowm || (month == nowm && day < nowd))))
+            return "Minimum age for using this app is " + minage + ".";
         return "accept";
 
     }
-
-
-
 
 
 }

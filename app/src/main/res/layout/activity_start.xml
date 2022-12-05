@@ -86,12 +86,23 @@
         android:textColorHint="@color/white"
         android:inputType="textPassword"
         android:textSize="20dp" />
+    
+    <CheckBox
+        android:id="@+id/rememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:text="Remember me"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password"
+        android:layout_below="@id/rememberMe"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:backgroundTint="@color/purple_700"
