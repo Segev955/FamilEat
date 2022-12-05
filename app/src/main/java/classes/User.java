@@ -15,10 +15,6 @@ public class User {
 
     private String fullName, email, date, gender, type;
 
-    public User() {
-
-    }
-
     public User(String fullName, String email, String date, String gender, String type) {
         this.fullName = fullName;
         this.email = email;

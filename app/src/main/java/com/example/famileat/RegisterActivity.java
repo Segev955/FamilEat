@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -133,14 +134,29 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    ArrayList<Dinner> dinners=new ArrayList<Dinner>();
                     User user = new User(fullName, email, date, gender, type);
+                    String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
                     FirebaseDatabase.getInstance().getReference("Users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child(Uid)
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, fullName + " registered successfully!", Toast.LENGTH_SHORT).show();
+                                        if (type.equals("Host")) {
+                                            Host h=new Host(Uid,fullName);
+                                            FirebaseDatabase.getInstance().getReference("Hosts")
+                                                    .child(Uid).setValue(h).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(RegisterActivity.this, fullName + " registered successfully as a Host!", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                        else{
+                                            Toast.makeText(RegisterActivity.this, fullName + " registered successfully as a guest!", Toast.LENGTH_SHORT).show();
+                                        }
+
                                         FirebaseUser user2 = FirebaseAuth.getInstance().getCurrentUser();
                                         user2.sendEmailVerification();
                                         Intent n = new Intent(getApplicationContext(),StartActivity.class);
