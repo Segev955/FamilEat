@@ -1,5 +1,6 @@
 package classes;
 
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
@@ -7,11 +8,10 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Dinner {
-
-    private String hostUid,title, date, time, address, kosher, details;
+    private String hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
 
-    public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details) {
+    public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
         this.hostUid=hostUid;
         this.title = title;
         this.date = date;
@@ -20,7 +20,9 @@ public class Dinner {
         this.amount = amount;
         this.kosher = kosher;
         this.details = details;
-
+        this.picture=picture;
+        if(this.picture.equals(""))
+            this.picture="no picture";
     }
     public String getHostUid() {
         return this.hostUid;

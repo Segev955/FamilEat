@@ -1,5 +1,8 @@
 package com.example.famileat;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,11 +12,14 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,35 +27,30 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 import classes.Dinner;
-import classes.Host;
-import classes.User;
 
 public class SubmitDinner extends AppCompatActivity {
 
-    private Button location,submit,button_time;
+    private Button location,submit, btnTime;
     private EditText text_title,text_details,text_date;
     private TextView location_text;
     private RadioGroup radio_kosher;
     private RadioButton kosher_r;
     private NumberPicker amont_t;
-    int PLACE_PICKER_REQUEST = 1;
+    private ImageView imgGallery;
+    int PLACE_PICKER_REQUEST = 1, SELECT_PICTURE=200;
+    private final int GALLERY_REQ_CODE= 1000;
+    private  Uri selectedImageUri;
 
     //    private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -61,15 +62,27 @@ public class SubmitDinner extends AppCompatActivity {
         setContentView(R.layout.activity_submit_dinner);
         text_title = findViewById(R.id.title);
         text_date = findViewById(R.id.date);
-        button_time=findViewById(R.id.time);
+        btnTime =findViewById(R.id.time);
         amont_t = findViewById(R.id.amount_p);
         amont_t.setMinValue(0);
         amont_t.setMaxValue(500);
         radio_kosher = findViewById(R.id.kosher);
         text_details = findViewById(R.id.details);
         submit = findViewById(R.id.submit);
+        imgGallery = findViewById(R.id.imgGallery);
+
 
         auth = FirebaseAuth.getInstance();
+
+        //Picture Picker
+        imgGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageChooser();
+            }
+        });
+
+
 
 //        //location picker
 //        location = findViewById(R.id.location);
@@ -111,7 +124,7 @@ public class SubmitDinner extends AppCompatActivity {
         };
 
         //Time Button
-        button_time.setOnClickListener(new View.OnClickListener() {
+        btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -125,7 +138,7 @@ public class SubmitDinner extends AppCompatActivity {
                                                   int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
-                                button_time.setText(hourOfDay + ":" + minute);
+                                btnTime.setText(hourOfDay + ":" + minute);
                             }
                         }, hour, minute, true);
                 // at last we are calling show to
@@ -142,7 +155,7 @@ public class SubmitDinner extends AppCompatActivity {
 
                 String title = text_title.getText().toString();
                 String date = text_date.getText().toString();
-                String time = button_time.getText().toString();
+                String time = btnTime.getText().toString();
                 String address = "maze pinat mapo";
                 int amount = amont_t.getValue();
                 int select_kosher = radio_kosher.getCheckedRadioButtonId();
@@ -162,7 +175,7 @@ public class SubmitDinner extends AppCompatActivity {
                         kosher_r = (RadioButton) findViewById(select_kosher);
                         kosher = kosher_r.getText().toString();
                     }
-                    submitDinner(title, date, time, address, amount, kosher, details);
+                    submitDinner(title, date, time, address, amount, kosher, details, selectedImageUri.getLastPathSegment());
                 }
             }
         });
@@ -170,9 +183,9 @@ public class SubmitDinner extends AppCompatActivity {
     }
     //...................................................................
 
-    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details) {
+    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String picture) {
         String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details);
+        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details,picture);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
         String Did=reference.getKey();
         reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -192,25 +205,69 @@ public class SubmitDinner extends AppCompatActivity {
     }
 
 
+    // this function is triggered when
+    // the Select Image Button is clicked
+    void imageChooser() {
 
+        // create an instance of the
+        // intent of the type image
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
+
+    // this function is triggered when user
+    // selects the image from the imageChooser
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                StringBuilder stringBuilder = new StringBuilder();
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                stringBuilder.append("LATITUDE :");
-                stringBuilder.append(latitude);
-                stringBuilder.append("\n");
-                stringBuilder.append("LONGITUDE :");
-                stringBuilder.append(longitude);
-                location_text.setText(stringBuilder.toString());
 
+        if (resultCode == RESULT_OK) {
+
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+                    // update the preview image in the layout
+                    imgGallery.setImageURI(selectedImageUri);
+                }
             }
         }
     }
+
+
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                if (requestCode == GALLERY_REQ_CODE){
+//                    imgGallery.setImageURI(data.getData());
+//                }
+////                Place place = PlacePicker.getPlace(data, this);
+////                StringBuilder stringBuilder = new StringBuilder();
+////                String latitude = String.valueOf(place.getLatLng().latitude);
+////                String longitude = String.valueOf(place.getLatLng().longitude);
+////                stringBuilder.append("LATITUDE :");
+////                stringBuilder.append(latitude);
+////                stringBuilder.append("\n");
+////                stringBuilder.append("LONGITUDE :");
+////                stringBuilder.append(longitude);
+////                location_text.setText(stringBuilder.toString());
+//
+//            }
+//        }
+ //   }
+
+
+
+
+
 }

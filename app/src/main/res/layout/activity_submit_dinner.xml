@@ -179,6 +179,14 @@
         android:textColorHint="@color/white"
         android:textSize="18dp" />
 
+    <ImageView
+
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:scaleType="fitXY"
+        android:id="@+id/imgGallery"
+        android:src="@drawable/login_bg4"/>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/submit"
         android:layout_width="wrap_content"
