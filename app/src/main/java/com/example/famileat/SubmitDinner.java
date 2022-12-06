@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,15 +28,25 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.famileat.databinding.ActivityHostMainBinding;
+import com.example.famileat.databinding.ActivitySubmitDinnerBinding;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.lang.ref.Reference;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import classes.Dinner;
 
@@ -47,10 +58,16 @@ public class SubmitDinner extends AppCompatActivity {
     private RadioGroup radio_kosher;
     private RadioButton kosher_r;
     private NumberPicker amont_t;
-    private ImageView imgGallery;
+//    private ImageView imgGallery;
     int PLACE_PICKER_REQUEST = 1, SELECT_PICTURE=200;
     private final int GALLERY_REQ_CODE= 1000;
     private  Uri selectedImageUri;
+
+    private ActivitySubmitDinnerBinding binding;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private ProgressDialog progressDialog;
 
     //    private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -69,18 +86,31 @@ public class SubmitDinner extends AppCompatActivity {
         radio_kosher = findViewById(R.id.kosher);
         text_details = findViewById(R.id.details);
         submit = findViewById(R.id.submit);
-        imgGallery = findViewById(R.id.imgGallery);
-
-
+//        imgGallery = findViewById(R.id.imgGallery);
         auth = FirebaseAuth.getInstance();
 
-        //Picture Picker
+        binding = ActivitySubmitDinnerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+        binding.uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+
+
+
+
+
+/*        //Picture Picker
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 imageChooser();
             }
-        });
+        });*/
 
 
 
@@ -192,7 +222,7 @@ public class SubmitDinner extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    System.out.println(Did);
+                    uploadImage();
                     Toast.makeText(SubmitDinner.this, title + " submitted successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SubmitDinner.this, HostMainActivity.class));
                 }
@@ -207,7 +237,7 @@ public class SubmitDinner extends AppCompatActivity {
 
     // this function is triggered when
     // the Select Image Button is clicked
-    void imageChooser() {
+/*    void imageChooser() {
 
         // create an instance of the
         // intent of the type image
@@ -218,14 +248,61 @@ public class SubmitDinner extends AppCompatActivity {
         // pass the constant to compare it
         // with the returned requestCode
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }*/
+
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,100);
+
+    }
+
+    private void uploadImage() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading file....");
+        progressDialog.show();
+
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String fileName = format.format(now);
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+
+
+        storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                binding.imgGallery.setImageURI(null);
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SubmitDinner.this, "image upload failed!", Toast.LENGTH_SHORT).show();
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+            }
+        });
     }
 
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && data !=null && data.getData() != null) {
+            imageUri = data.getData();
+            binding.imgGallery.setImageURI(imageUri);
+        }
 
-        if (resultCode == RESULT_OK) {
+
+/*        if (resultCode == RESULT_OK) {
 
             // compare the resultCode with the
             // SELECT_PICTURE constant
@@ -237,8 +314,9 @@ public class SubmitDinner extends AppCompatActivity {
                     imgGallery.setImageURI(selectedImageUri);
                 }
             }
-        }
+        }*/
     }
+
 
 
 
