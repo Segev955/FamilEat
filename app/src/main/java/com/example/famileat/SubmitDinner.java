@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +18,7 @@ import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -41,8 +43,8 @@ import classes.User;
 
 public class SubmitDinner extends AppCompatActivity {
 
-    private Button location,submit;
-    private EditText text_title,text_details,text_date,text_time;
+    private Button location,submit,button_time;
+    private EditText text_title,text_details,text_date;
     private TextView location_text;
     private RadioGroup radio_kosher;
     private RadioButton kosher_r;
@@ -59,7 +61,7 @@ public class SubmitDinner extends AppCompatActivity {
         setContentView(R.layout.activity_submit_dinner);
         text_title = findViewById(R.id.title);
         text_date = findViewById(R.id.date);
-        text_time = findViewById(R.id.time);
+        button_time=findViewById(R.id.time);
         amont_t = findViewById(R.id.amount_p);
         amont_t.setMinValue(0);
         amont_t.setMaxValue(500);
@@ -69,22 +71,23 @@ public class SubmitDinner extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        //location picker
-        location = findViewById(R.id.location);
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(SubmitDinner.this),
-                            PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        //location picker
+//        location = findViewById(R.id.location);
+//        location.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//                try {
+//                    startActivityForResult(builder.build(SubmitDinner.this),
+//                            PLACE_PICKER_REQUEST);
+//                } catch (GooglePlayServicesRepairableException e) {
+//                    e.printStackTrace();
+//                } catch (GooglePlayServicesNotAvailableException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
         //Date Button:
         text_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +102,6 @@ public class SubmitDinner extends AppCompatActivity {
                 dateDialog.show();
             }
         });
-
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -108,6 +110,31 @@ public class SubmitDinner extends AppCompatActivity {
             }
         };
 
+        //Time Button
+        button_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                // on below line we are initializing our Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(SubmitDinner.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                // on below line we are setting selected time
+                                // in our text view.
+                                button_time.setText(hourOfDay + ":" + minute);
+                            }
+                        }, hour, minute, true);
+                // at last we are calling show to
+                // display our time picker dialog.
+                timePickerDialog.show();
+            }
+        });
+
+
         //Submit button: ..................................................
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,59 +142,51 @@ public class SubmitDinner extends AppCompatActivity {
 
                 String title = text_title.getText().toString();
                 String date = text_date.getText().toString();
-                String time = text_time.getText().toString();
+                String time = button_time.getText().toString();
                 String address = "maze pinat mapo";
                 int amount = amont_t.getValue();
                 int select_kosher = radio_kosher.getCheckedRadioButtonId();
                 String details = text_details.getText().toString();
 
-
-                //validation here!!!!!!!
-
-                submitDinner(title,date,time,address,amount,select_kosher,details);
+                //validation input checking...............................
+                String valid_ans = "";
+                if (!(valid_ans=Dinner.check_title(title)).equals("accept")) {
+                    Toast.makeText(SubmitDinner.this, valid_ans, Toast.LENGTH_SHORT).show();
+                    text_title.requestFocus();
+                } else if (!(valid_ans= Dinner.check_date_time(date,time)).equals("accept")) {
+                    Toast.makeText(SubmitDinner.this, valid_ans, Toast.LENGTH_SHORT).show();
+                    text_date.requestFocus();
+                } else {
+                    String kosher ="Unspecified";
+                    if(select_kosher!=-1) {
+                        kosher_r = (RadioButton) findViewById(select_kosher);
+                        kosher = kosher_r.getText().toString();
+                    }
+                    submitDinner(title, date, time, address, amount, kosher, details);
+                }
             }
         });
 
     }
     //...................................................................
 
-    private void submitDinner(String title, String date, String time, String address, int amount, int kosher, String details) {
-        Dinner dinner = new Dinner(title, date, time, address, amount, kosher,details);
+    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details) {
         String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Hosts");;
-        reference.child(Uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
+        String Did=reference.getKey();
+        reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Host host = snapshot.getValue(Host.class);
-                if (host != null) {
-                    host.addDinner(dinner);
-                    FirebaseDatabase.getInstance().getReference("Hosts")
-                            .child(Uid)
-                            .setValue(host).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(SubmitDinner.this, title + " submitted successfully!", Toast.LENGTH_SHORT).show();
-                                        FirebaseUser user2 = FirebaseAuth.getInstance().getCurrentUser();
-                                        user2.sendEmailVerification();
-                                        Intent n = new Intent(getApplicationContext(),StartActivity.class);
-                                        startActivity(n);
-                                    } else {
-                                        Toast.makeText(SubmitDinner.this, "Submission failed!", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-                            });
-
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    System.out.println(Did);
+                    Toast.makeText(SubmitDinner.this, title + " submitted successfully!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SubmitDinner.this, HostMainActivity.class));
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+                else
+                    Toast.makeText(SubmitDinner.this, "Submission failed!", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }

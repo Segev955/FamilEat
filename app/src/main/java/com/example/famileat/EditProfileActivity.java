@@ -117,12 +117,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 String date = text_date.getText().toString();
                 int select_gender = radio_gender.getCheckedRadioButtonId();
 
-
-                if (!User.check_fullName(fullName).equals("accept")) {
-                    Toast.makeText(EditProfileActivity.this, User.check_fullName(fullName), Toast.LENGTH_SHORT).show();
+                String validans="";
+                if (!(validans= User.check_fullName(fullName)).equals("accept")) {
+                    Toast.makeText(EditProfileActivity.this, validans, Toast.LENGTH_SHORT).show();
                     text_fullName.requestFocus();}
-                else if (!User.check_date(date).equals("accept")) {
-                    Toast.makeText(EditProfileActivity.this, User.check_date(date), Toast.LENGTH_SHORT).show();
+                else if (!(validans= User.check_date(date)).equals("accept")) {
+                    Toast.makeText(EditProfileActivity.this, validans, Toast.LENGTH_SHORT).show();
                     text_date.requestFocus();
                 }
                 else if (select_gender == -1) {

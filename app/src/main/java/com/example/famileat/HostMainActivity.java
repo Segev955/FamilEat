@@ -38,8 +38,6 @@ public class HostMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_main);
-        Toast.makeText(HostMainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
-
         //logout .................................................
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +50,7 @@ public class HostMainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(HostMainActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(HostMainActivity.this, StartActivity.class));
-//                finish();
+                finish();
             }
         });
         //........................................................

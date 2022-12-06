@@ -270,7 +270,7 @@ public class StartActivity extends AppCompatActivity {
                                     else
                                         startActivity(new Intent(StartActivity.this, GuestMainActivity.class));
                                     Toast.makeText(StartActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-//                                    finish();
+                                    finish();
                                 }
                             }
 

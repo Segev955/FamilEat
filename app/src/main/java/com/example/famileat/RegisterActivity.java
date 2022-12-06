@@ -94,18 +94,19 @@ public class RegisterActivity extends AppCompatActivity {
                 int select_gender = radio_gender.getCheckedRadioButtonId();
                 int select_type = radio_type.getCheckedRadioButtonId();
 
-
-                if (!User.check_fullName(fullName).equals("accept")) {
-                    Toast.makeText(RegisterActivity.this, User.check_fullName(fullName), Toast.LENGTH_SHORT).show();
+                //validation input checking...............................
+                String valid_ans= "";
+                if (!(valid_ans=User.check_fullName(fullName)).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_fullName.requestFocus();
-                } else if (!User.check_email(email).equals("accept")) {
-                    Toast.makeText(RegisterActivity.this, User.check_email(email), Toast.LENGTH_SHORT).show();
+                } else if (!(valid_ans= User.check_email(email)).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_email.requestFocus();
-                } else if (!User.check_pass(password).equals("accept")) {
-                    Toast.makeText(RegisterActivity.this, User.check_pass(password), Toast.LENGTH_SHORT).show();
+                } else if (!(valid_ans=User.check_pass(password)).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_password.requestFocus();
-                } else if (!User.check_date(date).equals("accept")) {
-                    Toast.makeText(RegisterActivity.this, User.check_date(date), Toast.LENGTH_SHORT).show();
+                } else if (!(valid_ans= User.check_date(date)).equals("accept")) {
+                    Toast.makeText(RegisterActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_date.requestFocus();
                 }
                 else if (select_gender == -1) {
@@ -144,14 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         if (type.equals("Host")) {
-                                            Host h=new Host(Uid,fullName);
-                                            FirebaseDatabase.getInstance().getReference("Hosts")
-                                                    .child(Uid).setValue(h).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            Toast.makeText(RegisterActivity.this, fullName + " registered successfully as a Host!", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
+                                            Toast.makeText(RegisterActivity.this, fullName + " registered successfully as a Host!", Toast.LENGTH_SHORT).show();
                                         }
                                         else{
                                             Toast.makeText(RegisterActivity.this, fullName + " registered successfully as a guest!", Toast.LENGTH_SHORT).show();
