@@ -85,6 +85,8 @@ public class Dinner {
     public static String check_title(String title) {
         if (TextUtils.isEmpty(title))
             return "Please enter a title.";
+        if (title.length()<4)
+            return "Title too short (at least 4 characters.)";
         return "accept";
     }
 
