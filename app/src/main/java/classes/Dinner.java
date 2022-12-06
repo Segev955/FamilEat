@@ -1,6 +1,5 @@
 package classes;
 
-import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
@@ -10,6 +9,8 @@ import java.util.Calendar;
 public class Dinner {
     private String hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
+
+    public Dinner() {}
 
     public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
         this.hostUid=hostUid;

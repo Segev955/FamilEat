@@ -4,6 +4,8 @@ import static com.example.famileat.StartActivity.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,14 +24,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import classes.Dinner;
 import classes.User;
+import classes.myAdapder;
 
 public class GuestMainActivity extends AppCompatActivity {
     private Button logout;
     private Button editprofile;
     private FirebaseUser user;
     private DatabaseReference reference;
+    private DatabaseReference referenceD;
     private String ID;
+
+    private RecyclerView recyclerView;
+    private myAdapder myAdapter;
+    ArrayList<Dinner> dinnerList;
+
     TextView name,email;
 
     private boolean backPressed = false;
@@ -40,6 +52,33 @@ public class GuestMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_main);
         Toast.makeText(GuestMainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
+
+        //Dinner List: ...........................................................................
+        recyclerView = findViewById(R.id.dinnerList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        referenceD = FirebaseDatabase.getInstance().getReference("Dinners");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dinnerList = new ArrayList<>();
+        myAdapter = new myAdapder(this,dinnerList, R.drawable.google);
+        recyclerView.setAdapter(myAdapter);
+
+        referenceD.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                    dinnerList.add(dinner);
+                }
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //.........................................................................................
 
         //logout .................................................
         logout = findViewById(R.id.logout);
