@@ -85,6 +85,10 @@ public class Dinner {
         this.details = details;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
     public static String check_title(String title) {
         if (TextUtils.isEmpty(title))
             return "Please enter a title.";

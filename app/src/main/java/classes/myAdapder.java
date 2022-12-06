@@ -1,17 +1,29 @@
 package classes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famileat.R;
+import com.example.famileat.SubmitDinner;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
@@ -21,6 +33,8 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
     ArrayList<Dinner> list;
 
     int proImage;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public myAdapder(Context context, ArrayList<Dinner> list , int proImage) {
         this.context = context;
@@ -43,10 +57,33 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
         holder.address.setText(dinner.getAddress());
         holder.date.setText(dinner.getDate());
         holder.time.setText(dinner.getTime());
-        holder.dinnerImage.setImageResource(R.mipmap.ic_launcher);
 //        holder.amount.setText(dinner.getAmount());
         holder.kosher.setText(dinner.getKosher());
 //        holder.details.setText(dinner.getDetails());
+//        holder.photoname.setText(dinner.getPicture());
+
+        storage = FirebaseStorage.getInstance();
+        System.out.println(dinner.getPicture());
+        storageReference = storage.getReference("images/"+dinner.getPicture());
+        try {
+            File file = File.createTempFile("temp", ".png");
+            storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    holder.dinnerImage.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    System.out.println("Failed");
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -56,7 +93,7 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, address, date, time, amount, kosher, details;
+        TextView title, address, date, time, amount, kosher, details, photoname;
         ImageView dinnerImage;
 
         public MyViewHolder(@NonNull View itemView) {

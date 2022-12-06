@@ -52,22 +52,24 @@ import classes.Dinner;
 
 public class SubmitDinner extends AppCompatActivity {
 
-    private Button location,submit, btnTime;
+    private Button location,submit, btnTime, uploadImage;
     private EditText text_title,text_details,text_date;
     private TextView location_text;
     private RadioGroup radio_kosher;
     private RadioButton kosher_r;
     private NumberPicker amont_t;
-//    private ImageView imgGallery;
+    private ImageView imgGallery;
     int PLACE_PICKER_REQUEST = 1, SELECT_PICTURE=200;
     private final int GALLERY_REQ_CODE= 1000;
-    private  Uri selectedImageUri;
+//    private  Uri selectedImageUri;
 
-    private ActivitySubmitDinnerBinding binding;
+    // Upload Image: .................................
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
+    private String fileName;
+    //...............................................
 
     //    private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -86,32 +88,20 @@ public class SubmitDinner extends AppCompatActivity {
         radio_kosher = findViewById(R.id.kosher);
         text_details = findViewById(R.id.details);
         submit = findViewById(R.id.submit);
-//        imgGallery = findViewById(R.id.imgGallery);
+        imgGallery = findViewById(R.id.imgGallery);
         auth = FirebaseAuth.getInstance();
+        uploadImage = findViewById(R.id.uploadImage);
+        fileName = "";
 
-        binding = ActivitySubmitDinnerBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
 
-        binding.uploadImage.setOnClickListener(new View.OnClickListener() {
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage();
             }
         });
-
-
-
-
-
-/*        //Picture Picker
-        imgGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageChooser();
-            }
-        });*/
-
 
 
 //        //location picker
@@ -205,7 +195,7 @@ public class SubmitDinner extends AppCompatActivity {
                         kosher_r = (RadioButton) findViewById(select_kosher);
                         kosher = kosher_r.getText().toString();
                     }
-                    submitDinner(title, date, time, address, amount, kosher, details, selectedImageUri.getLastPathSegment());
+                    submitDinner(title, date, time, address, amount, kosher, details, fileName);
                 }
             }
         });
@@ -213,16 +203,15 @@ public class SubmitDinner extends AppCompatActivity {
     }
     //...................................................................
 
-    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String picture) {
+    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String fileName) {
         String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details,picture);
+        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details, fileName);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
         String Did=reference.getKey();
         reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    uploadImage();
                     Toast.makeText(SubmitDinner.this, title + " submitted successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SubmitDinner.this, HostMainActivity.class));
                 }
@@ -256,6 +245,7 @@ public class SubmitDinner extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,100);
 
+
     }
 
     private void uploadImage() {
@@ -270,14 +260,14 @@ public class SubmitDinner extends AppCompatActivity {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
         Date now = new Date();
-        String fileName = format.format(now);
+        fileName = format.format(now);
         storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
 
 
         storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                binding.imgGallery.setImageURI(null);
+                imgGallery.setImageURI(null);
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
 
@@ -298,7 +288,8 @@ public class SubmitDinner extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && data !=null && data.getData() != null) {
             imageUri = data.getData();
-            binding.imgGallery.setImageURI(imageUri);
+            imgGallery.setImageURI(imageUri);
+            uploadImage();
         }
 
 
