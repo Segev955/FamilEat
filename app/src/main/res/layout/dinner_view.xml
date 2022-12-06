@@ -17,6 +17,19 @@
         android:textColor="@color/black"
         android:textSize="26sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/join"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="@color/purple_700"
+        android:text="Join request"
+        android:textSize="15dp" />
+
     <ImageView
         android:id="@+id/dinnerImage"
         android:layout_width="90dp"
@@ -86,13 +99,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amount :"
+                android:text="Available places :"
                 android:textColor="@color/black"
                 android:textSize="26sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvAmount"
+                android:id="@+id/tvAvailables"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"

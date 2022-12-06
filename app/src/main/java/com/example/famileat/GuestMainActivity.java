@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -51,7 +52,6 @@ public class GuestMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_main);
-        Toast.makeText(GuestMainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
 
         //Dinner List: ...........................................................................
         recyclerView = findViewById(R.id.dinnerList);
@@ -64,13 +64,17 @@ public class GuestMainActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dinnerList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    dinnerList.add(dinner);
+                    if(Dinner.isAvailable(dinner))
+                        dinnerList.add(dinner);
                 }
                 myAdapter.notifyDataSetChanged();
+
             }
 
             @Override

@@ -129,10 +129,10 @@
             android:layout_below="@id/date">
 
             <RadioButton
-                android:id="@+id/diary"
+                android:id="@+id/dairy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kosher diary"
+                android:text="Kosher dairy"
                 android:background="#30ffffff"
                 android:textStyle="bold"
                 android:textSize="20dp"

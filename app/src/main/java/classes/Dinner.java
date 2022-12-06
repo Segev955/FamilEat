@@ -1,16 +1,28 @@
 package classes;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Dinner {
+
     private String hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
-
-    public Dinner() {}
+    private List<String> acceptedUid;
+    public Dinner() {this.acceptedUid = new ArrayList<String>();}
 
     public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
         this.hostUid=hostUid;
@@ -24,7 +36,29 @@ public class Dinner {
         this.picture=picture;
         if(this.picture.equals(""))
             this.picture="no picture";
+        this.acceptedUid = new ArrayList<String>();
+        this.getAcceptedUid().add("hhh");
     }
+    public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid) {
+        this.hostUid=hostUid;
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.address = address;
+        this.amount = amount;
+        this.kosher = kosher;
+        this.details = details;
+        this.picture=picture;
+        if(this.picture.equals(""))
+            this.picture="no picture";
+        this.acceptedUid = acceptedUid;
+    }
+
+    public List<String> getAcceptedUid()
+    {
+        return this.acceptedUid;
+    }
+
     public String getHostUid() {
         return this.hostUid;
     }
@@ -154,5 +188,48 @@ public class Dinner {
 
     }
 
+    public static String check_amount(int amount){
+        if (amount<1)
+            return "Amount must be at least 1.";
+        return "accept";
+    }
+
+    public static int numOfAvailables(Dinner dinner) {
+        return dinner.amount-dinner.acceptedUid.size();
+    }
+
+    public static boolean isAvailable(Dinner dinner)
+    {
+        return numOfAvailables(dinner)>0;
+    }
+    public static boolean acceptUser(Dinner dinner, String Uid){
+        if (!isAvailable(dinner))
+            return false;
+        dinner.acceptedUid.add(Uid);
+        return true;
+    }
+
+    public static Dinner getDinnerById(String Did){
+        final Dinner[] dinner = {null};
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");;
+        reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if(dataSnapshot.getKey()==Did)
+                        dinner[0] = dataSnapshot.getValue(Dinner.class);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return dinner[0];
+
+    }
 
 }
