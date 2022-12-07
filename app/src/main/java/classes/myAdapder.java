@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -62,6 +65,7 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Dinner dinner = list.get(position);
+        String currUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         holder.title.setText(dinner.getTitle());
         holder.address.setText(dinner.getAddress());
         holder.date.setText(dinner.getDate());
@@ -72,29 +76,74 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
 //          holder.details.setText(dinner.getDetails());
 //          holder.photoname.setText(dinner.getPicture());
 
+        //Set join button
+        holder.join.getText().equals("Join request");
+        if(Dinner.isRequested(dinner,currUid))
+            holder.join.setText("Cancel request");
         holder.join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(holder.join.getText().equals("Join request")) {
-                    Request request = new Request(dinner.getHostUid(), FirebaseAuth.getInstance().getCurrentUser().getUid(), "dinner uid");
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests").push();
-                    Rid[0] = reference.getKey();
-                    reference.setValue(request).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                holder.join.setText("Cancel request");
+                        Dinner newdinner=Dinner.requestUser(dinner,currUid);
+                        if (newdinner!=null) {
+                            DatabaseReference reqReference = FirebaseDatabase.getInstance().getReference("Requests").push();
+                            DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Dinners").child(newdinner.getID());
+                            Rid[0] = reqReference.getKey();
+                            Request request = new Request(Rid[0],dinner.getHostUid(), currUid, dinner.getID());
+                            reqReference.setValue(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        holder.join.setText("Cancel request");
+                                        dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                dinnerReference.setValue(newdinner);
+                                                holder.join.setText("Cancel request");
+                                            }
 
-                            } else {
-                                System.out.println("Failed on send request. ");
-                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                System.out.println("Failed on send request. ");
+                                            }
+                                        });
+
+
+                                    } else {
+                                        System.out.println("Failed on send request. ");
+                                    }
+                                }
+                            });
                         }
-                    });
+
 
                 }
                 else {
-                    FirebaseDatabase.getInstance().getReference().child("Requests").child(Rid[0]).removeValue();
-                    holder.join.setText("Join request");
+
+                    Dinner newdinner=Dinner.cancelRequest(dinner,currUid);
+                    if (newdinner!=null) {
+                        //DatabaseReference reqReference = FirebaseDatabase.getInstance().getReference("Requests");
+                        DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Dinners").child(newdinner.getID());
+                        holder.join.setText("Cancel request");
+                        dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                holder.join.setText("Join request");
+                                dinnerReference.setValue(newdinner);
+                                Request.deleteRequstByDinnerIdAndGuestId(newdinner.getID(),currUid);
+//                                if (!reqId.equals(""))
+//                                    FirebaseDatabase.getInstance().getReference().child("Requests").child(reqId).removeValue();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                System.out.println("Failed on send request. ");
+                            }
+                        });
+                    }
+
+
+
                 }
             }
         });

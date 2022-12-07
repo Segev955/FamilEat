@@ -19,12 +19,48 @@ import java.util.List;
 
 public class Dinner {
 
-    private String hostUid,title, date, time, address, kosher, details, picture;
+    private String ID, hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
-    private List<String> acceptedUid;
-    public Dinner() {this.acceptedUid = new ArrayList<String>();}
+    private List<String> acceptedUid, requestsUid;
+    public Dinner() {
+        this.acceptedUid = new ArrayList<String>();
+        this.requestsUid= new ArrayList<String>();
+    }
 
-    public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
+    public Dinner(String ID,String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
+        this.ID=ID;
+        this.hostUid=hostUid;
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.address = address;
+        this.amount = amount;
+        this.kosher = kosher;
+        this.details = details;
+        this.picture=picture;
+        if(this.picture.equals(""))
+            this.picture="no picture";
+        this.acceptedUid = new ArrayList<String>();
+        this.requestsUid= new ArrayList<String>();
+    }
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid) {
+        this.ID=ID;
+        this.hostUid=hostUid;
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.address = address;
+        this.amount = amount;
+        this.kosher = kosher;
+        this.details = details;
+        this.picture=picture;
+        if(this.picture.equals(""))
+            this.picture="no picture";
+        this.acceptedUid = acceptedUid;
+        this.requestsUid= new ArrayList<String>();
+    }
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher,List<String>requestsUid, String details, String picture) {
+        this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
         this.date = date;
@@ -38,8 +74,10 @@ public class Dinner {
             this.picture="no picture";
         this.acceptedUid = new ArrayList<String>();
         this.getAcceptedUid().add("hhh");
+        this.requestsUid=requestsUid;
     }
-    public Dinner(String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid) {
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid) {
+        this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
         this.date = date;
@@ -52,11 +90,30 @@ public class Dinner {
         if(this.picture.equals(""))
             this.picture="no picture";
         this.acceptedUid = acceptedUid;
+        this.requestsUid=requestsUid;
+    }
+
+    public String getID()
+    {
+        return this.ID;
+    }
+    public void setID(String id){
+        this.ID=id;
     }
 
     public List<String> getAcceptedUid()
     {
         return this.acceptedUid;
+    }
+
+    public List<String> getRequestsUid()
+    {
+        return this.requestsUid;
+    }
+
+    public void getRequestsUid(List<String>requestsUid)
+    {
+        this.requestsUid=requestsUid;
     }
 
     public String getHostUid() {
@@ -202,10 +259,30 @@ public class Dinner {
     {
         return numOfAvailables(dinner)>0;
     }
+    public static boolean isRequested(Dinner d,String Uid){
+        for(String i:d.requestsUid)
+            if (i.equals(Uid))
+                return true;
+        return false;
+    }
+    public static Dinner requestUser(Dinner dinner,String Uid){
+        if (isRequested(dinner,Uid))
+            return null;
+        dinner.requestsUid.add(Uid);
+        return dinner;
+    }
+    public static Dinner cancelRequest(Dinner dinner,String Uid){
+        if (isRequested(dinner,Uid)) {
+            dinner.requestsUid.remove(Uid);
+            return dinner;
+        }
+        return null;
+    }
     public static boolean acceptUser(Dinner dinner, String Uid){
-        if (!isAvailable(dinner))
+        if (!isAvailable(dinner)&&!isRequested(dinner,Uid))
             return false;
         dinner.acceptedUid.add(Uid);
+        dinner.requestsUid.remove(Uid);
         return true;
     }
 

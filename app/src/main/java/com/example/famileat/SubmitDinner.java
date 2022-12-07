@@ -229,9 +229,9 @@ public class SubmitDinner extends AppCompatActivity {
 
     private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String fileName) {
         String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Dinner dinner = new Dinner(Uid,title, date, time, address, amount, kosher,details, fileName);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
         String Did=reference.getKey();
+        Dinner dinner = new Dinner(Did,Uid,title, date, time, address, amount, kosher,details, fileName);
         reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
