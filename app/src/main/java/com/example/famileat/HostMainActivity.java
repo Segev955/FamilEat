@@ -4,7 +4,10 @@ import static com.example.famileat.StartActivity.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,13 +25,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import classes.Dinner;
 import classes.User;
+import classes.hostAdapter;
 
 public class HostMainActivity extends AppCompatActivity {
     private Button logout, editprofile, new_meal;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
+
+    private DatabaseReference referenceD;
+    private RecyclerView recyclerView;
+    private hostAdapter myAdapter;
+    ArrayList<Dinner> dinnerList;
+
     TextView name,email;
 
     private boolean backPressed = false;
@@ -38,6 +51,47 @@ public class HostMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_main);
+
+        //set user and ID
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        ID = user.getUid();
+
+        //Dinner List: ...........................................................................
+        recyclerView = findViewById(R.id.dinnerList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        referenceD = FirebaseDatabase.getInstance().getReference("Dinners");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dinnerList = new ArrayList<>();
+        myAdapter = new hostAdapter(this,dinnerList, R.drawable.google);
+        recyclerView.setAdapter(myAdapter);
+
+        referenceD.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dinnerList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                    if(dinner.getHostUid().equals(ID))
+                        dinnerList.add(dinner);
+                }
+                myAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //.........................................................................................
+
+
+
+
+
         //logout .................................................
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -72,9 +126,7 @@ public class HostMainActivity extends AppCompatActivity {
             }
         });
         //........................................................
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        ID = user.getUid();
+
 
         final TextView fullname_text = (TextView) findViewById(R.id.name);
 

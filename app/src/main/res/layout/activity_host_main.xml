@@ -31,16 +31,30 @@
         android:textStyle="bold" />
 
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
+        android:layout_below="@id/logout"
+        android:layout_marginTop="79dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/purple_700"
         android:text="new meal"
         android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/mymealstxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_meal"
+        android:layout_marginBottom="90dp"
+        android:text="My Meals:"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/edit_profile"
         android:layout_width="wrap_content"
@@ -57,6 +71,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log out" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dinnerList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </RelativeLayout>

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 import classes.Dinner;
 import classes.User;
-import classes.myAdapder;
+import classes.guestAdapder;
 
 public class GuestMainActivity extends AppCompatActivity {
     private Button logout;
@@ -40,7 +40,7 @@ public class GuestMainActivity extends AppCompatActivity {
     private String ID;
 
     private RecyclerView recyclerView;
-    private myAdapder myAdapter;
+    private guestAdapder myAdapter;
     ArrayList<Dinner> dinnerList;
 
     TextView name,email;
@@ -60,7 +60,7 @@ public class GuestMainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dinnerList = new ArrayList<>();
-        myAdapter = new myAdapder(this,dinnerList, R.drawable.google);
+        myAdapter = new guestAdapder(this,dinnerList, R.drawable.google);
         recyclerView.setAdapter(myAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
