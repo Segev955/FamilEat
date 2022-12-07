@@ -100,7 +100,6 @@ public class myAdapder  extends RecyclerView.Adapter<myAdapder.MyViewHolder> {
         });
 
         storage = FirebaseStorage.getInstance();
-        System.out.println(dinner.getPicture());
         storageReference = storage.getReference("images/" + dinner.getPicture());
         try {
             File file = File.createTempFile("temp", ".png");

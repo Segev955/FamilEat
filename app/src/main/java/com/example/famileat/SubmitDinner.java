@@ -11,6 +11,8 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -38,10 +40,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.Reference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -90,13 +95,32 @@ public class SubmitDinner extends AppCompatActivity {
         submit = findViewById(R.id.submit);
         imgGallery = findViewById(R.id.imgGallery);
         auth = FirebaseAuth.getInstance();
-        uploadImage = findViewById(R.id.uploadImage);
-        fileName = "";
+        fileName = "dufult_dinner.jpg";
 
+        //View the default image.
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference("images/" + fileName);
+        try {
+            File file = File.createTempFile("temp", ".png");
+            storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    imgGallery.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
+                    System.out.println("Failed");
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
-        uploadImage.setOnClickListener(new View.OnClickListener() {
+        //Pick Picture Button
+        imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage();
@@ -223,22 +247,6 @@ public class SubmitDinner extends AppCompatActivity {
 
     }
 
-
-    // this function is triggered when
-    // the Select Image Button is clicked
-/*    void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-    }*/
-
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -267,7 +275,7 @@ public class SubmitDinner extends AppCompatActivity {
         storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                imgGallery.setImageURI(null);
+                imgGallery.setImageURI(imageUri);
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
 
@@ -286,57 +294,13 @@ public class SubmitDinner extends AppCompatActivity {
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && data !=null && data.getData() != null) {
+        if (requestCode == 100 && data != null && data.getData() != null) {
             imageUri = data.getData();
             imgGallery.setImageURI(imageUri);
             uploadImage();
         }
 
-
-/*        if (resultCode == RESULT_OK) {
-
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
-                    // update the preview image in the layout
-                    imgGallery.setImageURI(selectedImageUri);
-                }
-            }
-        }*/
     }
-
-
-
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PLACE_PICKER_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                if (requestCode == GALLERY_REQ_CODE){
-//                    imgGallery.setImageURI(data.getData());
-//                }
-////                Place place = PlacePicker.getPlace(data, this);
-////                StringBuilder stringBuilder = new StringBuilder();
-////                String latitude = String.valueOf(place.getLatLng().latitude);
-////                String longitude = String.valueOf(place.getLatLng().longitude);
-////                stringBuilder.append("LATITUDE :");
-////                stringBuilder.append(latitude);
-////                stringBuilder.append("\n");
-////                stringBuilder.append("LONGITUDE :");
-////                stringBuilder.append(longitude);
-////                location_text.setText(stringBuilder.toString());
-//
-//            }
-//        }
- //   }
-
-
-
 
 
 }

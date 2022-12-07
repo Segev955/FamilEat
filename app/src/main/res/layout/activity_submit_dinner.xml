@@ -185,20 +185,7 @@
         android:layout_height="90dp"
         android:scaleType="fitXY"
         android:id="@+id/imgGallery"
-        android:layout_below="@id/details"
         android:src="@drawable/login_bg4"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/uploadImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/details"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/ic_launcher_background"
-        android:layout_alignParentEnd="true"
-        android:text="Upload Image"
-        android:textSize="5dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/submit"
