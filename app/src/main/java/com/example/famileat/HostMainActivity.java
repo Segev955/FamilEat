@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,12 +46,14 @@ public class HostMainActivity extends AppCompatActivity {
     TextView name,email;
 
     private boolean backPressed = false;
+    private AlertDialog.Builder dinnerOptions;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_main);
+        dinnerOptions = new AlertDialog.Builder(this);
 
         //set user and ID
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -64,7 +67,7 @@ public class HostMainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dinnerList = new ArrayList<>();
-        myAdapter = new hostAdapter(this,dinnerList, R.drawable.google);
+        myAdapter = new hostAdapter(this,dinnerList, R.drawable.google, dinnerOptions);
         recyclerView.setAdapter(myAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
