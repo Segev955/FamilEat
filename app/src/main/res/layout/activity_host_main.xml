@@ -31,7 +31,6 @@
         android:textStyle="bold" />
 
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_meal"
         android:layout_width="wrap_content"
@@ -43,13 +42,25 @@
         android:text="new meal"
         android:textSize="15dp" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logout"
+            android:layout_marginTop="79dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="215dp"
+            android:backgroundTint="@color/purple_700"
+            android:text="requests"
+            android:textSize="15dp"
+            app:layout_constraintRight_toRightOf="@+id/new_meal"
+            app:layout_constraintTop_toBottomOf="@+id/new_meal" />
 
     <TextView
         android:id="@+id/mymealstxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/new_meal"
-        android:layout_marginBottom="90dp"
         android:text="My Meals:"
         android:textColor="@color/black"
         android:textSize="25dp"
