@@ -42,6 +42,7 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
     public static String currUid;
     private AlertDialog.Builder dinnerOptions;
 //    private AlertDialog options;
+    Bitmap bitmap;
 
 
 
@@ -75,6 +76,28 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
         holder.time.setText(dinner.getTime());
         holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
         holder.kosher.setText(dinner.getKosher());
+        holder.dinnerImage.setImageBitmap(bitmap);
+
+        //Set picture
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference("images/" + dinner.getPicture());
+        try {
+            File file = File.createTempFile("temp", ".png");
+            storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    holder.dinnerImage.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Failed");
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         final String[] Rid = new String[1];
         //Set meal button
@@ -116,8 +139,9 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
                     storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                             dinnerImage.setImageBitmap(bitmap);
+                            holder.dinnerImage.setImageBitmap(bitmap);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -158,26 +182,7 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
         });
 
 
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference("images/" + dinner.getPicture());
-        try {
-            File file = File.createTempFile("temp", ".png");
-            storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    holder.dinnerImage.setImageBitmap(bitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
 
-                    System.out.println("Failed");
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
     }

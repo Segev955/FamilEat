@@ -1,16 +1,23 @@
 package classes;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -302,6 +309,7 @@ public class Dinner {
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
                     if (dinner.getID().equals(dinID)) {
                         FirebaseDatabase.getInstance().getReference().child("Dinners").child(dinID).removeValue();
+                        deletePicture(dinner.getPicture());
                 }
             }
 
@@ -312,6 +320,26 @@ public class Dinner {
 
             }});
     }
+
+    public static void deletePicture(String picName){
+        if(!picName.equals("default_dinner.jpg")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/" + picName);
+            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d(TAG, "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d(TAG, "onFailure: did not delete file");
+                }
+            });
+        }
+    }
+
 
     public static Dinner getDinnerById(String Did){
         final Dinner[] dinner = {null};

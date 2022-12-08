@@ -1,5 +1,7 @@
 package com.example.famileat;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +30,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +79,7 @@ public class EditDinnerActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private FirebaseAuth auth;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private boolean uploading=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +102,6 @@ public class EditDinnerActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
-
-
         reference = FirebaseDatabase.getInstance().getReference("Dinners");
         reference.child(hostAdapter.currUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,8 +122,6 @@ public class EditDinnerActivity extends AppCompatActivity {
                     text_details.setText(dinner.getDetails());
 
                     //View the dinner image.
-
-
                     storageReference = storage.getReference("images/" + picName);
                     try {
                         File file = File.createTempFile("temp", ".png");
@@ -133,13 +134,13 @@ public class EditDinnerActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-
                                 System.out.println("Failed");
                             }
                         });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
 
                 }
             }
@@ -191,8 +192,7 @@ public class EditDinnerActivity extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EditDinnerActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
                                 btnTime.setText(hourOfDay + ":" + minute);
@@ -235,11 +235,14 @@ public class EditDinnerActivity extends AppCompatActivity {
                         kosher_r = (RadioButton) findViewById(select_kosher);
                         kosher = kosher_r.getText().toString();
                     }
+                    if(!picName.equals(dinner.getPicture())) {
+                        Dinner.deletePicture(dinner.getPicture());
+                    }
+
                     updateDinner(title, date, time, address, amount, kosher, details, picName);
                 }
             }
         });
-
     }
 
     private void updateDinner(String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
@@ -261,7 +264,6 @@ public class EditDinnerActivity extends AppCompatActivity {
                         startActivity(n);
                     }
                 });
-
     }
     //...................................................................
 
@@ -270,8 +272,6 @@ public class EditDinnerActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,100);
-
-
     }
 
     private void uploadImage() {
@@ -279,24 +279,14 @@ public class EditDinnerActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading file....");
         progressDialog.show();
-
-
-        storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        picName = format.format(now);
         storageReference = FirebaseStorage.getInstance().getReference("images/"+ picName);
-
-
         storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 imgGallery.setImageURI(imageUri);
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -306,17 +296,30 @@ public class EditDinnerActivity extends AppCompatActivity {
                     progressDialog.dismiss();
             }
         });
-    }
 
+    }
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && data != null && data.getData() != null) {
+            if(!picName.equals(dinner.getPicture()))
+                Dinner.deletePicture(picName);
             imageUri = data.getData();
             imgGallery.setImageURI(imageUri);
+            setUri(imageUri);
+            setPicName();
             uploadImage();
         }
+    }
+    private void setPicName() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String picName = format.format(now);
+        this.picName = picName;
+    }
 
+    private void setUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 }

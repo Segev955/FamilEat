@@ -63,7 +63,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
-    private String fileName;
+    private String picName;
     //...............................................
 
     //    private ProgressBar progressBar;
@@ -86,11 +86,11 @@ public class SubmitDinnerActivity extends AppCompatActivity {
         submit = findViewById(R.id.submit);
         imgGallery = findViewById(R.id.imgGallery);
         auth = FirebaseAuth.getInstance();
-        fileName = "dufult_dinner.jpg";
+        picName = "default_dinner.jpg";
 
         //View the default image.
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference("images/" + fileName);
+        storageReference = storage.getReference("images/" + picName);
         try {
             File file = File.createTempFile("temp", ".png");
             storageReference.getFile(file).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
@@ -210,7 +210,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
                         kosher_r = (RadioButton) findViewById(select_kosher);
                         kosher = kosher_r.getText().toString();
                     }
-                    submitDinner(title, date, time, address, amount, kosher, details, fileName);
+                    submitDinner(title, date, time, address, amount, kosher, details, picName);
                 }
             }
         });
@@ -218,11 +218,11 @@ public class SubmitDinnerActivity extends AppCompatActivity {
     }
     //...................................................................
 
-    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String fileName) {
+    private void submitDinner(String title, String date, String time, String address, int amount, String kosher, String details,String picName) {
         String Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
         String Did=reference.getKey();
-        Dinner dinner = new Dinner(Did,Uid,title, date, time, address, amount, kosher,details, fileName);
+        Dinner dinner = new Dinner(Did,Uid,title, date, time, address, amount, kosher,details, picName);
         reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -257,10 +257,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        fileName = format.format(now);
-        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+picName);
 
 
         storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -286,11 +283,25 @@ public class SubmitDinnerActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && data != null && data.getData() != null) {
+            Dinner.deletePicture(picName);
             imageUri = data.getData();
             imgGallery.setImageURI(imageUri);
+            setUri(imageUri);
+            setPicName();
             uploadImage();
         }
 
+    }
+
+    private void setPicName() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String picName = format.format(now);
+        this.picName = picName;
+    }
+
+    private void setUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
 
