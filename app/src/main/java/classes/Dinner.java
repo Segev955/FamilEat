@@ -177,7 +177,11 @@ public class Dinner {
     }
 
     public String getPicture() {
-        return picture;
+        return this.picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture=picture;
     }
 
     public static String check_title(String title) {
@@ -245,9 +249,11 @@ public class Dinner {
 
     }
 
-    public static String check_amount(int amount){
+    public static String check_amount(int amount,int accepted){
         if (amount<1)
             return "Amount must be at least 1.";
+        if(amount<accepted)
+            return "You have accepted more guests then amount.";
         return "accept";
     }
 
@@ -284,6 +290,27 @@ public class Dinner {
         dinner.acceptedUid.add(Uid);
         dinner.requestsUid.remove(Uid);
         return true;
+    }
+    public static void deleteDinnerById(String dinID)
+    {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                    if (dinner.getID().equals(dinID)) {
+                        FirebaseDatabase.getInstance().getReference().child("Dinners").child(dinID).removeValue();
+                }
+            }
+
+        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }});
     }
 
     public static Dinner getDinnerById(String Did){

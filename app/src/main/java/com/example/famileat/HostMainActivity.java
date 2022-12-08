@@ -116,7 +116,7 @@ public class HostMainActivity extends AppCompatActivity {
         new_meal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HostMainActivity.this, SubmitDinner.class));
+                startActivity(new Intent(HostMainActivity.this, SubmitDinnerActivity.class));
             }
         });
         //........................................................

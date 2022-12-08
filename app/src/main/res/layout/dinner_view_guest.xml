@@ -26,8 +26,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="170dp"
         android:layout_marginTop="70dp"
-        android:backgroundTint="@color/purple_700"
-        android:text="Join request"
+        android:text="send request"
         android:textSize="15dp" />
 
     <TextView

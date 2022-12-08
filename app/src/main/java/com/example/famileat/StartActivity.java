@@ -120,7 +120,7 @@ public class StartActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent n = new Intent(getApplicationContext(),ForgotPass.class);
+                Intent n = new Intent(getApplicationContext(), ForgotPassActivity.class);
                 startActivity(n);
             }
         });

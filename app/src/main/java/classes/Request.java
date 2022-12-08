@@ -64,32 +64,43 @@ public class Request {
         return Dinner.acceptUser(d,r.guestUid);
     }
 
-    public static void deleteRequstByDinnerIdAndGuestId(String dinID,String guestID){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");;
+    public static void deleteRequstByDinnerIdAndGuestId(String dinID,String guestID) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");
+        ;
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Request request = dataSnapshot.getValue(Request.class);
-                    if(request.dinnerid.equals(dinID) && request.guestUid.equals(guestID)){
+                    if (request.dinnerid.equals(dinID) && request.guestUid.equals(guestID)) {
                         FirebaseDatabase.getInstance().getReference().child("Requests").child(request.requestId).removeValue();
-                        break;
                     }
-
                 }
-
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
-
+    public static void deleteRequstsByDinnerId(String dinID){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");;
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Request request = dataSnapshot.getValue(Request.class);
+                    if(request.dinnerid.equals(dinID)){
+                        FirebaseDatabase.getInstance().getReference().child("Requests").child(request.requestId).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
 }
+
 

@@ -17,6 +17,13 @@
         android:theme="@style/Theme.FamilEat"
         tools:targetApi="31">
         <activity
+            android:name=".EditDinnerActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false">
             <meta-data
@@ -39,14 +46,14 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".SubmitDinner"
+            android:name=".SubmitDinnerActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ForgotPass"
+            android:name=".ForgotPassActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

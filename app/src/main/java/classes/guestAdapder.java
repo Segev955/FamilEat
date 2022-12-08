@@ -72,13 +72,13 @@ public class guestAdapder extends RecyclerView.Adapter<guestAdapder.MyViewHolder
 //          holder.photoname.setText(dinner.getPicture());
 
         //Set join button
-        holder.join.getText().equals("Join request");
+        holder.join.getText().equals("send request");
         if(Dinner.isRequested(dinner,currUid))
             holder.join.setText("Cancel request");
         holder.join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.join.getText().equals("Join request")) {
+                if(holder.join.getText().equals("send request")) {
                         Dinner newdinner=Dinner.requestUser(dinner,currUid);
                         if (newdinner!=null) {
                             DatabaseReference reqReference = FirebaseDatabase.getInstance().getReference("Requests").push();
@@ -123,7 +123,7 @@ public class guestAdapder extends RecyclerView.Adapter<guestAdapder.MyViewHolder
                         dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                holder.join.setText("Join request");
+                                holder.join.setText("send request");
                                 dinnerReference.setValue(newdinner);
                                 Request.deleteRequstByDinnerIdAndGuestId(newdinner.getID(),currUid);
 //                                if (!reqId.equals(""))

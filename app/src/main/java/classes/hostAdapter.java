@@ -3,6 +3,7 @@ package classes;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -16,17 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.famileat.HostMainActivity;
+import com.example.famileat.EditDinnerActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,13 +34,12 @@ import java.util.ArrayList;
 public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> {
 
     Context context;
-
     ArrayList<Dinner> list;
 
     int proImage;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    private String currUid;
+    public static String currUid;
     private AlertDialog.Builder dinnerOptions;
 //    private AlertDialog options;
 
@@ -86,11 +81,14 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
         holder.mealbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currUid=dinner.getID();
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_dinner_options, null);
                 AlertDialog options;
                 TextView title, address, date, time, availables, kosher, details, photoname;
                 ImageView dinnerImage;
+                Button editBtn,deleteBtn;
+
                 title = contactPopuoView.findViewById(R.id.tvTitle);
                 address = contactPopuoView.findViewById(R.id.tvAddress);
                 date = contactPopuoView.findViewById(R.id.tvDate);
@@ -99,6 +97,8 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
                 kosher = contactPopuoView.findViewById(R.id.tvKosher);
                 dinnerImage = contactPopuoView.findViewById(R.id.dinnerImage);
                 details = contactPopuoView.findViewById(R.id.tvDetails);
+                deleteBtn = contactPopuoView.findViewById(R.id.deleteDinner);
+                editBtn = contactPopuoView.findViewById(R.id.editDinner);
 
                 title.setText(dinner.getTitle());
                 address.setText(dinner.getAddress());
@@ -107,6 +107,7 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
                 availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
                 kosher.setText(dinner.getKosher());
                 details.setText(dinner.getDetails());
+
                 //set image
                 storage = FirebaseStorage.getInstance();
                 storageReference = storage.getReference("images/" + dinner.getPicture());
@@ -132,6 +133,26 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
                 dinnerOptions.setView(contactPopuoView);
                 options = dinnerOptions.create();
                 options.show();
+
+                //Set edit button
+                editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent editIntent = new Intent(context.getApplicationContext(), EditDinnerActivity.class);
+                        context.startActivity(editIntent);
+                        options.cancel();
+                    }
+                });
+
+                //Set delete button
+                deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dinner.deleteDinnerById(dinner.getID());
+                        Request.deleteRequstsByDinnerId(dinner.getID());
+                        options.cancel();
+                    }
+                });
 
             }
         });
