@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,31 +31,32 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import classes.Dinner;
+import classes.HostsAdapter;
+import classes.RequestsAdapter;
 import classes.User;
-import classes.hostAdapter;
 
 public class HostMainActivity extends AppCompatActivity {
-    private Button logout, editprofile, new_meal;
+    private Button logout, editprofile, new_meal, requests;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
 
     private DatabaseReference referenceD;
     private RecyclerView recyclerView;
-    private hostAdapter myAdapter;
+    private HostsAdapter hostAdapter;
     ArrayList<Dinner> dinnerList;
 
     TextView name,email;
 
     private boolean backPressed = false;
-    private AlertDialog.Builder dinnerOptions;
+    private AlertDialog.Builder dialog_builder;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_main);
-        dinnerOptions = new AlertDialog.Builder(this);
+        dialog_builder = new AlertDialog.Builder(this);
 
         //set user and ID
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -67,8 +70,10 @@ public class HostMainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dinnerList = new ArrayList<>();
-        myAdapter = new hostAdapter(this,dinnerList, R.drawable.google, dinnerOptions);
-        recyclerView.setAdapter(myAdapter);
+
+        //Set host adapter..............................................
+        hostAdapter = new HostsAdapter(this,dinnerList, R.drawable.google, dialog_builder);
+        recyclerView.setAdapter(hostAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -80,7 +85,7 @@ public class HostMainActivity extends AppCompatActivity {
                     if(dinner.getHostUid().equals(ID))
                         dinnerList.add(dinner);
                 }
-                myAdapter.notifyDataSetChanged();
+                hostAdapter.notifyDataSetChanged();
 
             }
 
@@ -130,6 +135,49 @@ public class HostMainActivity extends AppCompatActivity {
         });
         //........................................................
 
+        //Requests button............................................
+        requests = findViewById(R.id.btnRequests);
+        requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog;
+                AlertDialog.Builder dialog_builder = new AlertDialog.Builder(HostMainActivity.this);
+                dialog = dialog_builder.create();
+                dialog.show();
+                LayoutInflater inflater = (LayoutInflater) HostMainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View contactPopuoView = inflater.inflate(R.layout.host_requests_view, null);
+
+                RequestsAdapter requestsAdapter = new RequestsAdapter(contactPopuoView.getContext(),dinnerList, R.drawable.google, dialog_builder);
+                recyclerView.setAdapter(requestsAdapter);
+                referenceD.addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        dinnerList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                            if(dinner.getHostUid().equals(ID))
+                                dinnerList.add(dinner);
+                        }
+                        requestsAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                dialog_builder.setView(contactPopuoView);
+                dialog = dialog_builder.create();
+                dialog.show();
+
+
+    }
+        });
+
+        //........................................................
 
         final TextView fullname_text = (TextView) findViewById(R.id.name);
 

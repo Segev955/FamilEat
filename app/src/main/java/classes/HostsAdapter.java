@@ -31,7 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> {
+public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<Dinner> list;
@@ -41,7 +41,7 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
     private StorageReference storageReference;
     public static String currUid;
     private AlertDialog.Builder dinnerOptions;
-//    private AlertDialog options;
+    //    private AlertDialog options;
     Bitmap bitmap;
 
 
@@ -49,7 +49,7 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
 
 
 
-    public hostAdapter(Context context, ArrayList<Dinner> list, int proImage, AlertDialog.Builder dinnerOptions) {
+    public HostsAdapter(Context context, ArrayList<Dinner> list, int proImage, AlertDialog.Builder dinnerOptions) {
         this.context = context;
         this.list = list;
         this.proImage = proImage;
@@ -61,14 +61,14 @@ public class hostAdapter extends RecyclerView.Adapter<hostAdapter.MyViewHolder> 
 
     @NonNull
     @Override
-    public hostAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HostsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.dinner_view_host, parent, false);
-        return new hostAdapter.MyViewHolder(v);
+        return new HostsAdapter.MyViewHolder(v);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull hostAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HostsAdapter.MyViewHolder holder, int position) {
         Dinner dinner = list.get(position);
         holder.title.setText(dinner.getTitle());
         holder.address.setText(dinner.getAddress());

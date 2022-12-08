@@ -1,7 +1,5 @@
 package com.example.famileat;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,7 +27,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -51,7 +47,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import classes.Dinner;
-import classes.hostAdapter;
+import classes.HostsAdapter;
 
 public class EditDinnerActivity extends AppCompatActivity {
 
@@ -103,7 +99,7 @@ public class EditDinnerActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
         reference = FirebaseDatabase.getInstance().getReference("Dinners");
-        reference.child(hostAdapter.currUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(HostsAdapter.currUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dinner = snapshot.getValue(Dinner.class);
