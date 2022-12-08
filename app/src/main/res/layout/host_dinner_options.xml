@@ -198,17 +198,18 @@
             android:id="@+id/editDinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/logout"
-            app:layout_constraintRight_toRightOf="@+id/logout"
+            android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
             android:text="edit dinner"
-            android:textSize="15dp" />
+            android:textSize="10dp" />
 
         <Button
             android:id="@+id/deleteDinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Delete Dinner" />
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/ic_baseline_delete_24"
+            android:text="Delete Dinner"
+            android:textSize="10dp"/>
 
 
     </LinearLayout>

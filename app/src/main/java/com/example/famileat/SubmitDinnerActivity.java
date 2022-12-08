@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +52,7 @@ import classes.Dinner;
 public class SubmitDinnerActivity extends AppCompatActivity {
 
     private Button location,submit, btnTime, uploadImage;
-    private EditText text_title,text_details,text_date;
+    private EditText text_title,text_details,text_date, text_address;
     private TextView location_text;
     private RadioGroup radio_kosher;
     private RadioButton kosher_r;
@@ -75,6 +79,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_dinner);
 
+        text_address = findViewById(R.id.location);
         text_title = findViewById(R.id.title);
         text_date = findViewById(R.id.date);
         btnTime =findViewById(R.id.time);
@@ -118,23 +123,6 @@ public class SubmitDinnerActivity extends AppCompatActivity {
             }
         });
 
-
-//        //location picker
-//        location = findViewById(R.id.location);
-//        location.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//                try {
-//                    startActivityForResult(builder.build(SubmitDinner.this),
-//                            PLACE_PICKER_REQUEST);
-//                } catch (GooglePlayServicesRepairableException e) {
-//                    e.printStackTrace();
-//                } catch (GooglePlayServicesNotAvailableException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         //Date Button:
         text_date.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +179,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
                 String title = text_title.getText().toString();
                 String date = text_date.getText().toString();
                 String time = btnTime.getText().toString();
-                String address = "maze pinat mapo";
+                String address = text_address.getText().toString();
                 int amount = amont_t.getValue();
                 int select_kosher = radio_kosher.getCheckedRadioButtonId();
                 String details = text_details.getText().toString();
