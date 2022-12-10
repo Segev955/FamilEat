@@ -5,7 +5,7 @@
 ### With FamilEat no one will be hungry or lonely on Saturdays and holidays.
 ### FamilEat is here for you!
 
-//logo picture
+<img src="https://user-images.githubusercontent.com/86108478/206856064-c18e9fc2-c65f-44c3-87bc-80fda0b4a314.jpg" alt="drawing" hight="10" width="800"/>
 
 # General information: 
 In this application you can register as a host user or guest user, the only place where you can choose the type of user is on the registration screen. <br>
