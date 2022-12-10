@@ -36,4 +36,14 @@ This screen is the only place where you can choose your user type (host or guest
 On this screen you can reset your password in case you forgot it, all you have to do is enter your email address click on "reset password" and you will be sent an email with a link, when you click on the link you can enter a new password and connect to the system with it.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206837807-b0ac41ea-ffb1-4d18-9fa1-f516a8790491.jpg" alt="drawing" width="200"/>
 
+### Edit profile screen:
+This screen can be entered from both a host and a guest user, you can edit your full name, date of birth and gender on this screen.<br>
+(Password can be edited using the "Forgot password" button, email and user type cannot be edited).<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/206850090-2b56cba8-0c6b-4380-9fad-9ac3dd4ed6b7.jpg" alt="drawing" width="200"/>
+
+### Host main screen:
+This screen is the screen that host type users go to after logging in, this is the home screen for hosts.<br>
+In this screen there are options of adding a new meal, editing a profile and logging out.<br>
+The meals created by the host are displayed on the screen, clicking on a meal opens up more details about the meal and additional options for the meal.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/206849748-d87b3170-e3ae-476e-bca4-ef63c16659fe.jpg" alt="drawing" width="200"/>
 
