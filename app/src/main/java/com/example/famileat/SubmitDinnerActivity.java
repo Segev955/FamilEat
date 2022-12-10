@@ -161,7 +161,17 @@ public class SubmitDinnerActivity extends AppCompatActivity {
                                                   int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
-                                btnTime.setText(hourOfDay + ":" + minute);
+                                String time = hourOfDay + ":" + minute;
+                                if (time.length() < 5) {
+                                    if (hourOfDay<10)
+                                        time = "0" + time;
+                                    if (minute <10){
+                                        String[] spl = time.split(":");
+                                        time = spl[0] + ":0" + spl[1];
+                                    }
+
+                                }
+                                btnTime.setText(time);
                             }
                         }, hour, minute, true);
                 // at last we are calling show to

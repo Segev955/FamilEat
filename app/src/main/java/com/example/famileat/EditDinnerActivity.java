@@ -191,7 +191,17 @@ public class EditDinnerActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
-                                btnTime.setText(hourOfDay + ":" + minute);
+                                String time = hourOfDay + ":" + minute;
+                                if (time.length() < 5) {
+                                    if (hourOfDay<10)
+                                        time = "0" + time;
+                                    if (minute <10){
+                                        String[] spl = time.split(":");
+                                        time = spl[0] + ":0" + spl[1];
+                                    }
+
+                                }
+                                btnTime.setText(time);
                             }
                         }, hour, minute, true);
                 // at last we are calling show to
@@ -209,7 +219,7 @@ public class EditDinnerActivity extends AppCompatActivity {
                 String title = text_title.getText().toString();
                 String date = text_date.getText().toString();
                 String time = btnTime.getText().toString();
-                String address = "maze pinat mapo";
+                String address = "Ariel University";
                 int amount = amont_t.getValue();
                 int select_kosher = radio_kosher.getCheckedRadioButtonId();
                 String details = text_details.getText().toString();

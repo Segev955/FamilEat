@@ -251,7 +251,6 @@ public class Dinner {
         int nowmi = c.get(Calendar.MINUTE);
         if ( (year == nowy && month == nowm && day == nowd)  && (hour<nowho||(hour==nowho&&minute<nowmi)) )
             return "The time has already passed.";
-
         return "accept";
 
     }

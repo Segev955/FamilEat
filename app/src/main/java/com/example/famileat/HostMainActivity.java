@@ -56,7 +56,7 @@ public class HostMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_main);
-        dialog_builder = new AlertDialog.Builder(this);
+
 
         //set user and ID
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,6 +72,7 @@ public class HostMainActivity extends AppCompatActivity {
         dinnerList = new ArrayList<>();
 
         //Set host adapter..............................................
+        dialog_builder = new AlertDialog.Builder(this);
         hostAdapter = new HostsAdapter(this,dinnerList, R.drawable.google, dialog_builder);
         recyclerView.setAdapter(hostAdapter);
 
@@ -140,38 +141,55 @@ public class HostMainActivity extends AppCompatActivity {
         requests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AlertDialog dialog;
                 AlertDialog.Builder dialog_builder = new AlertDialog.Builder(HostMainActivity.this);
-                dialog = dialog_builder.create();
-                dialog.show();
+
                 LayoutInflater inflater = (LayoutInflater) HostMainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_requests_view, null);
 
-                RequestsAdapter requestsAdapter = new RequestsAdapter(contactPopuoView.getContext(),dinnerList, R.drawable.google, dialog_builder);
-                recyclerView.setAdapter(requestsAdapter);
-                referenceD.addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        dinnerList.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                            Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                            if(dinner.getHostUid().equals(ID))
-                                dinnerList.add(dinner);
-                        }
-                        requestsAdapter.notifyDataSetChanged();
+//                //Dinner List: ...........................................................................
+//                RecyclerView recyclerView = contactPopuoView.findViewById(R.id.dinnerList);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+//                DatabaseReference  referenceD = FirebaseDatabase.getInstance().getReference("Dinners");
+//                recyclerView.setHasFixedSize(true);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+//                ArrayList<Dinner> dinner_list = new ArrayList<>();
+//
+//                //Set host adapter..............................................
+//                dialog_builder = new AlertDialog.Builder(contactPopuoView.getContext());
+//                HostsAdapter hostAdapter = new HostsAdapter(contactPopuoView.getContext(),dinner_list, R.drawable.google, dialog_builder);
+//                recyclerView.setAdapter(hostAdapter);
+//
+//                referenceD.addValueEventListener(new ValueEventListener() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        dinner_list.clear();
+//                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                            Dinner dinner = dataSnapshot.getValue(Dinner.class);
+//                            if(dinner.getHostUid().equals(ID))
+//                                dinner_list.add(dinner);
+//                        }
+//                        hostAdapter.notifyDataSetChanged();
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+//                //.........................................................................................
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+
 
                 dialog_builder.setView(contactPopuoView);
                 dialog = dialog_builder.create();
                 dialog.show();
+
 
 
     }
@@ -187,8 +205,6 @@ public class HostMainActivity extends AppCompatActivity {
                 User profile = snapshot.getValue(User.class);
                 if (profile != null) {
                     String fullname = profile.getFullName();
-                    String email = profile.getEmail();
-
                     fullname_text.setText(fullname);
                 }
             }

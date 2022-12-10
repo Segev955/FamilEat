@@ -62,7 +62,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
     @NonNull
     @Override
     public RequestsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.dinner_view_host, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.host_requests_view, parent, false);
         return new RequestsAdapter.MyViewHolder(v);
     }
 
