@@ -26,7 +26,7 @@ and contact the hosts of his meals.
 # Application screens: 
 ## General screens:
 ### Login screen- The start activity:
-On this screen you can connect to the system using an email address and password, if you are not a registered user you can go to the registration screen, if you do not remember the old password go to the password recovery screen, if you have not verified the email account you will not be able to log in until you do so, if you are a host type user, after Registration will go to the hosts home screen, if you are a guest type user, after registration you will go to the hosts home screen.
+On this screen you can connect to the system using an email address and password, if you are not a registered user you can go to the registration screen, if you do not remember your password go to the password recovery screen, if you have not verified the email account you will not be able to log in until you do so, if you are a host type user, after Registration will go to the hosts home screen, if you are a guest type user, after registration you will go to the guests home screen.
 There is an option to mark "remember me" and on subsequent connections the application will go to your home screen automatically until you click logout.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206835169-e255f592-4f82-42af-acfc-b956b7841744.jpg" alt="drawing" width="200"/>
 
