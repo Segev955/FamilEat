@@ -2,8 +2,9 @@
 
 ### Don't you have a place to have a Shabbat dinner?
 ### Are you hosting a meal and have space available to host people?
-### With FamilEat no one will be hungry or lonely on Saturdays and holidays.
 ### FamilEat is here for you!
+### With FamilEat no one will be alone on Saturdays and holidays.
+
 
 <img src="https://user-images.githubusercontent.com/86108478/206856224-ab026cac-bcda-4bcc-9b0f-c44eeaa85034.jpg" alt="drawing" width="800"/>
 
