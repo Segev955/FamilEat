@@ -56,7 +56,5 @@ The meals created by the host are displayed on the screen, clicking on a meal op
 
 ### Submit dinner screen
 On this screen, a host can enter a new meal into the system by entering the details of the meal, which are title, date, time, number of guests, kosher, photo and free text.<br>
-<br><img src="https://user-images.githubusercontent.com/86108478/206855274-13b3f194-8f25-4c6c-aad0-70e918d087d6.jpg") alt="drawing" width="200"/>
+<br><img src="https://user-images.githubusercontent.com/86108478/206855392-708767f9-dde5-4bd2-8352-0b03e97ae98e.jpg" width="200"/>
 ## Guests screens:
-
-
