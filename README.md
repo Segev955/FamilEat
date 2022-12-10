@@ -1,8 +1,9 @@
 # FamilEat - Android app for sharing and hosting dinners. 
 
-### With FamilEat no one will be hungry on Saturdays and holidays.<br>
-### Don't you have a place to have a Shabbat dinner?<br>
-### FamilEat is here for you!<br>
+### Don't you have a place to have a Shabbat dinner?
+### Are you hosting a meal and have space available to host people?
+### With FamilEat no one will be hungry or lonely on Saturdays and holidays.
+### FamilEat is here for you!
 
 //logo picture
 
