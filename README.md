@@ -20,14 +20,14 @@ a user of the host type has the option of creating a new meal, viewing and editi
 A guest type user has the option to view all the meals that the hosts have posted, choose which meal he wants to join and send a request to join.
 A guest will be able to view his meals (the meals he sent a request and the host approved)
 and contact the hosts of his meals.
-# Application screens: 
 
+# Application screens: 
+## General screens:
 ### Login screen- The start activity:
 On this screen you can connect to the system using an email address and password, if you are not a registered user you can go to the registration screen, if you do not remember the old password go to the password recovery screen, if you have not verified the email account you will not be able to log in until you do so, if you are a host type user, after Registration will go to the hosts home screen, if you are a guest type user, after registration you will go to the hosts home screen.
 There is an option to mark "remember me" and on subsequent connections the application will go to your home screen automatically until you click logout.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206835169-e255f592-4f82-42af-acfc-b956b7841744.jpg" alt="drawing" width="200"/>
 
-## General screens:
 ### Register screen:
 On this screen you can register for the system using an email address and password, by clicking the "sign up" button the system will check the legality of the inputs and your age (over 16), if everything is correct your details will be registered in the system and your user will become active after you verify your email.
 This screen is the only place where you can choose your user type (host or guest).<br>
@@ -56,7 +56,7 @@ The meals created by the host are displayed on the screen, clicking on a meal op
 
 ### Submit dinner screen
 On this screen, a host can enter a new meal into the system by entering the details of the meal, which are title, date, time, number of guests, kosher, photo and free text.<br>
-<br><img src="https://user-images.githubusercontent.com/86108478/206855274-13b3f194-8f25-4c6c-aad0-70e918d087d6.jpg)" alt="drawing" width="200"/>
+<br><img src="https://user-images.githubusercontent.com/86108478/206855274-13b3f194-8f25-4c6c-aad0-70e918d087d6.jpg") alt="drawing" width="200"/>
 ## Guests screens:
 
 
