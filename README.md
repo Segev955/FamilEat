@@ -27,6 +27,7 @@ On this screen you can connect to the system using an email address and password
 There is an option to mark "remember me" and on subsequent connections the application will go to your home screen automatically until you click logout.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206835169-e255f592-4f82-42af-acfc-b956b7841744.jpg" alt="drawing" width="200"/>
 
+## General screens:
 ### Register screen:
 On this screen you can register for the system using an email address and password, by clicking the "sign up" button the system will check the legality of the inputs and your age (over 16), if everything is correct your details will be registered in the system and your user will become active after you verify your email.
 This screen is the only place where you can choose your user type (host or guest).<br>
@@ -41,6 +42,7 @@ This screen can be entered from both a host and a guest user, you can edit your 
 (Password can be edited using the "Forgot password" button, email and user type cannot be edited).<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206850090-2b56cba8-0c6b-4380-9fad-9ac3dd4ed6b7.jpg" alt="drawing" width="200"/>
 
+## Hosts screens:
 ### Host main screen:
 This screen is the screen that host type users go to after logging in, this is the home screen for hosts.<br>
 In this screen there are options of adding a new meal, editing a profile and logging out.<br>
@@ -52,5 +54,9 @@ By clicking on a meal, the details of the meal open up and options for editing a
 The meals created by the host are displayed on the screen, clicking on a meal opens up more details about the meal and additional options for the meal.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/206855101-79c07fef-b7c1-4f33-a73c-c88ec2778ca2.jpg" alt="drawing" width="200"/>
 
+### Submit dinner screen
+On this screen, a host can enter a new meal into the system by entering the details of the meal, which are title, date, time, number of guests, kosher, photo and free text.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/206855274-13b3f194-8f25-4c6c-aad0-70e918d087d6.jpg)" alt="drawing" width="200"/>
+## Guests screens:
 
 
