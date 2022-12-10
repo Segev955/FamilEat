@@ -50,6 +50,7 @@ The meals created by the host are displayed on the screen, clicking on a meal op
 ### Dinner options:
 By clicking on a meal, the details of the meal open up and options for editing and deleting appear..<br>
 The meals created by the host are displayed on the screen, clicking on a meal opens up more details about the meal and additional options for the meal.<br>
-<br><img src="https://user-images.githubusercontent.com/86108478/206855101-79c07fef-b7c1-4f33-a73c-c88ec2778ca2.jpg"/>
+<br><img src="https://user-images.githubusercontent.com/86108478/206855101-79c07fef-b7c1-4f33-a73c-c88ec2778ca2.jpg" alt="drawing" width="200"/>
+
 
 
