@@ -49,6 +49,9 @@ public class HostMainActivity extends AppCompatActivity {
     private HostsAdapter hostAdapter;
     ArrayList<Dinner> dinnerList;
 
+    private static final String ONESIGNAL_APP_ID = "d165de36-ef1b-46ff-b69b-678b6637236e";
+
+    TextView name,email;
 
     private boolean backPressed = false;
     private AlertDialog.Builder dialog_builder;
@@ -185,6 +188,20 @@ public class HostMainActivity extends AppCompatActivity {
         });
         //........................................................
 
+        //Requests button............................................
+        requests = findViewById(R.id.btnRequests);
+        requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(requests.getText().equals("requests"))
+                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
+            }
+        });
+
+
+        //........................................................
 
         final TextView fullname_text = (TextView) findViewById(R.id.name);
 
@@ -194,6 +211,8 @@ public class HostMainActivity extends AppCompatActivity {
                 User profile = snapshot.getValue(User.class);
                 if (profile != null) {
                     String fullname = profile.getFullName();
+                    String email = profile.getEmail();
+
                     fullname_text.setText(fullname);
                 }
             }

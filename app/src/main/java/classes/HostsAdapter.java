@@ -188,6 +188,14 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                     }
                 });
 
+                //show image
+/*                dinnerImage.setOnClickListener((new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        View v = LayoutInflater.from(context).inflate(R.layout.dinner_view_host, parent, false);
+                    }
+                }));*/
+
             }
         });
 

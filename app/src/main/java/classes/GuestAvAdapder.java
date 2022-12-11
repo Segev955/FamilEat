@@ -1,9 +1,12 @@
 package classes;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.famileat.GuestMainActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -69,6 +74,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
         holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
         holder.kosher.setText(dinner.getKosher());
         final String[] Rid = new String[1];
+
 
         //Set join button
         holder.join.getText().equals("send request");
