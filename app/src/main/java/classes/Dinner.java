@@ -277,6 +277,12 @@ public class Dinner {
                 return true;
         return false;
     }
+    public static boolean isAccepted(Dinner d,String Uid){
+        for(String i:d.acceptedUid)
+            if (i.equals(Uid))
+                return true;
+        return false;
+    }
     public static Dinner requestUser(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid))
             return null;
@@ -286,15 +292,17 @@ public class Dinner {
     public static Dinner cancelRequest(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid)) {
             dinner.requestsUid.remove(Uid);
+            Request.deleteRequstByDinnerIdAndGuestId(dinner.getID(),Uid);
             return dinner;
         }
         return null;
     }
-    public static boolean acceptUser(Dinner dinner, String Uid){
-        if (!isAvailable(dinner)&&!isRequested(dinner,Uid))
+    public static boolean acceptUser(Dinner dinner, Request request){
+        if (!isAvailable(dinner)&&!isRequested(dinner,request.getGuestUid()))
             return false;
-        dinner.acceptedUid.add(Uid);
-        dinner.requestsUid.remove(Uid);
+        dinner.acceptedUid.add(request.getGuestUid());
+        dinner.requestsUid.remove(request.getGuestUid());
+        Request.deleteRequstByDinnerIdAndGuestId(dinner.getID(),request.getGuestUid());
         return true;
     }
     public static void deleteDinnerById(String dinID)
@@ -341,25 +349,26 @@ public class Dinner {
 
 
     public static Dinner getDinnerById(String Did){
-        final Dinner[] dinner = {null};
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");;
-        reference.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    if(dataSnapshot.getKey()==Did)
-                        dinner[0] = dataSnapshot.getValue(Dinner.class);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return dinner[0];
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");;
+//        reference.child(Did).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Dinner dinner = snapshot.getValue(Dinner.class);
+//                if(dinner!=null){
+//                    ID[0] =dinner.getID();
+//                    hostUid[0] =dinner.getHostUid();
+//                    title=dinner.getTitle();
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//        return dinner[0];
+        return null;
 
     }
 

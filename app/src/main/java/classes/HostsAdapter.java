@@ -74,7 +74,11 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
         holder.address.setText(dinner.getAddress());
         holder.date.setText(dinner.getDate());
         holder.time.setText(dinner.getTime());
-        holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
+        int av = Dinner.numOfAvailables(dinner);
+        if (av == 0)
+            holder.availables.setText("FULL");
+        else
+            holder.availables.setText(Integer.toString(av));
         holder.kosher.setText(dinner.getKosher());
         holder.dinnerImage.setImageBitmap(bitmap);
 
@@ -108,7 +112,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_dinner_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, photoname;
+                TextView title, address, date, time, availables, kosher, details, amount;
                 ImageView dinnerImage;
                 Button editBtn,deleteBtn;
 
@@ -117,6 +121,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 date = contactPopuoView.findViewById(R.id.tvDate);
                 time = contactPopuoView.findViewById(R.id.tvTime);
                 availables = contactPopuoView.findViewById(R.id.tvAvailables);
+                amount = contactPopuoView.findViewById(R.id.tvAmount);
                 kosher = contactPopuoView.findViewById(R.id.tvKosher);
                 dinnerImage = contactPopuoView.findViewById(R.id.dinnerImage);
                 details = contactPopuoView.findViewById(R.id.tvDetails);
@@ -127,7 +132,12 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 address.setText(dinner.getAddress());
                 date.setText(dinner.getDate());
                 time.setText(dinner.getTime());
-                availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
+                int av = Dinner.numOfAvailables(dinner);
+                if (av == 0)
+                    availables.setText("FULL");
+                else
+                    availables.setText(Integer.toString(av));
+                amount.setText(Integer.toString(dinner.getAmount()));
                 kosher.setText(dinner.getKosher());
                 details.setText(dinner.getDetails());
 

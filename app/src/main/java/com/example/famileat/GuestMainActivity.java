@@ -70,7 +70,7 @@ public class GuestMainActivity extends AppCompatActivity {
                 dinnerList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(Dinner.isAvailable(dinner))
+                    if(Dinner.isAvailable(dinner)&&!Dinner.isAccepted(dinner,ID))
                         dinnerList.add(dinner);
                 }
                 myAdapter.notifyDataSetChanged();

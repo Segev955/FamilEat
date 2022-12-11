@@ -125,9 +125,6 @@ public class guestAdapder extends RecyclerView.Adapter<guestAdapder.MyViewHolder
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 holder.join.setText("send request");
                                 dinnerReference.setValue(newdinner);
-                                Request.deleteRequstByDinnerIdAndGuestId(newdinner.getID(),currUid);
-//                                if (!reqId.equals(""))
-//                                    FirebaseDatabase.getInstance().getReference().child("Requests").child(reqId).removeValue();
                             }
 
                             @Override

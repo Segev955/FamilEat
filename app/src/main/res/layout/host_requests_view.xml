@@ -9,37 +9,136 @@
     app:cardCornerRadius="8dp"
     android:layout_margin="16dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Request for title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/rtime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="30dp"
+        android:text="request time:"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"/>/>
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dd/mm/yyyy     00:00"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="90dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/hello"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="60dp"
-            android:gravity="center"
-            android:text="Requests"
-            android:textColor="@color/white"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/requestsList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/hello"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Requester: "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvRequester"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:text="full name, gender, age years old"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available places :"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvAvailables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="accept"
+                android:textSize="15dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="delete"
+                android:textColor="#FF0000"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
-
+    <ImageView
+        android:id="@+id/dinnerImage"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="30dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </androidx.cardview.widget.CardView>

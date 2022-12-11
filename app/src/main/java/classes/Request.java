@@ -10,65 +10,85 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class Request {
-    private String requestId, hostUid, guestUid, dinnerid;
-    private boolean isAccepted;
+    private String requestId, hostUid, guestUid, dinnerid,date, time;
 
     public Request(){
-        this.isAccepted = false;
+
     }
     public Request(String requestId, String hostUid,String guestUid, String dinnerid){
         this.requestId=requestId;
         this.hostUid = hostUid;
         this.guestUid = guestUid;
         this.dinnerid = dinnerid;
-        this.isAccepted = false;
+        final Calendar cal = Calendar.getInstance();
+        //set date
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        this.date=day+"/"+month+"/"+year;
+
+        //set time
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        this.time = hour + ":" + minute;
+        if (this.time.length() < 5) {
+            if (hour<10)
+                this.time = "0" + this.time;
+            if (minute <10){
+                String[] spl = this.time.split(":");
+                this.time = spl[0] + ":0" + spl[1];
+            }
+
+        }
     }
 
-    public Request(String requestId, String hostUid,String guestUid, String dinnerid, boolean isAccepted){
-        this.requestId=requestId;
-        this.hostUid = hostUid;
-        this.guestUid = guestUid;
-        this.dinnerid = dinnerid;
-        this.isAccepted = isAccepted;
-    }
 
     public String getRequestId() {return this.requestId;}
-    public String getHostUid(){
-        return this.hostUid;
-    }
-    public String getGuestUid(){
-        return this.guestUid;
-    }
-    public String getDinnerid(){
-        return this.dinnerid;
-    }
     public void setId(String ID){
         this.requestId=requestId;
+    }
+    public String getHostUid(){
+        return this.hostUid;
     }
     public void setHostUid(String hostUid){
         this.hostUid=hostUid;
     }
+    public String getGuestUid(){
+        return this.guestUid;
+    }
     public void setGuestUid(String guestUid){
         this.guestUid=guestUid;
+    }
+    public String getDinnerid(){
+        return this.dinnerid;
     }
     public void setDinnerid(String dinnerid){
         this.dinnerid=dinnerid;
     }
-
-    public static boolean acceptRequest(Request r)
-    {
-        Dinner d =Dinner.getDinnerById(r.dinnerid);
-        if (d==null)
-            return false;
-        return Dinner.acceptUser(d,r.guestUid);
+    public String getDate(){
+        return this.date;
     }
+    public void setDate(String date){
+        this.date=date;
+    }
+    public String getTime(){
+        return this.time;
+    }
+    public void setTime(String time){
+        this.time=time;
+    }
+
+
+
+
+
 
     public static void deleteRequstByDinnerIdAndGuestId(String dinID,String guestID) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");
-        ;
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {

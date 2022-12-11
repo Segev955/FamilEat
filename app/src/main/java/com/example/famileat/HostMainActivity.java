@@ -4,6 +4,7 @@ import static com.example.famileat.StartActivity.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 
 import classes.Dinner;
 import classes.HostsAdapter;
+import classes.Request;
 import classes.RequestsAdapter;
 import classes.User;
 
@@ -46,7 +49,6 @@ public class HostMainActivity extends AppCompatActivity {
     private HostsAdapter hostAdapter;
     ArrayList<Dinner> dinnerList;
 
-    TextView name,email;
 
     private boolean backPressed = false;
     private AlertDialog.Builder dialog_builder;
@@ -96,7 +98,53 @@ public class HostMainActivity extends AppCompatActivity {
             }
         });
         //.........................................................................................
+        //set requests number
 
+        DatabaseReference referenceR = FirebaseDatabase.getInstance().getReference("Requests");
+        referenceR.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int sum = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Request request = dataSnapshot.getValue(Request.class);
+                    assert request != null;
+                    if (request.getHostUid().equals(ID)) {
+                        sum++;
+                    }
+
+                }
+                if (sum == 0) {
+                    requests.setText("requests");
+                    requests.setBackgroundColor(0x988E8F);
+                }
+                else {
+                    requests.setText("requests (" + sum + ")");
+                    requests.setBackgroundColor(0xff99cc00);
+                }
+                sum = 0;
+//sali.sharfman@msmail.ariel.ac.il
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+            //.........................................................................................
+        //Requests button............................................
+        requests = findViewById(R.id.btnRequests);
+        requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(requests.getText().equals("requests"))
+                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
+            }
+        });
+
+        //........................................................
 
 
 
@@ -136,66 +184,6 @@ public class HostMainActivity extends AppCompatActivity {
         });
         //........................................................
 
-        //Requests button............................................
-        requests = findViewById(R.id.btnRequests);
-        requests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AlertDialog dialog;
-                AlertDialog.Builder dialog_builder = new AlertDialog.Builder(HostMainActivity.this);
-
-                LayoutInflater inflater = (LayoutInflater) HostMainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View contactPopuoView = inflater.inflate(R.layout.host_requests_view, null);
-
-//                //Dinner List: ...........................................................................
-//                RecyclerView recyclerView = contactPopuoView.findViewById(R.id.dinnerList);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
-//                DatabaseReference  referenceD = FirebaseDatabase.getInstance().getReference("Dinners");
-//                recyclerView.setHasFixedSize(true);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
-//                ArrayList<Dinner> dinner_list = new ArrayList<>();
-//
-//                //Set host adapter..............................................
-//                dialog_builder = new AlertDialog.Builder(contactPopuoView.getContext());
-//                HostsAdapter hostAdapter = new HostsAdapter(contactPopuoView.getContext(),dinner_list, R.drawable.google, dialog_builder);
-//                recyclerView.setAdapter(hostAdapter);
-//
-//                referenceD.addValueEventListener(new ValueEventListener() {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        dinner_list.clear();
-//                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-//                            Dinner dinner = dataSnapshot.getValue(Dinner.class);
-//                            if(dinner.getHostUid().equals(ID))
-//                                dinner_list.add(dinner);
-//                        }
-//                        hostAdapter.notifyDataSetChanged();
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//                //.........................................................................................
-
-
-
-
-
-                dialog_builder.setView(contactPopuoView);
-                dialog = dialog_builder.create();
-                dialog.show();
-
-
-
-    }
-        });
-
-        //........................................................
 
         final TextView fullname_text = (TextView) findViewById(R.id.name);
 

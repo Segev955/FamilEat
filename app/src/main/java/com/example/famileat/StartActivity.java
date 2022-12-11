@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import classes.Dinner;
 import classes.User;
 
 public class StartActivity extends AppCompatActivity {
@@ -63,8 +64,6 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         text_email = findViewById(R.id.email);
         text_password = findViewById(R.id.password);
-//        text_email.setText("salishar2@gmail.com");
-//        text_password.setText("111111");
         login = findViewById(R.id.signin);
 
         rememberMe = findViewById(R.id.rememberMe);
