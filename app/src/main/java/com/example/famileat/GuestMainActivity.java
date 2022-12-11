@@ -28,8 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import classes.Dinner;
+import classes.GuestMyAdapter;
 import classes.User;
-import classes.guestAdapder;
+import classes.GuestAvAdapder;
 
 public class GuestMainActivity extends AppCompatActivity {
     private Button logout, editprofile, meals_btn;
@@ -40,7 +41,8 @@ public class GuestMainActivity extends AppCompatActivity {
     private String ID;
 
     private RecyclerView recyclerView;
-    private guestAdapder myAdapter, avAdapter;
+    private GuestAvAdapder avAdapter;
+    private GuestMyAdapter myAdapter;
     ArrayList<Dinner> av_dinnerList,my_dinnerList;
 
 
@@ -61,8 +63,8 @@ public class GuestMainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         av_dinnerList = new ArrayList<>();
         my_dinnerList = new ArrayList<>();
-        myAdapter = new guestAdapder(this, my_dinnerList, R.drawable.google);
-        avAdapter = new guestAdapder(this, av_dinnerList, R.drawable.google);
+        myAdapter = new GuestMyAdapter(this, my_dinnerList, R.drawable.google);
+        avAdapter = new GuestAvAdapder(this, av_dinnerList, R.drawable.google);
         recyclerView.setAdapter(avAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {

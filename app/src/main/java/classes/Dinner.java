@@ -100,6 +100,7 @@ public class Dinner {
         this.requestsUid=requestsUid;
     }
 
+
     public String getID()
     {
         return this.ID;
@@ -304,6 +305,10 @@ public class Dinner {
         dinner.requestsUid.remove(request.getGuestUid());
         Request.deleteRequstByDinnerIdAndGuestId(dinner.getID(),request.getGuestUid());
         return true;
+    }
+    public static Dinner removeGuest(Dinner dinner, String currUid) {
+        dinner.acceptedUid.remove(currUid);
+        return dinner;
     }
     public static void deleteDinnerById(String dinID)
     {
