@@ -80,6 +80,10 @@ public class RequestsActivity extends AppCompatActivity {
                     if(request.getHostUid().equals(ID))
                         requestList.add(request);
                 }
+                if (requestList.size()==0){
+                    Intent editIntent = new Intent(RequestsActivity.this, HostMainActivity.class);
+                    startActivity(editIntent);
+                }
                 requestAdapter.notifyDataSetChanged();
 
             }

@@ -109,7 +109,7 @@ public class HostMainActivity extends AppCompatActivity {
                     assert request != null;
                     if (request.getHostUid().equals(ID)) {
                         sum++;
-                        Toast.makeText(HostMainActivity.this,  "You have a new request!", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(HostMainActivity.this,  "You have a new request!", Toast.LENGTH_SHORT).show();
                     }
 
                 }

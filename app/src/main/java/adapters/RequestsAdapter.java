@@ -120,6 +120,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
 
                     final String[] Rid = new String[1];
                 }
+//                if (list.size()==0){
+//                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
+//                    context.startActivity(editIntent);
+//                }
             }
 
             @Override
@@ -142,8 +146,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
                     int age = year-Integer.parseInt(guest[0].getDate().split("/")[2]);
                     if(month<Integer.parseInt(guest[0].getDate().split("/")[1]))
                         age--;
-                    holder.requester.setText(guest[0].getFullName()+":\n"+guest[0].getGender()+", "+age+" years old.");
+                    holder.requester.setText(guest[0].getFullName()+"\n"+guest[0].getGender()+", "+age+" years old.");
                 }
+
             }
 
             @Override
@@ -163,10 +168,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                               //  Toast.makeText(context.getApplicationContext(),  "user accepted!", Toast.LENGTH_SHORT).show();
-                                if (list.size()==0){
-                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
-                                    context.startActivity(editIntent);
-                                }
+//                                if (list.size()==0){
+//                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
+//                                    context.startActivity(editIntent);
+//                                }
 
                             }
                         });
@@ -182,10 +187,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                             //    Toast.makeText(context.getApplicationContext(),  "request deleted!", Toast.LENGTH_SHORT).show();
-                                if (list.size()==0){
-                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
-                                    context.startActivity(editIntent);
-                                }
+//                                if (list.size()==0){
+//                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
+//                                    context.startActivity(editIntent);
+//                                }
 
                             }
                         });

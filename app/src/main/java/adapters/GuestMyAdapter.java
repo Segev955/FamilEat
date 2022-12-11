@@ -79,31 +79,17 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
             public void onClick(View view) {
                 Dinner newdinner=Dinner.removeGuest(dinner,currUid);
                 if (newdinner!=null) {
-                    DatabaseReference reqReference = FirebaseDatabase.getInstance().getReference("Requests").push();
                     DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Dinners").child(newdinner.getID());
-                    Rid[0] = reqReference.getKey();
-                    Request request = new Request(Rid[0],dinner.getHostUid(), currUid, dinner.getID());
-                    reqReference.setValue(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        dinnerReference.setValue(newdinner);
-                                       // Toast.makeText(context.getApplicationContext(),  "You are out of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
-                                    }
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            dinnerReference.setValue(newdinner);
+                            // Toast.makeText(context.getApplicationContext(),  "You are out of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
+                        }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        System.out.println("Failed exit the dinner.");
-                                    }
-                                });
-
-
-                            } else {
-                                System.out.println("Failed exit the dinner.");
-                            }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            System.out.println("Failed exit the dinner.");
                         }
                     });
                 }
