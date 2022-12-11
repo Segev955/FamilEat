@@ -32,18 +32,18 @@ import classes.User;
 import classes.guestAdapder;
 
 public class GuestMainActivity extends AppCompatActivity {
-    private Button logout;
-    private Button editprofile;
+    private Button logout, editprofile, meals_btn;
+    private TextView meals_txt;
     private FirebaseUser user;
     private DatabaseReference reference;
     private DatabaseReference referenceD;
     private String ID;
 
     private RecyclerView recyclerView;
-    private guestAdapder myAdapter;
-    ArrayList<Dinner> dinnerList;
+    private guestAdapder myAdapter, avAdapter;
+    ArrayList<Dinner> av_dinnerList,my_dinnerList;
 
-    TextView name,email;
+
 
     private boolean backPressed = false;
 
@@ -59,24 +59,30 @@ public class GuestMainActivity extends AppCompatActivity {
         referenceD = FirebaseDatabase.getInstance().getReference("Dinners");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dinnerList = new ArrayList<>();
-        myAdapter = new guestAdapder(this,dinnerList, R.drawable.google);
-        recyclerView.setAdapter(myAdapter);
+        av_dinnerList = new ArrayList<>();
+        my_dinnerList = new ArrayList<>();
+        myAdapter = new guestAdapder(this, my_dinnerList, R.drawable.google);
+        avAdapter = new guestAdapder(this, av_dinnerList, R.drawable.google);
+        recyclerView.setAdapter(avAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dinnerList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                av_dinnerList.clear();
+                my_dinnerList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(Dinner.isAvailable(dinner)&&!Dinner.isAccepted(dinner,ID))
-                        dinnerList.add(dinner);
+                    if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
+                        av_dinnerList.add(dinner);
+                    if(Dinner.isAccepted(dinner,ID))
+                        my_dinnerList.add(dinner);
+
                 }
                 myAdapter.notifyDataSetChanged();
+                avAdapter.notifyDataSetChanged();
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -106,6 +112,26 @@ public class GuestMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(GuestMainActivity.this, EditProfileActivity.class));
+            }
+        });
+        //........................................................
+        //Meals button............................................
+        meals_txt = findViewById(R.id.meals_txt);
+        meals_btn = findViewById(R.id.meals_btn);
+        meals_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(meals_btn.getText().equals("my meals")){
+                    meals_btn.setText("available meals");
+                    meals_txt.setText("My Meals:");
+                    recyclerView.setAdapter(myAdapter);
+                }
+                else{
+                    meals_btn.setText("my meals");
+                    meals_txt.setText("Available Meals:");
+                    recyclerView.setAdapter(avAdapter);
+                }
+
             }
         });
         //........................................................
