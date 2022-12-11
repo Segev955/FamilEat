@@ -47,7 +47,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import classes.Dinner;
-import classes.HostsAdapter;
+import adapters.HostsAdapter;
 
 public class EditDinnerActivity extends AppCompatActivity {
 

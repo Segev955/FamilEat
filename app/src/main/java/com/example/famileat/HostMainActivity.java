@@ -4,19 +4,15 @@ import static com.example.famileat.StartActivity.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,9 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import classes.Dinner;
-import classes.HostsAdapter;
+import adapters.HostsAdapter;
 import classes.Request;
-import classes.RequestsAdapter;
 import classes.User;
 
 public class HostMainActivity extends AppCompatActivity {

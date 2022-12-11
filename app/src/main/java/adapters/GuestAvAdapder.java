@@ -1,12 +1,9 @@
-package classes;
+package adapters;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.famileat.GuestMainActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,6 +32,9 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import classes.Dinner;
+import classes.Request;
 
 public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHolder> {
 
@@ -99,7 +97,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 dinnerReference.setValue(newdinner);
-                                                Toast.makeText(context.getApplicationContext(),  "Request sent to the host of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
+                                               // Toast.makeText(context.getApplicationContext(),  "Request sent to the host of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
                                                 holder.join.setText("Cancel request");
                                             }
 
@@ -129,7 +127,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
                         dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Toast.makeText(context.getApplicationContext(),  "Request canceled.", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(context.getApplicationContext(),  "Request canceled.", Toast.LENGTH_SHORT).show();
                                 holder.join.setText("send request");
                                 dinnerReference.setValue(newdinner);
                             }

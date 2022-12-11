@@ -1,4 +1,4 @@
-package classes;
+package adapters;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -12,13 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.famileat.EditDinnerActivity;
 import com.example.famileat.HostMainActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +36,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import classes.Dinner;
+import classes.Request;
+import classes.User;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyViewHolder> {
 
@@ -160,7 +162,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
                         .child(dinner[0].getID()).setValue(dinner[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(context.getApplicationContext(),  "user accepted!", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(context.getApplicationContext(),  "user accepted!", Toast.LENGTH_SHORT).show();
+                                if (list.size()==0){
+                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
+                                    context.startActivity(editIntent);
+                                }
 
                             }
                         });
@@ -175,7 +181,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
                         .child(dinner[0].getID()).setValue(dinner[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(context.getApplicationContext(),  "user accepted!", Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(context.getApplicationContext(),  "request deleted!", Toast.LENGTH_SHORT).show();
+                                if (list.size()==0){
+                                    Intent editIntent = new Intent(context.getApplicationContext(), HostMainActivity.class);
+                                    context.startActivity(editIntent);
+                                }
 
                             }
                         });
@@ -281,7 +291,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        CardView mealbtn;
+        CardView reqbtn;
         TextView title, time,requester, availables;
         Button accept,delete;
         ImageView dinnerImage;
@@ -292,7 +302,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
 
             accept = itemView.findViewById(R.id.accept);
             delete = itemView.findViewById(R.id.delete);
-            mealbtn = itemView.findViewById(R.id.mealbtn);
+            reqbtn = itemView.findViewById(R.id.reqbtn);
             title = itemView.findViewById(R.id.tvTitle);
             time = itemView.findViewById(R.id.tvTime);
             requester = itemView.findViewById(R.id.tvRequester);

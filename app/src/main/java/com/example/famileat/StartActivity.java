@@ -154,6 +154,9 @@ public class StartActivity extends AppCompatActivity {
 
             });
         }
+
+        //set remember my
+        rememberMe.setChecked(true);
         rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -162,14 +165,14 @@ public class StartActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("remember", "true");
                     editor.apply();
-                    Toast.makeText(StartActivity.this,"Checked", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(StartActivity.this,"Checked", Toast.LENGTH_SHORT).show();
                 }
                 else if (!buttonView.isChecked()) {
                     SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("remember", "false");
                     editor.apply();
-                    Toast.makeText(StartActivity.this,"Unchecked", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(StartActivity.this,"Unchecked", Toast.LENGTH_SHORT).show();
 
                 }
             }

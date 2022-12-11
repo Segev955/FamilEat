@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mealbtn"
+    android:id="@+id/reqbtn"
     app:cardElevation="8dp"
     app:cardCornerRadius="8dp"
     android:layout_margin="16dp">

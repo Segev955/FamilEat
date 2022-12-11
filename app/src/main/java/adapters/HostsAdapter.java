@@ -1,4 +1,4 @@
-package classes;
+package adapters;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -30,6 +30,9 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import classes.Dinner;
+import classes.Request;
 
 public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder> {
 
@@ -225,7 +228,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mealbtn = itemView.findViewById(R.id.mealbtn);
+            mealbtn = itemView.findViewById(R.id.reqbtn);
             title = itemView.findViewById(R.id.tvTitle);
             address = itemView.findViewById(R.id.tvAddress);
             date = itemView.findViewById(R.id.tvDate);

@@ -1,4 +1,4 @@
-package classes;
+package adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,6 +32,9 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import classes.Dinner;
+import classes.Request;
 
 public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHolder> {
 
@@ -88,7 +91,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         dinnerReference.setValue(newdinner);
-                                        Toast.makeText(context.getApplicationContext(),  "You are out of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(context.getApplicationContext(),  "You are out of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override

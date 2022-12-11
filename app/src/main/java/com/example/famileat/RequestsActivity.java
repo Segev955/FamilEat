@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import classes.Request;
-import classes.RequestsAdapter;
+import adapters.RequestsAdapter;
 import classes.User;
 
 public class RequestsActivity extends AppCompatActivity {
