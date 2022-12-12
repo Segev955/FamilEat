@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,9 +74,22 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
 
 
         //Set join button
-        holder.join.getText().equals("send request");
-        if(Dinner.isRequested(dinner,currUid))
-            holder.join.setText("Cancel request");
+        DatabaseReference referenceR = FirebaseDatabase.getInstance().getReference("Requests");
+        referenceR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(Dinner.isRequested(dinner,currUid))
+                    holder.join.setText("Cancel request");
+                else
+                    holder.join.setText("send request");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         holder.join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

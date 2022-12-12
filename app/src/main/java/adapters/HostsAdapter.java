@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.famileat.ChatActivity;
 import com.example.famileat.EditDinnerActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -117,7 +118,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 AlertDialog options;
                 TextView title, address, date, time, availables, kosher, details, amount;
                 ImageView dinnerImage;
-                Button editBtn,deleteBtn;
+                Button editBtn,deleteBtn, chatbtn;
 
                 title = contactPopuoView.findViewById(R.id.tvTitle);
                 address = contactPopuoView.findViewById(R.id.tvAddress);
@@ -130,6 +131,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 details = contactPopuoView.findViewById(R.id.tvDetails);
                 deleteBtn = contactPopuoView.findViewById(R.id.deleteDinner);
                 editBtn = contactPopuoView.findViewById(R.id.editDinner);
+                chatbtn = contactPopuoView.findViewById(R.id.chatbtn);
 
                 title.setText(dinner.getTitle());
                 address.setText(dinner.getAddress());
@@ -191,6 +193,16 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                     }
                 });
 
+                //Set chat button
+                chatbtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent chatIntent = new Intent(context.getApplicationContext(), ChatActivity.class);
+                        chatIntent.putExtra("Did",dinner.getID());
+                        context.startActivity(chatIntent);
+                        options.cancel();
+                    }
+                });
                 //show image
 /*                dinnerImage.setOnClickListener((new View.OnClickListener() {
                     @Override

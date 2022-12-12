@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reqbtn"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/typetxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="type"
+        android:textColor="#910B0B"
+        android:drawableLeft="@android:drawable/star_big_on"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/nametxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:layout_marginLeft="100dp"
+        android:textColor="#000000"
+
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/msgtxt"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:drawableLeft="@android:drawable/ic_dialog_email"
+        android:text="message.."
+        android:layout_marginTop="40dp"
+        android:textColor="#421717"
+        android:background="#A2B190"
+        android:textSize="20sp" />
+
+
+
+
+</androidx.cardview.widget.CardView>

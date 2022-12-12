@@ -23,28 +23,12 @@ public class Request {
         this.hostUid = hostUid;
         this.guestUid = guestUid;
         this.dinnerid = dinnerid;
-        final Calendar cal = Calendar.getInstance();
         //set date
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH)+1;
-        int year = cal.get(Calendar.YEAR);
-        this.date=day+"/"+month+"/"+year;
+        this.date= getCurrDate();
 
         //set time
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
-        this.time = hour + ":" + minute;
-        if (this.time.length() < 5) {
-            if (hour<10)
-                this.time = "0" + this.time;
-            if (minute <10){
-                String[] spl = this.time.split(":");
-                this.time = spl[0] + ":0" + spl[1];
-            }
-
-        }
+        this.time = getCurrTime();
     }
-
 
     public String getRequestId() {return this.requestId;}
     public void setId(String ID){
@@ -85,6 +69,30 @@ public class Request {
 
 
 
+    public static String getCurrDate(){
+        final Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        return day+"/"+month+"/"+year;
+    }
+    public static String getCurrTime(){
+        String time;
+        final Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        time = hour + ":" + minute;
+        if (time.length() < 5) {
+            if (hour<10)
+                time = "0" + time;
+            if (minute <10){
+                String[] spl = time.split(":");
+                time = spl[0] + ":0" + spl[1];
+            }
+
+        }
+        return time;
+    }
 
     public static void deleteRequstByDinnerIdAndGuestId(String dinID,String guestID) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");

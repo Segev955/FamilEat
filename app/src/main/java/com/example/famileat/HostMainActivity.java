@@ -122,7 +122,6 @@ public class HostMainActivity extends AppCompatActivity {
                     requests.setBackgroundColor(0xff99cc00);
                 }
                 sum = 0;
-//sali.sharfman@msmail.ariel.ac.il
             }
 
             @Override

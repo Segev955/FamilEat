@@ -2,6 +2,7 @@ package adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.famileat.ChatActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,6 +75,15 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
         holder.kosher.setText(dinner.getKosher());
         final String[] Rid = new String[1];
 
+        //Set chat button
+        holder.chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent chatIntent = new Intent(context.getApplicationContext(), ChatActivity.class);
+                chatIntent.putExtra("Did",dinner.getID());
+                context.startActivity(chatIntent);
+            }
+        });
         //Set exit button
         holder.exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +140,11 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
 
         TextView title, address, date, time, availables, kosher, details, photoname;
         ImageView dinnerImage;
-        Button exit;
+        Button exit, chat;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            chat = itemView.findViewById(R.id.chatbtn);
             exit = itemView.findViewById(R.id.exit);
             title = itemView.findViewById(R.id.tvTitle);
             address = itemView.findViewById(R.id.tvAddress);

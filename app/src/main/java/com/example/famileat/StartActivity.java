@@ -156,7 +156,6 @@ public class StartActivity extends AppCompatActivity {
         }
 
         //set remember my
-        rememberMe.setChecked(true);
         rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

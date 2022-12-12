@@ -2,7 +2,6 @@ package classes;
 
 import static android.content.ContentValues.TAG;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,10 +25,14 @@ import java.util.List;
 
 public class Dinner {
 
+    private List<String> chat;
     private String ID, hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
     private List<String> acceptedUid, requestsUid;
+
     public Dinner() {
+        this.chat=new ArrayList<String>();
+
         this.acceptedUid = new ArrayList<String>();
         this.requestsUid= new ArrayList<String>();
     }
@@ -49,8 +52,27 @@ public class Dinner {
             this.picture="no picture";
         this.acceptedUid = new ArrayList<String>();
         this.requestsUid= new ArrayList<String>();
+        this.chat=new ArrayList<String>();
+
     }
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid) {
+    public Dinner(String ID,String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture, List<String> chat) {
+        this.ID=ID;
+        this.hostUid=hostUid;
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.address = address;
+        this.amount = amount;
+        this.kosher = kosher;
+        this.details = details;
+        this.picture=picture;
+        if(this.picture.equals(""))
+            this.picture="no picture";
+        this.acceptedUid = new ArrayList<String>();
+        this.requestsUid= new ArrayList<String>();
+        this.chat=chat;
+    }
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid, List<String>chat) {
         this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
@@ -65,8 +87,9 @@ public class Dinner {
             this.picture="no picture";
         this.acceptedUid = acceptedUid;
         this.requestsUid= new ArrayList<String>();
+        this.chat = chat;
     }
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher,List<String>requestsUid, String details, String picture) {
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher,List<String>requestsUid, String details, String picture,List<String> chat) {
         this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
@@ -82,8 +105,9 @@ public class Dinner {
         this.acceptedUid = new ArrayList<String>();
         this.getAcceptedUid().add("hhh");
         this.requestsUid=requestsUid;
+        this.chat = chat;
     }
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid) {
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid, List<String>chat) {
         this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
@@ -98,6 +122,7 @@ public class Dinner {
             this.picture="no picture";
         this.acceptedUid = acceptedUid;
         this.requestsUid=requestsUid;
+        this.chat = chat;
     }
 
 
@@ -117,6 +142,11 @@ public class Dinner {
     public List<String> getRequestsUid()
     {
         return this.requestsUid;
+    }
+
+    public List<String> getChat()
+    {
+        return this.chat;
     }
 
     public void getRequestsUid(List<String>requestsUid)
@@ -192,6 +222,21 @@ public class Dinner {
         this.picture=picture;
     }
 
+
+
+    public static Dinner sendGroupMessage(Dinner dinner, String fullName, String msg, String type){
+        if (msg.length()>0) {
+            String message = type + "\n" + Request.getCurrDate() + "     " + Request.getCurrTime()+"\n"+ fullName + "\n" + msg;
+            dinner.chat.add(message);
+        }
+        return dinner;
+    }
+    public static Dinner clearChat(Dinner dinner){
+        String msg=dinner.chat.get(0);
+        dinner.chat.clear();
+        dinner.chat.add(msg);
+        return dinner;
+    }
     public static String check_title(String title) {
         if (TextUtils.isEmpty(title))
             return "Please enter a title.";
@@ -272,24 +317,28 @@ public class Dinner {
     {
         return numOfAvailables(dinner)>0;
     }
+
     public static boolean isRequested(Dinner d,String Uid){
         for(String i:d.requestsUid)
             if (i.equals(Uid))
                 return true;
         return false;
     }
+
     public static boolean isAccepted(Dinner d,String Uid){
         for(String i:d.acceptedUid)
             if (i.equals(Uid))
                 return true;
         return false;
     }
+
     public static Dinner requestUser(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid))
             return null;
         dinner.requestsUid.add(Uid);
         return dinner;
     }
+
     public static Dinner cancelRequest(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid)) {
             dinner.requestsUid.remove(Uid);
@@ -298,6 +347,7 @@ public class Dinner {
         }
         return null;
     }
+
     public static boolean acceptUser(Dinner dinner, Request request){
         if (!isAvailable(dinner)&&!isRequested(dinner,request.getGuestUid()))
             return false;
@@ -306,12 +356,13 @@ public class Dinner {
         Request.deleteRequstByDinnerIdAndGuestId(dinner.getID(),request.getGuestUid());
         return true;
     }
+
     public static Dinner removeGuest(Dinner dinner, String currUid) {
         dinner.acceptedUid.remove(currUid);
         return dinner;
     }
-    public static void deleteDinnerById(String dinID)
-    {
+
+    public static void deleteDinnerById(String dinID) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -351,6 +402,7 @@ public class Dinner {
             });
         }
     }
+
 
 
     public static Dinner getDinnerById(String Did){

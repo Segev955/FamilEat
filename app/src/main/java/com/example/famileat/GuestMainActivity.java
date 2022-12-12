@@ -27,10 +27,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import adapters.GuestAvAdapder;
 import classes.Dinner;
 import adapters.GuestMyAdapter;
 import classes.User;
-import adapters.GuestAvAdapder;
+import adapters.ChatAdapter;
 
 public class GuestMainActivity extends AppCompatActivity {
     private Button logout, editprofile, meals_btn;
