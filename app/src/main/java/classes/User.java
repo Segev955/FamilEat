@@ -125,8 +125,6 @@ public class User {
 
     }
     public static String getFullnameByUid(String Uid) {
-
-
         final User[] user = new User[1];
         DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Users").child(Uid);
         dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
