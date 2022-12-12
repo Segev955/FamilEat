@@ -132,7 +132,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 TextView title, address, date, time, availables, kosher, details, amount;
                 Spinner accepted;
                 ImageView dinnerImage;
-                Button editBtn,deleteBtn, chatbtn;
+                Button editBtn,deleteBtn, chatbtn, kick;
 
 
                 title = contactPopuoView.findViewById(R.id.tvTitle);
@@ -148,6 +148,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 editBtn = contactPopuoView.findViewById(R.id.editDinner);
                 chatbtn = contactPopuoView.findViewById(R.id.chatbtn);
                 accepted = contactPopuoView.findViewById(R.id.tvAccepted);
+
 
                 //Set participants
                 DatabaseReference referenceD = FirebaseDatabase.getInstance().getReference("Dinners").child(dinner.getID());
@@ -253,6 +254,57 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                         options.cancel();
                     }
                 });
+
+//                //Set kick butto
+//                kick = contactPopuoView.findViewById(R.id.kick);
+//                kick.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+////                        for (String id:dinner.getAcceptedUid()) {
+////                            DatabaseReference ureference = FirebaseDatabase.getInstance().getReference("Users").child(id);
+////                            ureference.addListenerForSingleValueEvent(new ValueEventListener() {
+////                                @Override
+////                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+////                                    User profile = snapshot.getValue(User.class);
+////                                    if (profile != null&&accepted.gett) {
+////                                        participants.add(profile.getFullName());
+////                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+////                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+////                                        accepted.setAdapter(adapter);
+////                                    }
+////                                }
+////
+////                                @Override
+////                                public void onCancelled(@NonNull DatabaseError error) {
+////
+////                                }
+////                            });
+////                        }
+//                        Dinner newdinner = Dinner.removeGuest(dinner, dinner.getAcceptedUid().get(accepted.getAdapter(). - 1));
+//                        if (newdinner != null) {
+//                            DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Dinners").child(newdinner.getID());
+//                            dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                    dinnerReference.setValue(newdinner);
+//                                    // Toast.makeText(context.getApplicationContext(),  "You are out of "+newdinner.getTitle(), Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError error) {
+//                                    System.out.println("Failed exit the dinner.");
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//
+
+
+
+
+
 
                 //Set chat button
                 chatbtn.setOnClickListener(new View.OnClickListener() {
