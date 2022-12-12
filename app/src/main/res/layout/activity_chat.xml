@@ -90,30 +90,36 @@
 
     <EditText
         android:id="@+id/message_input"
-        android:layout_width="match_parent"
+        android:inputType="textMultiLine"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:maxLength="140"
-        android:layout_marginRight="48dp"
+        android:minHeight="45dp"
+        android:maxHeight="200dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@id/chatList"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
         android:layout_marginTop="-55dp"
         android:drawablePadding="10dp"
-        android:padding="20dp"
         android:textColor="@color/white"
+        android:imeOptions="actionDone"
         android:textColorHint="@color/white"
-        android:textSize="15dp"
+        android:textSize="12dp"
         android:hint="Input group message" />
 
-    <com.google.android.material.button.MaterialButton
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btnSend"
-        android:drawableTop= "@android:drawable/ic_menu_send"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:src="@drawable/send_message"
+        android:scaleY="0.5"
+        android:scaleX="0.5"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/chatList"
-        android:layout_marginTop="-55dp"
+        android:layout_marginTop="-63dp"
         android:layout_marginBottom="0dp"
-        android:layout_marginLeft="350dp"
+        android:layout_marginLeft="300dp"
         android:backgroundTint="#22B395"
         android:text=""
         android:textSize="11dp"/>

@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+
+/**
+ * class Dinner
+ */
 public class Dinner {
 
     private List<String> chat;
@@ -37,6 +41,9 @@ public class Dinner {
         this.requestsUid= new ArrayList<String>();
     }
 
+    /**
+     * constructor
+     */
     public Dinner(String ID,String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
         this.ID=ID;
         this.hostUid=hostUid;
@@ -55,6 +62,9 @@ public class Dinner {
         this.chat=new ArrayList<String>();
 
     }
+    /**
+     * constructor
+     */
     public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid, List<String>chat) {
         this.ID=ID;
         this.hostUid=hostUid;
@@ -74,6 +84,7 @@ public class Dinner {
     }
 
 
+    // ---- GET(ERS) & SET(ERS) ---- //
     public String getID()
     {
         return this.ID;
@@ -81,12 +92,18 @@ public class Dinner {
     public void setID(String id){
         this.ID=id;
     }
-
+    /**
+     * id of accepted to dinner
+     * @return         acceptedUid
+     */
     public List<String> getAcceptedUid()
     {
         return this.acceptedUid;
     }
-
+    /**
+     * id of requested to dinner
+     * @return         acceptedUid
+     */
     public List<String> getRequestsUid()
     {
         return this.requestsUid;
@@ -96,7 +113,6 @@ public class Dinner {
     {
         return this.chat;
     }
-
     public void getRequestsUid(List<String>requestsUid)
     {
         this.requestsUid=requestsUid;
@@ -169,9 +185,18 @@ public class Dinner {
     public void setPicture(String picture) {
         this.picture=picture;
     }
+    // ---- END OF GET(ERS) & SET(ERS) ---- //
 
 
-
+    /**
+     * sends Group Message
+     *
+     * @param  dinner    current dinner
+     * @param  fullName    full name of sender
+     * @param  msg    message
+     * @param  type    type of sender Guest/Host
+     * @return         object dinner (Dinner)
+     */
     public static Dinner sendGroupMessage(Dinner dinner, String fullName, String msg, String type){
         if (msg.length()>0) {
             String message = type + "\n" + Request.getCurrDate() + "     " + Request.getCurrTime()+"\n"+ fullName + "\n" + msg;
@@ -179,12 +204,24 @@ public class Dinner {
         }
         return dinner;
     }
+    /**
+     * clear Chat
+     *
+     * @param  dinner    current dinner
+     * @return         object dinner (Dinner)
+     */
     public static Dinner clearChat(Dinner dinner){
         String msg=dinner.chat.get(0);
         dinner.chat.clear();
         dinner.chat.add(msg);
         return dinner;
     }
+    /**
+     * check title (tittle need to be at lest 4 letters)
+     *
+     * @param  title    title of current dinnert
+     * @return         String (Accept/Not Accept)
+     */
     public static String check_title(String title) {
         if (TextUtils.isEmpty(title))
             return "Please enter a title.";
@@ -192,7 +229,13 @@ public class Dinner {
             return "Title too short (at least 4 characters.)";
         return "accept";
     }
-
+    /**
+     * check if date time is valid
+     *
+     * @param  date    data that want to put
+     * @param  time    time that want to put
+     * @return         String: accept/not
+     */
     public static String check_date_time(String date, String time) {
         //date
         if (TextUtils.isEmpty(date))
@@ -248,7 +291,13 @@ public class Dinner {
         return "accept";
 
     }
-
+    /**
+     * check if amount of guests is valid
+     *
+     * @param  amount    amount of possible guests
+     * @param  accepted    accepted guests
+     * @return         String: accept/not
+     */
     public static String check_amount(int amount,int accepted){
         if (amount<1)
             return "Amount must be at least 1.";
@@ -256,37 +305,71 @@ public class Dinner {
             return "You have accepted more guests then amount.";
         return "accept";
     }
-
+    /**
+     * check current amount of possible quests: (amount - accepted)
+     *
+     * @param  dinner    current dinner
+     * @return         (int) number
+     */
     public static int numOfAvailables(Dinner dinner) {
         return dinner.amount-dinner.acceptedUid.size();
     }
-
+    /**
+     * checks if the dinner is available to add more guests
+     *
+     * @param  dinner    current dinner
+     * @return         (boolean) True/False
+     */
     public static boolean isAvailable(Dinner dinner)
     {
         return numOfAvailables(dinner)>0;
     }
-
+    /**
+     * checks if the User id is in (requested to dinner) list
+     *
+     * @param  d    current dinner
+     * @param  Uid    User id
+     * @return         (boolean) True/False
+     */
     public static boolean isRequested(Dinner d,String Uid){
-        for(String i:d.requestsUid)
+        for(String i : d.requestsUid)
             if (i.equals(Uid))
                 return true;
         return false;
     }
-
+    /**
+     * checks if the User id is in (accepted to dinner) list
+     *
+     * @param  d    current dinner
+     * @param  Uid    User id
+     * @return         (boolean) True/False
+     */
     public static boolean isAccepted(Dinner d,String Uid){
         for(String i:d.acceptedUid)
             if (i.equals(Uid))
                 return true;
         return false;
     }
-
+    /**
+     * adds User id to (requested to dinner) list
+     *
+     * @param  dinner    current dinner
+     * @param  Uid    User id
+     * @return         (Dinner) dinner
+     */
     public static Dinner requestUser(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid))
             return null;
         dinner.requestsUid.add(Uid);
         return dinner;
     }
-
+    /**
+     * cancel User id from (requested to dinner) list
+     *
+     * @param  dinner    current dinner
+     * @param  Uid    User id
+     * @return         (Dinner) dinner
+     */
     public static Dinner cancelRequest(Dinner dinner,String Uid){
         if (isRequested(dinner,Uid)) {
             dinner.requestsUid.remove(Uid);
@@ -295,7 +378,13 @@ public class Dinner {
         }
         return null;
     }
-
+    /**
+     * accept user's request to Dinner
+     *
+     * @param  dinner    current dinner
+     * @param  request    Request
+     * @return         (boolean) True/False
+     */
     public static boolean acceptUser(Dinner dinner, Request request){
         if (!isAvailable(dinner)&&!isRequested(dinner,request.getGuestUid()))
             return false;
@@ -304,12 +393,22 @@ public class Dinner {
         Request.deleteRequstByDinnerIdAndGuestId(dinner.getID(),request.getGuestUid());
         return true;
     }
-
+    /**
+     * remove User(guest) from (accepted to dinner) list
+     *
+     * @param  dinner    current dinner
+     * @param  currUid    current user id
+     * @return         (Dinner) dinner
+     */
     public static Dinner removeGuest(Dinner dinner, String currUid) {
         dinner.acceptedUid.remove(currUid);
         return dinner;
     }
-
+    /**
+     * delete Dinner by IF from StorageReference
+     *
+     * @param  dinID    dinner ID
+     */
     public static void deleteDinnerById(String dinID) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -331,7 +430,11 @@ public class Dinner {
 
             }});
     }
-
+    /**
+     * delete picture from StorageReference
+     *
+     * @param  picName    name of picture
+     */
     public static void deletePicture(String picName){
         if(!picName.equals("default_dinner.jpg")&&!picName.equals("")) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/" + picName);
@@ -349,32 +452,6 @@ public class Dinner {
                 }
             });
         }
-    }
-
-
-
-    public static Dinner getDinnerById(String Did){
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners");;
-//        reference.child(Did).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Dinner dinner = snapshot.getValue(Dinner.class);
-//                if(dinner!=null){
-//                    ID[0] =dinner.getID();
-//                    hostUid[0] =dinner.getHostUid();
-//                    title=dinner.getTitle();
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//        return dinner[0];
-        return null;
-
     }
 
 }

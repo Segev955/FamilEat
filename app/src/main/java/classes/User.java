@@ -18,6 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.util.Date;
 
+
+/**
+ * class Request
+ */
 public class User {
 
     private String fullName, email, date, gender, type;
@@ -25,6 +29,9 @@ public class User {
     public User() {
 
     }
+    /**
+     * constructor
+     */
     public User(String fullName, String email, String date, String gender, String type) {
         this.fullName = fullName;
         this.email = email;
@@ -33,7 +40,7 @@ public class User {
         this.type = type;
     }
 
-
+    // ---- GET(ERS) & SET(ERS) ---- //
     public String getFullName() {
         return this.fullName;
     }
@@ -65,7 +72,15 @@ public class User {
     public String getType() {
         return this.type;
     }
+    // ---- END OF GET(ERS) & SET(ERS) ---- //
 
+
+    /**
+     * check full Name of User (need be correct)
+     *
+     * @param  fullName    full name of user
+     * @return         (String) accept/not
+     */
     public static String check_fullName(String fullName) {
         if (TextUtils.isEmpty(fullName))
             return "Please enter full name.";
@@ -76,6 +91,12 @@ public class User {
         return "accept";
     }
 
+    /**
+     * check if email of User is valid (need be correct)
+     *
+     * @param  email    email of user
+     * @return         (String) accept/not
+     */
     public static String check_email(String email) {
         if (TextUtils.isEmpty(email))
             return "Please enter email.";
@@ -84,6 +105,12 @@ public class User {
         return "accept";
     }
 
+    /**
+     * check if password of User is valid (need be correct)
+     *
+     * @param  password    password of user
+     * @return         (String) accept/not
+     */
     public static String check_pass(String password) {
         if (TextUtils.isEmpty(password))
             return "Please enter password.";
@@ -92,6 +119,12 @@ public class User {
         return "accept";
     }
 
+    /**
+     * check if user's date of birth is valid (need be correct)
+     *
+     * @param  date    date of user
+     * @return         (String) accept/not
+     */
     public static String check_date(String date) {
         int minage = 16;
         if (TextUtils.isEmpty(date))
@@ -124,6 +157,12 @@ public class User {
         return "accept";
 
     }
+    /**
+     * return full name by User ID (from database)
+     *
+     * @param  Uid    id of user
+     * @return         (String) name
+     */
     public static String getFullnameByUid(String Uid) {
         final String[] s = {""};
         DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Users").child(Uid);
