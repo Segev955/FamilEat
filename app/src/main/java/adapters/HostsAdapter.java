@@ -164,7 +164,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                         }
                         else {
                             ArrayList<String> participants = new ArrayList<String>();
-                            participants.add("view participants");
+                            //participants.add("view participants");
                             for (int i = 0; i < d.getAcceptedUid().size(); i++) {
                                 ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
