@@ -24,6 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -31,9 +36,12 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import classes.Dinner;
 import classes.Request;
+import classes.User;
 
 public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder> {
 
@@ -47,6 +55,8 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
     private AlertDialog.Builder dinnerOptions;
     //    private AlertDialog options;
     Bitmap bitmap;
+    private List<String> acceptedNames;
+    String str = "";
 
 
 
@@ -59,6 +69,8 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
         this.proImage = proImage;
         this.currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.dinnerOptions = dinnerOptions;
+        this.acceptedNames = new ArrayList<String>();
+
         //this.options = options;
 
     }
@@ -106,7 +118,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        DatabaseReference ureference = FirebaseDatabase.getInstance().getReference("Users");
         final String[] Rid = new String[1];
         //Set meal button
         holder.mealbtn.setOnClickListener(new View.OnClickListener() {
@@ -116,9 +128,10 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_dinner_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, amount;
+                TextView title, address, date, time, availables, kosher, details, amount, accepted;
                 ImageView dinnerImage;
                 Button editBtn,deleteBtn, chatbtn;
+
 
                 title = contactPopuoView.findViewById(R.id.tvTitle);
                 address = contactPopuoView.findViewById(R.id.tvAddress);
@@ -132,11 +145,38 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 deleteBtn = contactPopuoView.findViewById(R.id.deleteDinner);
                 editBtn = contactPopuoView.findViewById(R.id.editDinner);
                 chatbtn = contactPopuoView.findViewById(R.id.chatbtn);
+                accepted = contactPopuoView.findViewById(R.id.tvAccepted);
+
+                if (!dinner.getAcceptedUid().isEmpty()) {
+                    str = "";
+                    for (int i = 0; i < dinner.getAcceptedUid().size(); i++) {
+                        String s = dinner.getAcceptedUid().get(i);
+                        ureference.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User profile = snapshot.getValue(User.class);
+                                if (profile != null) {
+                                    str += profile.getFullName() + ". ";
+                                    System.out.println(str + ".......................");
+//                                    System.out.println(str + ",,,,,,,,,,,,,,,,,,,,,,");
+                                    accepted.setText(str);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                }
 
                 title.setText(dinner.getTitle());
                 address.setText(dinner.getAddress());
                 date.setText(dinner.getDate());
                 time.setText(dinner.getTime());
+
                 int av = Dinner.numOfAvailables(dinner);
                 if (av == 0)
                     availables.setText("FULL");

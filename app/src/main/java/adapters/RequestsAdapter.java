@@ -134,7 +134,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
 
         //Set guest details
         final User[] guest = new User[1];
-        DatabaseReference ureference = FirebaseDatabase.getInstance().getReference("Users");;
+        DatabaseReference ureference = FirebaseDatabase.getInstance().getReference("Users");
         ureference.child(request.getGuestUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
