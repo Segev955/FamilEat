@@ -9,8 +9,10 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +38,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import classes.Dinner;
@@ -56,7 +57,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
     //    private AlertDialog options;
     Bitmap bitmap;
     private List<String> acceptedNames;
-    String str = "";
+    String participantstr = "";
 
 
 
@@ -128,7 +129,8 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_dinner_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, amount, accepted;
+                TextView title, address, date, time, availables, kosher, details, amount;
+                Spinner accepted;
                 ImageView dinnerImage;
                 Button editBtn,deleteBtn, chatbtn;
 
@@ -147,30 +149,77 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 chatbtn = contactPopuoView.findViewById(R.id.chatbtn);
                 accepted = contactPopuoView.findViewById(R.id.tvAccepted);
 
-                if (!dinner.getAcceptedUid().isEmpty()) {
-                    str = "";
-                    for (int i = 0; i < dinner.getAcceptedUid().size(); i++) {
-                        String s = dinner.getAcceptedUid().get(i);
-                        ureference.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                User profile = snapshot.getValue(User.class);
-                                if (profile != null) {
-                                    str += profile.getFullName() + ". ";
-                                    System.out.println(str + ".......................");
-//                                    System.out.println(str + ",,,,,,,,,,,,,,,,,,,,,,");
-                                    accepted.setText(str);
-                                }
-                            }
+                //Set participants
+                DatabaseReference referenceD = FirebaseDatabase.getInstance().getReference("Dinners").child(dinner.getID());
+                referenceD.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Dinner d =snapshot.getValue(Dinner.class);
+                        if (d.getAcceptedUid().isEmpty()) {
+                            String[] participants={ "no participant"};
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            accepted.setAdapter(adapter);
+                        }
+                        else {
+                            ArrayList<String> participants = new ArrayList<String>();
+                            participants.add("view participants");
+                            for (int i = 0; i < d.getAcceptedUid().size(); i++) {
+                                ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        User profile = snapshot.getValue(User.class);
+                                        if (profile != null) {
+                                            participants.add(profile.getFullName());
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                            accepted.setAdapter(adapter);
+                                        }
+                                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
+                                    }
+                                });
                             }
-                        });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                }
+                });
+//
+//
+//
+//                if (!dinner.getAcceptedUid().isEmpty()) {
+//                    for (int i = 0; i < dinner.getAcceptedUid().size(); i++) {
+//                        String s = dinner.getAcceptedUid().get(i);
+//                        ureference.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                User profile = snapshot.getValue(User.class);
+//                                if (profile != null) {
+//                                    participantstr += profile.getFullName() + "\n";
+//                                    System.out.println(participantstr + ".......................");
+////                                    System.out.println(str + ",,,,,,,,,,,,,,,,,,,,,,");
+//                                    String[] users = { "Suresh Dasari", "Trishika Dasari", "Rohini Alavala", "Praveen Kumar", "Madhav Sai" };
+//                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dinner.getAcceptedUid());
+//                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                                    accepted.setAdapter(adapter);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
+//
+//                    }
+//                }
 
                 title.setText(dinner.getTitle());
                 address.setText(dinner.getAddress());
