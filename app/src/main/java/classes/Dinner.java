@@ -333,7 +333,7 @@ public class Dinner {
     }
 
     public static void deletePicture(String picName){
-        if(!picName.equals("default_dinner.jpg")) {
+        if(!picName.equals("default_dinner.jpg")&&!picName.equals("")) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/" + picName);
             storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
