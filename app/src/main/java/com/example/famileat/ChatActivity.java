@@ -4,6 +4,7 @@ import static com.example.famileat.StartActivity.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,8 @@ public class ChatActivity extends AppCompatActivity {
     private String Did;
     private TextView title,fullname_text;
     private EditText msgtxt;
-    private Button logout,editprofile, clearchat, sendbtn;
+    private Button logout,editprofile, clearchat;
+    private AppCompatImageView sendbtn;
     private RecyclerView recyclerView;
     private AlertDialog.Builder dialog_builder;
     private ChatAdapter chatAdapter;
