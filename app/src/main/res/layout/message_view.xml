@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reqbtn"
-    app:cardElevation="1dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
     app:cardCornerRadius="1dp"
-    android:layout_margin="1dp">
+    app:cardElevation="1dp">
 
     <TextView
         android:id="@+id/typetxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_supervisor_account_24"
         android:text="type"
         android:textColor="#910B0B"
-        android:drawableLeft="@drawable/ic_baseline_supervisor_account_24"
-        android:textStyle="bold"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/nametxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="name"
         android:layout_marginLeft="100dp"
+        android:layout_marginTop="2dp"
+        android:text="name"
         android:textColor="#000000"
+        android:textSize="15sp" />
 
-        android:textSize="10sp" />
+    <TextView
+        android:id="@+id/datetxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="19dp"
+        android:text="date"
+        android:textColor="#000000"
+        android:textSize="10dp" />
+
     <TextView
         android:id="@+id/msgtxt"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:text="message.."
         android:layout_marginTop="40dp"
-        android:textColor="#421717"
-        android:background="#A2B190"
+        android:background="@drawable/background_sent_msg"
+        android:text="message.."
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/white"
         android:textSize="15sp" />
-
-
 
 
 </androidx.cardview.widget.CardView>
