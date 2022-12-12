@@ -280,14 +280,16 @@ public class SubmitDinnerActivity extends AppCompatActivity {
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && data != null && data.getData() != null) {
-            Dinner.deletePicture(picName);
-            imageUri = data.getData();
-            imgGallery.setImageURI(imageUri);
-            setUri(imageUri);
-            setPicName();
-            uploadImage();
+        if(!picName.equals("default_dinner.jpg")) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == 100 && data != null && data.getData() != null) {
+                Dinner.deletePicture(picName);
+                imageUri = data.getData();
+                imgGallery.setImageURI(imageUri);
+                setUri(imageUri);
+                setPicName();
+                uploadImage();
+            }
         }
 
     }
