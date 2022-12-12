@@ -64,7 +64,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String[] message = list.get(position).split("\n");
         holder.type.setText(message[0]);
-        holder.name.setText(message[2]+'\n'+message[1]);
+        holder.name.setText(message[2]);
+        holder.date.setText(message[1]);
         String msg="";
         for (int i = 3; i < message.length; i++) {
             msg+=message[i]+"\n";
@@ -79,7 +80,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView message, type, name;
+        TextView message, type, name, date;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -87,6 +88,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             message = itemView.findViewById(R.id.msgtxt);
             name = itemView.findViewById(R.id.nametxt);
             type = itemView.findViewById(R.id.typetxt);
+            date = itemView.findViewById(R.id.datetxt);
 
         }
     }
