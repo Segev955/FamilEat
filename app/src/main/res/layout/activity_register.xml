@@ -20,7 +20,7 @@
             android:layout_margin="60dp"
             android:gravity="center"
             android:text="Register"
-            android:textColor="@color/white"
+            android:textColor="@color/ic_launcher_background"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -33,13 +33,13 @@
             android:layout_marginTop="-30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#30ffffff"
             android:drawableLeft="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"
             android:hint="Full Name"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:background="#30432E2E"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:textSize="20dp" />
 
         <EditText
@@ -51,13 +51,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#30ffffff"
+            android:background="#30432E2E"
             android:drawableLeft="@android:drawable/ic_dialog_email"
             android:drawablePadding="10dp"
             android:hint="Email"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:textSize="20dp" />
 
         <EditText
@@ -66,13 +66,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/email"
             android:layout_margin="10dp"
-            android:background="#30ffffff"
+            android:background="#30432E2E"
             android:drawableLeft="@drawable/ic_baseline_password_24"
             android:drawablePadding="10dp"
             android:hint="Password"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:inputType="textPassword"
             android:textSize="20dp" />
 
@@ -82,13 +82,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/password"
             android:layout_margin="10dp"
-            android:background="#30ffffff"
+            android:background="#30432E2E"
             android:drawableLeft="@drawable/ic_baseline_date_range_24"
             android:drawablePadding="10dp"
             android:hint="Birth Date (dd/mm/yyyy)"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:textSize="20dp" />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_below="@id/date"
             android:layout_margin="30dp"
             android:text="Gender:"
-            android:textColor="@color/white"
+            android:textColor="#674242"
             android:textSize="20dp"
             />
 
@@ -121,8 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Male"
-                    android:background="#30ffffff"
                     android:textStyle="bold"
+                    android:textColor="#674242"
                     android:textSize="20dp"
                     android:layout_below="@id/date"/>
 
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Female"
-                    android:background="#30ffffff"
+                    android:textColor="#674242"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_below="@id/date"/>
@@ -144,7 +144,8 @@
             android:layout_below="@id/date"
             android:layout_margin="30dp"
             android:text="type:"
-            android:textColor="@color/white"
+            android:background="#30432E2E"
+            android:textColor="#674242"
             android:textSize="20dp"
             />
         <LinearLayout
@@ -166,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Host"
-                    android:background="#30ffffff"
+                    android:textColor="#674242"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_below="@id/gend"/>
@@ -176,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Guest"
-                    android:background="#30ffffff"
+                    android:textColor="#674242"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_below="@id/gend"/>
@@ -201,7 +202,7 @@
             android:id="@+id/others"
             android:layout_above="@id/moreicons"
             android:text="or sign up with"
-            android:textColor="@color/white"
+            android:textColor="#674242"
             android:layout_centerHorizontal="true"/>
 
 

@@ -221,8 +221,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Dinners").push();
         String Did=reference.getKey();
         Dinner dinner = new Dinner(Did,Uid,title, date, time, address, amount, kosher,details, picName);
-        Dinner newdin=Dinner.sendGroupMessage(dinner,dinner.getTitle(),dinner.getDetails(),"START");
-        reference.setValue(newdin).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {

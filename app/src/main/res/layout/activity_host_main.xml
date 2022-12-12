@@ -14,7 +14,7 @@
         android:layout_margin="60dp"
         android:gravity="center"
         android:text="Hello Host"
-        android:textColor="@color/white"
+        android:textColor="@color/ic_launcher_background"
         android:textSize="25dp"
         android:textStyle="bold" />
 
@@ -38,7 +38,9 @@
         android:layout_below="@id/logout"
         android:layout_marginTop="79dp"
         android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/purple_700"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:drawableLeft="@drawable/ic_baseline_food_bank_24"
         android:text="new meal"
         android:textSize="10dp" />
@@ -51,7 +53,9 @@
             android:layout_marginTop="79dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="215dp"
-            android:backgroundTint="@color/purple_700"
+            android:background="#30432E2E"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:text="requests"
             android:textSize="15dp"
             app:layout_constraintRight_toRightOf="@+id/new_meal"
@@ -75,7 +79,9 @@
         app:layout_constraintRight_toRightOf="@+id/logout"
         android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
         android:layout_marginLeft="215dp"
-        android:backgroundTint="@color/purple_700"
+        android:background="#30511111"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:text="edit profile"
         android:textSize="10dp" />
 

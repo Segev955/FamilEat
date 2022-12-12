@@ -20,7 +20,7 @@
             android:layout_margin="60dp"
             android:gravity="center"
             android:text="Edit Profile"
-            android:textColor="@color/white"
+            android:textColor="@color/ic_launcher_background"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -33,13 +33,13 @@
             android:layout_marginTop="-30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#30ffffff"
+            android:background="#30432E2E"
             android:drawableLeft="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"
             android:hint="Full Name"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:textSize="20dp" />
 
 
@@ -49,13 +49,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/password"
             android:layout_margin="10dp"
-            android:background="#30ffffff"
+            android:background="#30432E2E"
             android:drawableLeft="@drawable/ic_baseline_date_range_24"
             android:drawablePadding="10dp"
             android:hint="Choose Date (dd/mm/yyyy)"
             android:padding="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="#674242"
+            android:textColorHint="#674242"
             android:textSize="20dp" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_below="@id/date"
             android:layout_margin="30dp"
             android:text="Gender:"
-            android:textColor="@color/white"
+            android:textColor="#674242"
             android:textSize="20dp"
             />
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/gend"
             android:layout_below="@id/date"
-            android:layout_marginRight="60dp"
+            android:layout_marginRight="120dp"
             android:gravity="center">
 
             <RadioGroup
@@ -88,8 +88,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Male"
-                    android:background="#30ffffff"
                     android:textStyle="bold"
+                    android:textColor="#674242"
                     android:textSize="20dp"
                     android:layout_below="@id/date"/>
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Female"
-                    android:background="#30ffffff"
+                    android:textColor="#674242"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_below="@id/date"/>

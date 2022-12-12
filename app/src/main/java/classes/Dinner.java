@@ -62,6 +62,7 @@ public class Dinner {
         this.chat=new ArrayList<String>();
 
     }
+
     /**
      * constructor
      */
@@ -211,9 +212,7 @@ public class Dinner {
      * @return         object dinner (Dinner)
      */
     public static Dinner clearChat(Dinner dinner){
-        String msg=dinner.chat.get(0);
         dinner.chat.clear();
-        dinner.chat.add(msg);
         return dinner;
     }
     /**
@@ -323,6 +322,16 @@ public class Dinner {
     public static boolean isAvailable(Dinner dinner)
     {
         return numOfAvailables(dinner)>0;
+    }
+    /**
+     * checks if the dinner the dinner did not passed
+     *
+     * @param  dinner    current dinner
+     * @return         (boolean) True/False
+     */
+    public static boolean isRelevant(Dinner dinner)
+    {
+        return check_date_time(dinner.getDate(),dinner.getTime()).equals("accept");
     }
     /**
      * checks if the User id is in (requested to dinner) list

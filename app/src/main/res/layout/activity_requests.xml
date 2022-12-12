@@ -14,7 +14,7 @@
         android:layout_margin="60dp"
         android:gravity="center"
         android:text="Hello Host"
-        android:textColor="@color/white"
+        android:textColor="@color/ic_launcher_background"
         android:textSize="25dp"
         android:textStyle="bold" />
 

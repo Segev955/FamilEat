@@ -155,42 +155,44 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                 referenceD.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Dinner d =snapshot.getValue(Dinner.class);
-                        if (d.getAcceptedUid().isEmpty()) {
-                            String[] participants={ "no participant"};
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            accepted.setAdapter(adapter);
-                        }
-                        else {
-                            ArrayList<String> participants = new ArrayList<String>();
-                            //participants.add("view participants");
-                            for (int i = 0; i < d.getAcceptedUid().size(); i++) {
-                                ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        User profile = snapshot.getValue(User.class);
-                                        if (profile != null) {
-                                            participants.add(profile.getFullName());
-                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
-                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                            accepted.setAdapter(adapter);
+                        Dinner d = snapshot.getValue(Dinner.class);
+                        if (d != null) {
+                            if (d.getAcceptedUid().isEmpty()) {
+                                String[] participants = {"no participant"};
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                accepted.setAdapter(adapter);
+                            } else {
+                                ArrayList<String> participants = new ArrayList<String>();
+                                //participants.add("view participants");
+                                for (int i = 0; i < d.getAcceptedUid().size(); i++) {
+                                    ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            User profile = snapshot.getValue(User.class);
+                                            if (profile != null) {
+                                                participants.add(profile.getFullName());
+                                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+                                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                accepted.setAdapter(adapter);
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled (@NonNull DatabaseError error){
 
-                    }
+                        }
+
                 });
 
 

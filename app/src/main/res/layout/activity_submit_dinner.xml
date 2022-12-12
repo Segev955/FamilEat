@@ -14,7 +14,7 @@
         android:layout_margin="30dp"
         android:gravity="center"
         android:text="Submit a Dinner:"
-        android:textColor="@color/white"
+        android:textColor="@color/ic_launcher_background"
         android:textSize="25dp"
         android:textStyle="bold" />
 
@@ -27,13 +27,13 @@
         android:layout_marginTop="-20dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_title_24"
         android:drawablePadding="10dp"
         android:hint="Title"
         android:padding="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:textSize="18dp" />
 
 
@@ -46,13 +46,13 @@
         android:layout_marginTop="-5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_date_range_24"
         android:drawablePadding="10dp"
         android:hint="Choose Date (dd/mm/yyyy)"
         android:padding="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:textSize="18dp" />
 
     <EditText
@@ -64,13 +64,13 @@
         android:layout_marginTop="-5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_add_location_24"
         android:drawablePadding="10dp"
         android:hint="Choose location"
         android:padding="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:textSize="18dp" />
 
     <Button
@@ -82,6 +82,9 @@
         android:layout_marginEnd="10dp"
         android:textSize="10dp"
         android:text="PICK TIME"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:drawableLeft="@drawable/ic_baseline_access_time_24"
         android:layout_below="@id/location"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +99,7 @@
         android:layout_below="@id/location"
         android:layout_margin="60dp"
         android:text="Amount:"
-        android:textColor="@color/white"
+        android:textColor="#674242"
         android:textSize="20dp"
         />
 
@@ -107,8 +110,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/location"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="-20dp"
         android:layout_marginEnd="100dp"
+        android:background="#30432E2E"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
         android:layout_marginRight="100dp"
         android:gravity="center" />
 
@@ -117,9 +122,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/amount"
-        android:layout_margin="55dp"
+
         android:text="Kosher:"
-        android:textColor="@color/white"
+        android:textColor="#674242"
         android:textSize="20dp"
         />
 
@@ -127,9 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/kosher1"
-        android:layout_below="@id/amount"
-        android:layout_marginLeft="70dp"
-        android:gravity="center">
+        android:layout_below="@id/gendertxt">
 
         <RadioGroup
             android:id="@+id/kosher"
@@ -142,9 +145,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kosher dairy"
-                android:background="#30ffffff"
+                android:textColor="#674242"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_below="@id/date"/>
 
             <RadioButton
@@ -152,9 +155,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kosher meat"
-                android:background="#30ffffff"
+                android:textColor="#674242"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_below="@id/date"/>
 
             <RadioButton
@@ -162,9 +165,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Not kosher"
-                android:background="#30ffffff"
+                android:textColor="#674242"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_below="@id/date"/>
 
         </RadioGroup>
@@ -179,13 +182,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_text_snippet_24"
         android:drawablePadding="10dp"
         android:hint="Details"
         android:padding="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColor="#674242"
+        android:background="#30432E2E"
+        android:textColorHint="#674242"
         android:textSize="18dp" />
 
     <TextView
@@ -195,7 +198,7 @@
         android:layout_below="@id/details"
         android:layout_margin="30dp"
         android:text="Upload image:"
-        android:textColor="@color/white"
+        android:textColor="#674242"
         android:textSize="20dp"
         />
 
