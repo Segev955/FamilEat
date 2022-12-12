@@ -90,6 +90,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
             }
         });
 
+
         holder.join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

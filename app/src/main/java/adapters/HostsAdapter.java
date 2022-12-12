@@ -204,12 +204,20 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                     }
                 });
                 //show image
-/*                dinnerImage.setOnClickListener((new View.OnClickListener() {
+                dinnerImage.setOnClickListener((new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        View v = LayoutInflater.from(context).inflate(R.layout.dinner_view_host, parent, false);
+                        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View contactPopuoView = inflater.inflate(R.layout.single_image, null);
+                        AlertDialog options;
+                        ImageView dinnerImage;
+                        dinnerImage = contactPopuoView.findViewById(R.id.imageview);
+                        dinnerImage.setImageBitmap(bitmap);
+                        dinnerOptions.setView(contactPopuoView);
+                        options = dinnerOptions.create();
+                        options.show();
                     }
-                }));*/
+                }));
 
             }
         });
