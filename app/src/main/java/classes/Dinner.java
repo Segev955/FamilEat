@@ -55,58 +55,6 @@ public class Dinner {
         this.chat=new ArrayList<String>();
 
     }
-    public Dinner(String ID,String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture, List<String> chat) {
-        this.ID=ID;
-        this.hostUid=hostUid;
-        this.title = title;
-        this.date = date;
-        this.time = time;
-        this.address = address;
-        this.amount = amount;
-        this.kosher = kosher;
-        this.details = details;
-        this.picture=picture;
-        if(this.picture.equals(""))
-            this.picture="no picture";
-        this.acceptedUid = new ArrayList<String>();
-        this.requestsUid= new ArrayList<String>();
-        this.chat=chat;
-    }
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details, String picture,List<String>acceptedUid, List<String>chat) {
-        this.ID=ID;
-        this.hostUid=hostUid;
-        this.title = title;
-        this.date = date;
-        this.time = time;
-        this.address = address;
-        this.amount = amount;
-        this.kosher = kosher;
-        this.details = details;
-        this.picture=picture;
-        if(this.picture.equals(""))
-            this.picture="no picture";
-        this.acceptedUid = acceptedUid;
-        this.requestsUid= new ArrayList<String>();
-        this.chat = chat;
-    }
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher,List<String>requestsUid, String details, String picture,List<String> chat) {
-        this.ID=ID;
-        this.hostUid=hostUid;
-        this.title = title;
-        this.date = date;
-        this.time = time;
-        this.address = address;
-        this.amount = amount;
-        this.kosher = kosher;
-        this.details = details;
-        this.picture=picture;
-        if(this.picture.equals(""))
-            this.picture="no picture";
-        this.acceptedUid = new ArrayList<String>();
-        this.getAcceptedUid().add("hhh");
-        this.requestsUid=requestsUid;
-        this.chat = chat;
-    }
     public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid, List<String>chat) {
         this.ID=ID;
         this.hostUid=hostUid;

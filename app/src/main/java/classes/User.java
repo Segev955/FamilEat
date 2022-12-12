@@ -6,7 +6,14 @@ import android.util.Patterns;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.famileat.RegisterActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -62,6 +69,10 @@ public class User {
     public static String check_fullName(String fullName) {
         if (TextUtils.isEmpty(fullName))
             return "Please enter full name.";
+        for (int i = 0; i < fullName.length(); i++) {
+            if (fullName.charAt(i)=='\n')
+                return "Full name not valid!";
+        }
         return "accept";
     }
 
@@ -112,6 +123,25 @@ public class User {
             return "Minimum age for using this app is " + minage + ".";
         return "accept";
 
+    }
+    public static String getFullnameByUid(String Uid) {
+
+
+        final User[] user = new User[1];
+        DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Users").child(Uid);
+        dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user[0] = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+        return user[0].fullName;
     }
 
 
