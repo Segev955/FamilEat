@@ -124,23 +124,7 @@ public class User {
         return "accept";
 
     }
-    public static String getFullnameByUid(String Uid) {
-        final User[] user = new User[1];
-        DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Users").child(Uid);
-        dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user[0] = snapshot.getValue(User.class);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-        return user[0].fullName;
-    }
 
 
 }

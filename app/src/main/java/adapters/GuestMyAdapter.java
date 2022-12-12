@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 import classes.Dinner;
 import classes.Request;
+import classes.User;
 
 public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHolder> {
 
@@ -68,6 +69,20 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
         Dinner dinner = list.get(position);
         String currUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         holder.title.setText(dinner.getTitle());
+        //Set host
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(dinner.getHostUid());
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                holder.host.setText(user.getFullName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.address.setText(dinner.getAddress());
         holder.date.setText(dinner.getDate());
         holder.time.setText(dinner.getTime());
@@ -138,7 +153,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, address, date, time, availables, kosher, details, photoname;
+        TextView title, address, date, time, availables, kosher, host, photoname;
         ImageView dinnerImage;
         Button exit, chat;
 
@@ -147,6 +162,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
             chat = itemView.findViewById(R.id.chatbtn);
             exit = itemView.findViewById(R.id.exit);
             title = itemView.findViewById(R.id.tvTitle);
+            host = itemView.findViewById(R.id.tvHost);
             address = itemView.findViewById(R.id.tvAddress);
             date = itemView.findViewById(R.id.tvDate);
             time = itemView.findViewById(R.id.tvTime);

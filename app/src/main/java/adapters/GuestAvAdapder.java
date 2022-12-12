@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import classes.Dinner;
 import classes.Request;
+import classes.User;
 
 public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHolder> {
 
@@ -65,6 +66,21 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
         Dinner dinner = list.get(position);
         String currUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         holder.title.setText(dinner.getTitle());
+
+        //Set host
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(dinner.getHostUid());
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                holder.host.setText(user.getFullName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.address.setText(dinner.getAddress());
         holder.date.setText(dinner.getDate());
         holder.time.setText(dinner.getTime());
@@ -189,7 +205,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, address, date, time, availables, kosher, details, photoname;
+        TextView title, address, date, time, availables, kosher, host, photoname;
         ImageView dinnerImage;
         Button join;
 
@@ -198,6 +214,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
 
             join = itemView.findViewById(R.id.join);
             title = itemView.findViewById(R.id.tvTitle);
+            host = itemView.findViewById(R.id.tvHost);
             address = itemView.findViewById(R.id.tvAddress);
             date = itemView.findViewById(R.id.tvDate);
             time = itemView.findViewById(R.id.tvTime);
