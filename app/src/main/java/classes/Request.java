@@ -12,6 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+/**
+ * class Request
+ */
 public class Request {
     private String requestId, hostUid, guestUid, dinnerid,date, time;
 
@@ -29,7 +32,7 @@ public class Request {
         //set time
         this.time = getCurrTime();
     }
-
+    // ---- GET(ERS) & SET(ERS) ---- //
     public String getRequestId() {return this.requestId;}
     public void setId(String ID){
         this.requestId=requestId;
@@ -64,11 +67,15 @@ public class Request {
     public void setTime(String time){
         this.time=time;
     }
+    // ---- END OF GET(ERS) & SET(ERS) ---- //
 
 
 
-
-
+    /**
+     * returns Current Date
+     *
+     * @return         (String) date
+     */
     public static String getCurrDate(){
         final Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -76,6 +83,11 @@ public class Request {
         int year = cal.get(Calendar.YEAR);
         return day+"/"+month+"/"+year;
     }
+    /**
+     * returns Current Time
+     *
+     * @return         (String) time
+     */
     public static String getCurrTime(){
         String time;
         final Calendar cal = Calendar.getInstance();
@@ -93,7 +105,12 @@ public class Request {
         }
         return time;
     }
-
+    /**
+     * delete specific Request (from FirebaseDatabase) By (Dinner Id And Guest Id)
+     *
+     * @param  dinID     dinner ID
+     * @param  guestID    quest ID
+     */
     public static void deleteRequstByDinnerIdAndGuestId(String dinID,String guestID) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,6 +129,12 @@ public class Request {
         });
     }
 
+    /**
+     * delete all Requests (from FirebaseDatabase) By (Dinner Id)
+     *
+     * @param  dinID     dinner ID
+     * @param  guestID    quest ID
+     */
     public static void deleteRequstsByDinnerId(String dinID){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Requests");;
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
