@@ -118,11 +118,13 @@ public class HostMainActivity extends AppCompatActivity {
                 }
                 if (sum == 0) {
                     requests.setText("requests");
+                    requests.setVisibility(View.GONE);
                     requests.setBackgroundColor(0x988E8F);
                 }
                 else {
+                    requests.setVisibility(View.VISIBLE);
                     requests.setText("requests (" + sum + ")");
-                    requests.setBackgroundColor(0xff9900);
+                    requests.setBackgroundColor(0xff99cc00);
                 }
                 sum = 0;
             }
