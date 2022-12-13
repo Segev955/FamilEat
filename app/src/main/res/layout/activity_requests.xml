@@ -38,7 +38,9 @@
         android:layout_below="@id/logout"
         android:layout_marginTop="79dp"
         android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/purple_700"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
+        android:backgroundTint="#30432E2E"
         android:drawableLeft="@drawable/ic_baseline_food_bank_24"
         android:text="new meal"
         android:textSize="10dp" />
@@ -63,7 +65,9 @@
         app:layout_constraintRight_toRightOf="@+id/logout"
         android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
         android:layout_marginLeft="215dp"
-        android:backgroundTint="@color/purple_700"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
+        android:backgroundTint="#30432E2E"
         android:text="edit profile"
         android:textSize="10dp" />
 

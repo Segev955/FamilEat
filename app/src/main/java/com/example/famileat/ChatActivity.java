@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference referenceU;
     private String ID;
-    private String Did;
+    private String Did, State;
     private TextView title,fullname_text;
     private EditText msgtxt;
     private Button logout,editprofile, clearchat;
@@ -83,7 +83,8 @@ public class ChatActivity extends AppCompatActivity {
 
         //set Did
         Bundle bundle = getIntent().getExtras();
-        this.Did=(String) bundle.get("Did");
+        this.Did = (String) bundle.get("Did");
+        this.State = (String) bundle.get("State");
 
 
 
@@ -182,7 +183,6 @@ public class ChatActivity extends AppCompatActivity {
 
         //Set clear button
         clearchat = findViewById(R.id.clearbtn);
-
         clearchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,6 +212,13 @@ public class ChatActivity extends AppCompatActivity {
                 });
             }
         });
+
+        //set disable for view only
+        if(this.State.equals("Past")){
+            clearchat.setVisibility(View.GONE);
+            sendbtn.setVisibility(View.GONE);
+            msgtxt.setVisibility(View.GONE);
+        }
 
 
 

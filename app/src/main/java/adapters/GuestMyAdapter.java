@@ -96,6 +96,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
             public void onClick(View view) {
                 Intent chatIntent = new Intent(context.getApplicationContext(), ChatActivity.class);
                 chatIntent.putExtra("Did",dinner.getID());
+                chatIntent.putExtra("State","Alive");
                 context.startActivity(chatIntent);
             }
         });

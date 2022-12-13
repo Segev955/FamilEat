@@ -314,6 +314,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.MyViewHolder
                     public void onClick(View view) {
                         Intent chatIntent = new Intent(context.getApplicationContext(), ChatActivity.class);
                         chatIntent.putExtra("Did",dinner.getID());
+                        chatIntent.putExtra("State","Alive");
                         context.startActivity(chatIntent);
                         options.cancel();
                     }

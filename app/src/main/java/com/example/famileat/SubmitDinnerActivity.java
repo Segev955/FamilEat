@@ -246,40 +246,40 @@ public class SubmitDinnerActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading file....");
-        progressDialog.show();
-
-
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-
-        storageReference = FirebaseStorage.getInstance().getReference("images/"+picName);
+        if(!picName.equals("default_dinner.jpg")) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading file....");
+            progressDialog.show();
 
 
-        storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                imgGallery.setImageURI(imageUri);
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SubmitDinnerActivity.this, "image upload failed!", Toast.LENGTH_SHORT).show();
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-            }
-        });
+            storageReference = FirebaseStorage.getInstance().getReference("images/" + picName);
+
+
+            storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    imgGallery.setImageURI(imageUri);
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SubmitDinnerActivity.this, "image upload failed!", Toast.LENGTH_SHORT).show();
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(!picName.equals("default_dinner.jpg")) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == 100 && data != null && data.getData() != null) {
                 Dinner.deletePicture(picName);
@@ -289,7 +289,6 @@ public class SubmitDinnerActivity extends AppCompatActivity {
                 setPicName();
                 uploadImage();
             }
-        }
 
     }
 

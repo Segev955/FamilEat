@@ -9,12 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -36,11 +44,14 @@ import classes.Request;
 import classes.User;
 
 public class HostMainActivity extends AppCompatActivity {
-    private Button logout, editprofile, new_meal, requests;
+    private Button logout, editprofile, new_meal, requests,search, past;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
-
+    private EditText text_date;
+    private RadioGroup radio_kosher;
+    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatabaseReference referenceD;
     private RecyclerView recyclerView;
     private HostsAdapter hostAdapter;
@@ -65,6 +76,39 @@ public class HostMainActivity extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference("Users");
         ID = user.getUid();
 
+        //Set kosher radio buttons
+        meat_r = findViewById(R.id.meat);
+        dairy_r = findViewById(R.id.dairy);
+        notkosher_r = findViewById(R.id.noKosher);
+        all_r = findViewById(R.id.all);
+        all_r.setChecked(true);
+        radio_kosher = findViewById(R.id.kosher);
+
+        //set Date Button:
+        text_date = findViewById(R.id.date);
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH)+1;
+        int year = cal.get(Calendar.YEAR);
+        final String[] date = {day + "/" + month + "/" + year};
+        text_date.setText(date[0]);
+        text_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dateDialog = new DatePickerDialog(HostMainActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month-1, day);
+                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dateDialog.show();
+            }
+        });
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                text_date.setText(date);
+            }
+        };
+
         //Dinner List: ...........................................................................
         recyclerView = findViewById(R.id.dinnerList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -83,9 +127,15 @@ public class HostMainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dinnerList.clear();
+                int select_kosher = radio_kosher.getCheckedRadioButtonId();
+                String kosher = "All";
+                if (select_kosher != -1) {
+                    kosher_r = (RadioButton) findViewById(select_kosher);
+                    kosher = kosher_r.getText().toString();
+                }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(dinner.getHostUid().equals(ID))
+                    if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher.equals("All")||kosher.equals(dinner.getKosher())))
                         dinnerList.add(dinner);
                 }
                 dinnerList=sortDinnersByDate(dinnerList);
@@ -135,6 +185,19 @@ public class HostMainActivity extends AppCompatActivity {
             }
         });
             //.........................................................................................
+
+
+        //Set past button
+        past = findViewById(R.id.past_btn);
+        past.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pastIntent = new Intent(HostMainActivity.this, PastActivity.class);
+                pastIntent.putExtra("Type","Host");
+                startActivity(pastIntent);
+            }
+        });
+
         //Requests button............................................
         requests = findViewById(R.id.btnRequests);
         requests.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +210,54 @@ public class HostMainActivity extends AppCompatActivity {
             }
         });
 
-        //........................................................
+//.............................................................................................................................
+        //Set search button
+        search = findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59");
+                if(!msg.equals("accept")){
+                    text_date.setText(date[0]);
+                    Toast.makeText(HostMainActivity.this,msg,Toast.LENGTH_SHORT).show();
+                }
+                else {
+
+                    referenceD.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            dinnerList.clear();
+                            int select_kosher = radio_kosher.getCheckedRadioButtonId();
+                            String kosher = "All";
+                            if (select_kosher != -1) {
+                                kosher_r = (RadioButton) findViewById(select_kosher);
+                                kosher = kosher_r.getText().toString();
+                            }
+
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                                if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher.equals("All")||kosher.equals(dinner.getKosher())))
+                                    dinnerList.add(dinner);
+
+                            }
+                            date[0]=text_date.getText().toString();
+                            dinnerList = sortDinnersByDate(dinnerList);
+                            hostAdapter.notifyDataSetChanged();
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
 
 
+
+            }
+        });
 
 
         //logout .................................................

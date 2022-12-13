@@ -8,25 +8,28 @@
     tools:context=".StartActivity">
 
     <TextView
-        android:id="@+id/hello"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="60dp"
         android:gravity="center"
-        android:text="Hello Host"
-        android:textColor="@color/ic_launcher_background"
+        android:text="name"
+        android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
-        android:layout_margin="90dp"
-        android:text="name"
-        android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="90dp"
+        android:textColor="@color/ic_launcher_background"
+        android:layout_marginBottom="90dp"
+        android:gravity="center"
+        android:text="Host"
         android:textSize="25dp"
         android:textStyle="bold" />
 
@@ -35,10 +38,9 @@
         android:id="@+id/new_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logout"
-        android:layout_marginTop="79dp"
-        android:layout_marginBottom="5dp"
-        android:background="#30432E2E"
+        android:layout_below="@id/past_btn"
+        android:backgroundTint="#30432E2E"
+
         android:textColor="#674242"
         android:textColorHint="#674242"
         android:drawableLeft="@drawable/ic_baseline_food_bank_24"
@@ -56,17 +58,125 @@
             android:layout_marginLeft="215dp"
             android:textColor="#674242"
             android:textColorHint="#674242"
+            android:backgroundTint="#30432E2E"
             android:text="requests"
             android:textSize="15dp"
             app:layout_constraintRight_toRightOf="@+id/new_meal"
             app:layout_constraintTop_toBottomOf="@+id/new_meal" />
 
+
+    <TextView
+        android:id="@+id/date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting from: "
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="190dp"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kosher_txt"
+        android:layout_marginStart="215dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#30432E2E"
+        android:drawableLeft="@drawable/ic_baseline_date_range_24"
+        android:drawablePadding="10dp"
+        android:hint="dd/mm/yyyy"
+        android:padding="10dp"
+        android:textColor="#674242"
+        android:textColorHint="#674242"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/kosher_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_meal"
+        android:text="Kosher selector: "
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/kosher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kosher_txt">
+
+
+        <RadioButton
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All"
+            android:textColor="#674242"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:layout_below="@id/date"/>
+        <RadioButton
+            android:id="@+id/dairy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kosher dairy"
+            android:textColor="#674242"
+            android:layout_marginTop="-20dp"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:layout_below="@id/date"/>
+
+        <RadioButton
+            android:id="@+id/meat"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="-20dp"
+            android:layout_height="wrap_content"
+            android:text="Kosher meat"
+            android:textStyle="bold"
+            android:textColor="#674242"
+            android:textSize="10dp"
+            android:layout_below="@id/date"/>
+
+        <RadioButton
+            android:id="@+id/noKosher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not kosher"
+            android:textColor="#674242"
+            android:layout_marginTop="-20dp"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:layout_below="@id/date"/>
+
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/logout"
+        app:layout_constraintRight_toRightOf="@+id/logout"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:layout_marginLeft="215dp"
+        android:layout_marginTop="-20dp"
+        android:layout_below="@id/date"
+        android:textColor="#674242"
+        android:backgroundTint="#30432E2E"
+        android:text="search"
+        android:textSize="10dp" />
+
     <TextView
         android:id="@+id/mymealstxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/new_meal"
+        android:layout_below="@id/search"
         android:text="My Meals:"
+        android:layout_marginTop="40dp"
         android:textColor="@color/black"
         android:layout_marginStart="10dp"
         android:textSize="25dp"
@@ -80,7 +190,7 @@
         app:layout_constraintRight_toRightOf="@+id/logout"
         android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
         android:layout_marginLeft="215dp"
-        android:background="#30511111"
+        android:backgroundTint="#30511111"
         android:textColor="#674242"
         android:textColorHint="#674242"
         android:text="edit profile"
@@ -100,7 +210,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/logout"
-        android:layout_marginTop="-7dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="10dp"
         android:drawableLeft="@drawable/ic_baseline_food_bank_24"
         android:text="past"
@@ -111,7 +221,7 @@
         android:id="@+id/dinnerList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/name"
+        android:layout_below="@id/mymealstxt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

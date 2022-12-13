@@ -25,6 +25,9 @@
         android:layout_marginTop="30dp"
         android:drawableLeft="@android:drawable/stat_notify_chat"
         android:text="chat"
+        android:textColor="#250E0E"
+        android:textColorHint="#250E0E"
+        android:backgroundTint="#30432E2E"
         android:textSize="10dp"/>
 
     <TextView
@@ -163,6 +166,9 @@
             android:layout_below="@id/tvTitle"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="170dp"
+            android:textColor="#250E0E"
+            android:textColorHint="#250E0E"
+            android:backgroundTint="#30432E2E"
             android:text="exit meal"
             android:textSize="15dp" />
 

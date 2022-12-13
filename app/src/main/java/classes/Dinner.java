@@ -478,10 +478,23 @@ public class Dinner implements Comparable<Dinner> {
 
     @Override
     public int compareTo(Dinner dinner) {
-        String[] mysplit = this.date.split("/");
-        String[] othersplit = dinner.date.split("/");
-        int myint = Integer.parseInt(mysplit[2]) + 100*Integer.parseInt(mysplit[1]) + Integer.parseInt(mysplit[0]);
-        int otherint = Integer.parseInt(othersplit[2]) + 100*Integer.parseInt(othersplit[1]) + Integer.parseInt(othersplit[0]);
-        return myint-otherint;
+        double mynumber = 0, othernumber = 0;
+        String[] mysplit, othersplit;
+        if(!this.date.equals(dinner.getDate())) {
+            mysplit = this.date.split("/");
+            othersplit = dinner.date.split("/");
+            mynumber = Integer.parseInt(mysplit[2]) * 130 + 32 * Integer.parseInt(mysplit[1]) + Integer.parseInt(mysplit[0]);
+            othernumber = Integer.parseInt(othersplit[2]) * 130 + 32 * Integer.parseInt(othersplit[1]) + Integer.parseInt(othersplit[0]);
+        }
+        if(!this.time.equals(dinner.getTime())) {
+            mysplit = this.time.split(":");
+            othersplit = dinner.time.split(":");
+            mynumber += Integer.parseInt(mysplit[0]) * 0.1 + 0.001 * Integer.parseInt(mysplit[1]);
+        }
+        if (mynumber-othernumber>0)
+            return 1;
+        if (mynumber-othernumber<0)
+            return -1;
+        return 0;
     }
 }

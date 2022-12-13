@@ -46,7 +46,7 @@ import classes.User;
 import adapters.ChatAdapter;
 
 public class GuestMainActivity extends AppCompatActivity {
-    private Button logout, editprofile, meals_btn, search;
+    private Button logout, editprofile, meals_btn, search, past;
     private TextView meals_txt;
     private EditText text_date;
     private FirebaseUser user;
@@ -209,7 +209,16 @@ public class GuestMainActivity extends AppCompatActivity {
             }
         });
 
-
+        //Set past button
+        past = findViewById(R.id.past_btn);
+        past.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pastIntent = new Intent(GuestMainActivity.this, PastActivity.class);
+                pastIntent.putExtra("Type","Guest");
+                startActivity(pastIntent);
+            }
+        });
         //logout .................................................
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -238,6 +247,16 @@ public class GuestMainActivity extends AppCompatActivity {
         //Meals button............................................
         meals_txt = findViewById(R.id.meals_txt);
         meals_btn = findViewById(R.id.meals_btn);
+        //Set my meals or available meals
+        if(meals_btn.getText().equals("my meals")){
+            recyclerView.setAdapter(avAdapter);
+            meals_txt.setText("Available Meals:");
+        }
+        else{
+            recyclerView.setAdapter(myAdapter);
+            meals_txt.setText("My Meals:");
+
+        }
         meals_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

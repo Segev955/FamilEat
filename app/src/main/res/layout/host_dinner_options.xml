@@ -36,6 +36,9 @@
         android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:drawableLeft="@android:drawable/stat_notify_chat"
+        android:textColor="#250E0E"
+        android:textColorHint="#250E0E"
+        android:backgroundTint="#30432E2E"
         android:text="chat"
         android:textSize="10dp" />
 
@@ -266,6 +269,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_baseline_mode_edit_24"
+                android:textColor="#250E0E"
+                android:textColorHint="#250E0E"
+                android:backgroundTint="#30432E2E"
                 android:text="edit dinner"
                 android:textSize="10dp" />
 
@@ -274,6 +280,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:textColor="#250E0E"
+                android:textColorHint="#250E0E"
+                android:backgroundTint="#30432E2E"
                 android:drawableLeft="@drawable/ic_baseline_delete_24"
                 android:text="Delete Dinner"
                 android:textSize="10dp" />

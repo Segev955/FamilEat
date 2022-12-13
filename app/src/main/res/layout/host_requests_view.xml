@@ -112,6 +112,9 @@
                 android:id="@+id/accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#B5AAAA"
+                android:textColorHint="#674242"
+                android:backgroundTint="#30432E2E"
                 android:text="accept"
                 android:textSize="15dp" />
 
@@ -121,6 +124,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="delete"
+                android:textColorHint="#674242"
+                android:backgroundTint="#30432E2E"
                 android:textColor="#FF0000"
                 android:textSize="15dp" />
 
