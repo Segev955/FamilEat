@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import adapters.HostsAdapter;
+import adapters.PastGuestAdapter;
 import adapters.PastHostAdapter;
 import classes.Dinner;
 import classes.Request;
@@ -44,6 +45,7 @@ public class PastActivity extends AppCompatActivity {
     private DatabaseReference referenceD;
     private RecyclerView recyclerView;
     private PastHostAdapter hostAdapter;
+    private PastGuestAdapter guestAdapter;
 
     ArrayList<Dinner> dinnerList;
 
@@ -76,10 +78,17 @@ public class PastActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dinnerList = new ArrayList<>();
 
-        //Set host adapter..............................................
+        //Set adapters..............................................
         dialog_builder = new AlertDialog.Builder(this);
-        hostAdapter = new PastHostAdapter(this,dinnerList, R.drawable.google, dialog_builder);
-        recyclerView.setAdapter(hostAdapter);
+        if (Type.equals("Host")) {
+            hostAdapter = new PastHostAdapter(this, dinnerList, R.drawable.google, dialog_builder);
+            recyclerView.setAdapter(hostAdapter);
+        }
+        else {
+            guestAdapter = new PastGuestAdapter(this, dinnerList, R.drawable.google, dialog_builder);
+            recyclerView.setAdapter(guestAdapter);
+        }
+
 
         referenceD.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -92,7 +101,10 @@ public class PastActivity extends AppCompatActivity {
                         dinnerList.add(dinner);
                 }
                 dinnerList=sortDinnersByDate(dinnerList);
-                hostAdapter.notifyDataSetChanged();
+                if (Type.equals("Host"))
+                    hostAdapter.notifyDataSetChanged();
+                else
+                    guestAdapter.notifyDataSetChanged();
 
             }
 

@@ -53,8 +53,8 @@ public class GuestMainActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private DatabaseReference referenceD;
     private String ID;
-    private RadioGroup radio_kosher;
-    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
+    private RadioGroup radio_kosher, radio_gender;
+    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r, gender_r, male_r, female_r, both_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private RecyclerView recyclerView;
     private GuestAvAdapder avAdapter;
@@ -79,6 +79,13 @@ public class GuestMainActivity extends AppCompatActivity {
         all_r = findViewById(R.id.all);
         all_r.setChecked(true);
         radio_kosher = findViewById(R.id.kosher);
+
+        //Set gender radio buttons
+        male_r = findViewById(R.id.male);
+        female_r = findViewById(R.id.female);
+        both_r = findViewById(R.id.both);
+        both_r.setChecked(true);
+        radio_gender = findViewById(R.id.gender);
 
         //set Date Button:
         text_date = findViewById(R.id.date);
