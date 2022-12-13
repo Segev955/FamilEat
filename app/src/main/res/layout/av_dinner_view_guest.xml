@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:cardElevation="8dp"
     app:cardCornerRadius="8dp"
+    android:background="@drawable/login_bg4"
     android:layout_margin="16dp">
 
     <TextView

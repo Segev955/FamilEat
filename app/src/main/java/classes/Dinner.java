@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * class Dinner
  */
-public class Dinner {
+public class Dinner implements Comparable<Dinner> {
 
     private List<String> chat;
     private String ID, hostUid,title, date, time, address, kosher, details, picture;
@@ -327,10 +327,23 @@ public class Dinner {
      * checks if the dinner the dinner did not passed
      *
      * @param  dinner    current dinner
+     * @param date
      * @return         (boolean) True/False
      */
-    public static boolean isRelevant(Dinner dinner)
+    public static boolean isRelevant(Dinner dinner, String date)
     {
+        if (check_date_time(date,"23:59").equals("accept")){
+            String[] splitdin = dinner.getDate().split("/");
+            String[] splitsel = date.split("/");
+            if(Integer.parseInt(splitdin[2])<Integer.parseInt(splitsel[2]))
+                return false;
+            if(Integer.parseInt(splitdin[2])==Integer.parseInt(splitsel[2]))
+                if(Integer.parseInt(splitdin[1])<Integer.parseInt(splitsel[1]))
+                    return false;
+            if(Integer.parseInt(splitdin[1])==Integer.parseInt(splitsel[1]))
+                if(Integer.parseInt(splitdin[0])<Integer.parseInt(splitsel[0]))
+                    return false;
+        }
         return check_date_time(dinner.getDate(),dinner.getTime()).equals("accept");
     }
     /**
@@ -463,4 +476,12 @@ public class Dinner {
         }
     }
 
+    @Override
+    public int compareTo(Dinner dinner) {
+        String[] mysplit = this.date.split("/");
+        String[] othersplit = dinner.date.split("/");
+        int myint = Integer.parseInt(mysplit[2]) + 100*Integer.parseInt(mysplit[1]) + Integer.parseInt(mysplit[0]);
+        int otherint = Integer.parseInt(othersplit[2]) + 100*Integer.parseInt(othersplit[1]) + Integer.parseInt(othersplit[0]);
+        return myint-otherint;
+    }
 }
