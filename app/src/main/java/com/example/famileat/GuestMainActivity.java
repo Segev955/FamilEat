@@ -86,8 +86,8 @@ public class GuestMainActivity extends AppCompatActivity {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH)+1;
         int year = cal.get(Calendar.YEAR);
-        String date = day + "/" + month + "/" + year;
-        text_date.setText(date);
+        final String[] date = {day + "/" + month + "/" + year};
+        text_date.setText(date[0]);
         text_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +141,7 @@ public class GuestMainActivity extends AppCompatActivity {
                     }
 
                 }
+                date[0] = text_date.getText().toString();
                 av_dinnerList = sortDinnersByDate(av_dinnerList);
                 my_dinnerList = sortDinnersByDate(my_dinnerList);
                 myAdapter.notifyDataSetChanged();
@@ -160,49 +161,54 @@ public class GuestMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59");
                 if(!msg.equals("accept")){
-                    text_date.setText(date);
+                    text_date.setText(date[0]);
                     Toast.makeText(GuestMainActivity.this,msg,Toast.LENGTH_SHORT).show();
                 }
+                else {
 
-                referenceD.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        av_dinnerList.clear();
-                        my_dinnerList.clear();
-                        int select_kosher = radio_kosher.getCheckedRadioButtonId();
-                        String kosher = "All";
-                        if (select_kosher != -1) {
-                            kosher_r = (RadioButton) findViewById(select_kosher);
-                            kosher = kosher_r.getText().toString();
-                        }
-
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                            if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher.equals("All")||kosher.equals(dinner.getKosher()))) {
-                                if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
-                                    av_dinnerList.add(dinner);
-                                if (Dinner.isAccepted(dinner, ID))
-                                    my_dinnerList.add(dinner);
+                    referenceD.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            av_dinnerList.clear();
+                            my_dinnerList.clear();
+                            int select_kosher = radio_kosher.getCheckedRadioButtonId();
+                            String kosher = "All";
+                            if (select_kosher != -1) {
+                                kosher_r = (RadioButton) findViewById(select_kosher);
+                                kosher = kosher_r.getText().toString();
                             }
 
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Dinner dinner = dataSnapshot.getValue(Dinner.class);
+                                if (Dinner.isRelevant(dinner, text_date.getText().toString()) && (kosher.equals("All") || kosher.equals(dinner.getKosher()))) {
+                                    if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
+                                        av_dinnerList.add(dinner);
+                                    if (Dinner.isAccepted(dinner, ID))
+                                        my_dinnerList.add(dinner);
+                                }
+
+                            }
+                            date[0]=text_date.getText().toString();
+                            av_dinnerList = sortDinnersByDate(av_dinnerList);
+                            my_dinnerList = sortDinnersByDate(my_dinnerList);
+                            myAdapter.notifyDataSetChanged();
+                            avAdapter.notifyDataSetChanged();
+
                         }
-                        av_dinnerList = sortDinnersByDate(av_dinnerList);
-                        my_dinnerList = sortDinnersByDate(my_dinnerList);
-                        myAdapter.notifyDataSetChanged();
-                        avAdapter.notifyDataSetChanged();
 
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+                        }
+                    });
+                }
 
 
 
             }
         });
+
 
         //logout .................................................
         logout = findViewById(R.id.logout);
