@@ -53,7 +53,7 @@
             android:layout_marginTop="79dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="215dp"
-            android:background="#30432E2E"
+            android:background="0x988E8F"
             android:textColor="#674242"
             android:textColorHint="#674242"
             android:text="requests"

@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import classes.Dinner;
 import adapters.HostsAdapter;
@@ -86,6 +88,7 @@ public class HostMainActivity extends AppCompatActivity {
                     if(dinner.getHostUid().equals(ID))
                         dinnerList.add(dinner);
                 }
+                dinnerList=sortDinnersByDate(dinnerList);
                 hostAdapter.notifyDataSetChanged();
 
             }
@@ -119,7 +122,7 @@ public class HostMainActivity extends AppCompatActivity {
                 }
                 else {
                     requests.setText("requests (" + sum + ")");
-                    requests.setBackgroundColor(0xff99cc00);
+                    requests.setBackgroundColor(0xff9900);
                 }
                 sum = 0;
             }
@@ -216,6 +219,16 @@ public class HostMainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list)
+    {
+        Collections.sort(list, new Comparator<Dinner>() {
+            @Override
+            public int compare(Dinner dinner, Dinner t1) {
+                return dinner.compareTo(t1);
+            }
+        });
+        return list;
     }
     //Press twice "back" for exit .............................................................
     @Override
