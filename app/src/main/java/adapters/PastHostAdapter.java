@@ -129,7 +129,7 @@ public class PastHostAdapter extends RecyclerView.Adapter<PastHostAdapter.MyView
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.host_past_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, amount;
+                TextView title, address, date, time, rating, kosher, details;
                 Spinner accepted;
                 ImageView dinnerImage;
                 Button chatbtn, kick;
@@ -139,8 +139,7 @@ public class PastHostAdapter extends RecyclerView.Adapter<PastHostAdapter.MyView
                 address = contactPopuoView.findViewById(R.id.tvAddress);
                 date = contactPopuoView.findViewById(R.id.tvDate);
                 time = contactPopuoView.findViewById(R.id.tvTime);
-                availables = contactPopuoView.findViewById(R.id.tvAvailables);
-                amount = contactPopuoView.findViewById(R.id.tvAmount);
+                rating = contactPopuoView.findViewById(R.id.tvGrade);
                 kosher = contactPopuoView.findViewById(R.id.tvKosher);
                 dinnerImage = contactPopuoView.findViewById(R.id.dinnerImage);
                 details = contactPopuoView.findViewById(R.id.tvDetails);
@@ -164,16 +163,27 @@ public class PastHostAdapter extends RecyclerView.Adapter<PastHostAdapter.MyView
                                 ArrayList<String> participants = new ArrayList<String>();
                                 //participants.add("view participants");
                                 for (int i = 0; i < d.getAcceptedUid().size(); i++) {
+                                    String id =d.getAcceptedUid().get(i);
                                     ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             User profile = snapshot.getValue(User.class);
                                             if (profile != null) {
-                                                participants.add(profile.getFullName());
-                                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
-                                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                accepted.setAdapter(adapter);
+                                                String c = "Not Commended.";
+                                                try {
+                                                    for (String msg : d.getCommands()) {
+                                                        if (msg.split("@")[0].equals(id))
+                                                            c = msg.split("@")[1];
+                                                    }
+                                                }
+                                                catch (Exception e){System.out.println(e);}
+                                                participants.add(profile.getFullName()+": "+c);
+
                                             }
+
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
+                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                            accepted.setAdapter(adapter);
                                         }
 
                                         @Override
@@ -193,18 +203,11 @@ public class PastHostAdapter extends RecyclerView.Adapter<PastHostAdapter.MyView
 
                 });
 
-
                 title.setText(dinner.getTitle());
                 address.setText(dinner.getAddress());
                 date.setText(dinner.getDate());
                 time.setText(dinner.getTime());
-
-                int av = Dinner.numOfAvailables(dinner);
-                if (av == 0)
-                    availables.setText("FULL");
-                else
-                    availables.setText(Integer.toString(av));
-                amount.setText(Integer.toString(dinner.getAmount()));
+                rating.setText((dinner.getRating()*20)+" ("+dinner.getRatersUid().size()+" votes).");
                 kosher.setText(dinner.getKosher());
                 details.setText(dinner.getDetails());
 

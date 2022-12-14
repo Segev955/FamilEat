@@ -132,7 +132,7 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.guest_past_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, amount, commandtxt;
+                TextView title, address, date, time, kosher, details, rating, commandtxt;
                 Spinner accepted;
                 ImageView dinnerImage;
                 Button chatbtn, grade;
@@ -145,8 +145,7 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 address = contactPopuoView.findViewById(R.id.tvAddress);
                 date = contactPopuoView.findViewById(R.id.tvDate);
                 time = contactPopuoView.findViewById(R.id.tvTime);
-                availables = contactPopuoView.findViewById(R.id.tvAvailables);
-                amount = contactPopuoView.findViewById(R.id.tvAmount);
+                rating = contactPopuoView.findViewById(R.id.tvGrade);
                 kosher = contactPopuoView.findViewById(R.id.tvKosher);
                 dinnerImage = contactPopuoView.findViewById(R.id.dinnerImage);
                 details = contactPopuoView.findViewById(R.id.tvDetails);
@@ -233,12 +232,7 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 date.setText(dinner.getDate());
                 time.setText(dinner.getTime());
 
-                int av = Dinner.numOfAvailables(dinner);
-                if (av == 0)
-                    availables.setText("FULL");
-                else
-                    availables.setText(Integer.toString(av));
-                amount.setText(Integer.toString(dinner.getAmount()));
+                rating.setText((dinner.getRating()*20)+" ("+dinner.getRatersUid().size()+" votes).");
                 kosher.setText(dinner.getKosher());
                 details.setText(dinner.getDetails());
 
@@ -347,8 +341,6 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
         CardView mealbtn;
         TextView title, address, date, time, availables, kosher, details, photoname;
         ImageView dinnerImage;
-        AlertDialog.Builder dinnerOptions;
-        AlertDialog options;
 
 
         public MyViewHolder(@NonNull View itemView) {
