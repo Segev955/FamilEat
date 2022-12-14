@@ -158,6 +158,13 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 commandtxt = contactPopuoView.findViewById(R.id.commandtxt);
 
 
+                 //set command txt
+                if (Dinner.isRated(dinner,uID)){
+                    ratingbar.setVisibility(View.GONE);
+                    grade.setVisibility(View.GONE);
+                    commandinput.setVisibility(View.GONE);
+                    commandtxt.setText("You already rated...");
+                }
 
                 //Set participants
                 DatabaseReference referenceD = FirebaseDatabase.getInstance().getReference("Dinners").child(dinner.getID());
@@ -175,17 +182,33 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                                 ArrayList<String> participants = new ArrayList<String>();
                                 //participants.add("view participants");
                                 for (int i = 0; i < d.getAcceptedUid().size(); i++) {
+                                    String id =d.getAcceptedUid().get(i);
                                     ureference.child(d.getAcceptedUid().get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             User profile = snapshot.getValue(User.class);
                                             if (profile != null) {
-                                                participants.add(profile.getFullName());
+
+                                                if(Dinner.isRated(d,id))
+                                                {
+                                                    String c = "Not Commended.";
+                                                    try {
+                                                        for (String msg : d.getCommands()) {
+                                                            if (msg.split("@")[0].equals(id))
+                                                                c = msg.split("@")[1];
+                                                        }
+                                                    }
+                                                    catch (Exception e){System.out.println(e);}
+                                                    participants.add(profile.getFullName()+": "+c);
+                                                }
+                                                else
+                                                    participants.add(profile.getFullName());
+                                            }
+
                                                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, participants);
                                                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                 accepted.setAdapter(adapter);
                                             }
-                                        }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {

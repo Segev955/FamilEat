@@ -120,7 +120,7 @@ public class Dinner implements Comparable<Dinner> {
     }
     public List<String> getChat()
     {
-        return this.ratersUid;
+        return this.chat;
     }
     public List<String> getRatersUid()
     {
@@ -222,7 +222,7 @@ public class Dinner implements Comparable<Dinner> {
         rating+=rate;
         dinner.rating=rating/ dinner.ratersUid.size();
         if (!TextUtils.isEmpty(command))
-            dinner.commands.add(command);
+            dinner.commands.add(raterUid+"@"+command);
         return dinner;
     }
 
