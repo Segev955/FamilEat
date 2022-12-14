@@ -6,11 +6,13 @@ package adapters;
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
+        import android.text.TextUtils;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
+        import android.widget.EditText;
         import android.widget.ImageView;
         import android.widget.RatingBar;
         import android.widget.Spinner;
@@ -22,7 +24,6 @@ package adapters;
         import androidx.recyclerview.widget.RecyclerView;
 
         import com.example.famileat.ChatActivity;
-        import com.example.famileat.EditDinnerActivity;
         import com.example.famileat.R;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
@@ -43,7 +44,6 @@ package adapters;
         import java.util.List;
 
         import classes.Dinner;
-        import classes.Request;
         import classes.User;
 
 public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyViewHolder> {
@@ -54,7 +54,7 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
     int proImage;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    public static String currUid;
+    public static String dID,uID;
     private AlertDialog.Builder dinnerOptions;
     //    private AlertDialog options;
     Bitmap bitmap;
@@ -70,7 +70,7 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
         this.context = context;
         this.list = list;
         this.proImage = proImage;
-        this.currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.dinnerOptions = dinnerOptions;
         this.acceptedNames = new ArrayList<String>();
 
@@ -128,14 +128,15 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
         holder.mealbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currUid=dinner.getID();
+                dID =dinner.getID();
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View contactPopuoView = inflater.inflate(R.layout.guest_past_options, null);
                 AlertDialog options;
-                TextView title, address, date, time, availables, kosher, details, amount;
+                TextView title, address, date, time, availables, kosher, details, amount, commandtxt;
                 Spinner accepted;
                 ImageView dinnerImage;
                 Button chatbtn, grade;
+                EditText commandinput;
                 RatingBar ratingbar;
 
 
@@ -153,6 +154,8 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 accepted = contactPopuoView.findViewById(R.id.tvAccepted);
                 ratingbar = contactPopuoView.findViewById(R.id.ratingBar);
                 grade = contactPopuoView.findViewById(R.id.gradebtn);
+                commandinput = contactPopuoView.findViewById(R.id.command_input);
+                commandtxt = contactPopuoView.findViewById(R.id.commandtxt);
 
 
 
@@ -248,8 +251,23 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 grade.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String rating=String.valueOf(ratingbar.getRating());
-                        Toast.makeText(context, rating, Toast.LENGTH_LONG).show();
+                        String command=commandinput.getText().toString();
+                        double rating=ratingbar.getRating();
+                        Dinner newdinner = Dinner.rate(dinner, uID,rating,command);
+                        FirebaseDatabase.getInstance().getReference("Dinners")
+                                .child(newdinner.getID()).setValue(newdinner).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(context, "Thank you for rating!", Toast.LENGTH_LONG).show();
+                                        ratingbar.setVisibility(View.GONE);
+                                        grade.setVisibility(View.GONE);
+                                        commandinput.setVisibility(View.GONE);
+                                        if (TextUtils.isEmpty(command))
+                                            commandtxt.setText("No command"+"\nGarde: "+rating*20);
+                                        else
+                                            commandtxt.setText("Your command: "+command+"\nGarde you rated: "+(int)(rating*20));
+                                    }
+                                });
 
                     }
                 });

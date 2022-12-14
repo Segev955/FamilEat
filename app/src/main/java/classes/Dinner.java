@@ -2,6 +2,7 @@ package classes;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,14 +30,16 @@ import java.util.List;
  */
 public class Dinner implements Comparable<Dinner> {
 
-    private List<String> chat;
     private String ID, hostUid,title, date, time, address, kosher, details, picture;
     private int amount;
-    private List<String> acceptedUid, requestsUid;
+    private double rating;
+    private List<String> acceptedUid, requestsUid,chat, ratersUid, commands;
 
     public Dinner() {
-        this.chat=new ArrayList<String>();
-
+        this.chat = new ArrayList<String>();
+        this.ratersUid = new ArrayList<String>();
+        this.commands = new ArrayList<String>();
+        this.rating = 0;
         this.acceptedUid = new ArrayList<String>();
         this.requestsUid= new ArrayList<String>();
     }
@@ -60,13 +63,16 @@ public class Dinner implements Comparable<Dinner> {
         this.acceptedUid = new ArrayList<String>();
         this.requestsUid= new ArrayList<String>();
         this.chat=new ArrayList<String>();
+        this.ratersUid = new ArrayList<String>();
+        this.commands = new ArrayList<String>();
+        this.rating = 0;
 
     }
 
     /**
      * constructor
      */
-    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid, List<String>chat) {
+    public Dinner(String ID, String hostUid,String title, String date, String time, String address, int amount, String kosher, String details,List<String>requestsUid, String picture,List<String>acceptedUid, List<String>chat, List<String>ratersUid, double rating, List<String>commands) {
         this.ID=ID;
         this.hostUid=hostUid;
         this.title = title;
@@ -82,6 +88,9 @@ public class Dinner implements Comparable<Dinner> {
         this.acceptedUid = acceptedUid;
         this.requestsUid=requestsUid;
         this.chat = chat;
+        this.ratersUid = ratersUid;
+        this.commands = commands;
+        this.rating=rating;
     }
 
 
@@ -109,10 +118,21 @@ public class Dinner implements Comparable<Dinner> {
     {
         return this.requestsUid;
     }
-
     public List<String> getChat()
     {
-        return this.chat;
+        return this.ratersUid;
+    }
+    public List<String> getRatersUid()
+    {
+        return this.ratersUid;
+    }
+    public List<String> getCommands()
+    {
+        return this.commands;
+    }
+    public double getRating()
+    {
+        return this.rating;
     }
     public void getRequestsUid(List<String>requestsUid)
     {
@@ -188,6 +208,23 @@ public class Dinner implements Comparable<Dinner> {
     }
     // ---- END OF GET(ERS) & SET(ERS) ---- //
 
+    public static boolean isRated (Dinner dinner, String Uid){
+        for (String id:dinner.ratersUid)
+            if (id.equals(Uid))
+                return true;
+        return false;
+    }
+    @SuppressLint("SuspiciousIndentation")
+    public static Dinner rate(Dinner dinner, String raterUid, Double rate, String command)
+    {
+        double rating= dinner.rating* dinner.ratersUid.size();
+        dinner.ratersUid.add(raterUid);
+        rating+=rate;
+        dinner.rating=rating/ dinner.ratersUid.size();
+        if (!TextUtils.isEmpty(command))
+            dinner.commands.add(command);
+        return dinner;
+    }
 
     /**
      * sends Group Message
