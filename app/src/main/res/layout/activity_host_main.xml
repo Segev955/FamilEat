@@ -34,6 +34,18 @@
         android:textStyle="bold" />
 
 
+    <TextView
+        android:id="@+id/retestxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="90dp"
+        android:text="No rates yet"
+        android:textColor="#719380"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_meal"
         android:layout_width="wrap_content"

@@ -69,11 +69,17 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
 
         //Set host
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(dinner.getHostUid());
-        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                holder.host.setText(user.getFullName());
+                User host = snapshot.getValue(User.class);
+                int rates=host.getRates();
+                if(rates==0)
+                    holder.host.setText(host.getFullName()+"\n"+"No rates yet");
+                else if(rates==1)
+                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating (1 rate)");
+                else
+                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating ("+rates+" rates)");
             }
 
             @Override

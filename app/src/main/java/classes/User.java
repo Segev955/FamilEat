@@ -25,8 +25,12 @@ import java.util.Date;
 public class User {
 
     private String fullName, email, date, gender, type;
+    private double rating;
+    private int rates;
 
     public User() {
+        this.rates = 0;
+        this.rating = 0;
 
     }
     /**
@@ -38,6 +42,8 @@ public class User {
         this.date = date;
         this.gender = gender;
         this.type = type;
+        this.rates = 0;
+        this.rating = 0;
     }
 
     // ---- GET(ERS) & SET(ERS) ---- //
@@ -71,6 +77,14 @@ public class User {
 
     public String getType() {
         return this.type;
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
+    public int getRates() {
+        return this.rates;
     }
     // ---- END OF GET(ERS) & SET(ERS) ---- //
 
@@ -179,6 +193,14 @@ public class User {
 
         });
         return s[0];
+    }
+    public static User rate(User user, double rate)
+    {
+        double rating= user.rating* user.rates;
+        rating+=rate;
+        user.rates++;
+        user.rating=rating/ user.rates;
+        return user;
     }
 
 

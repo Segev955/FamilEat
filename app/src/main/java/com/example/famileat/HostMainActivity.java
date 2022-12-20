@@ -49,6 +49,7 @@ public class HostMainActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String ID;
     private EditText text_date;
+    private TextView text_hello;
     private RadioGroup radio_kosher;
     private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -75,6 +76,9 @@ public class HostMainActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         ID = user.getUid();
+
+
+
 
         //Set kosher radio buttons
         meat_r = findViewById(R.id.meat);
@@ -309,18 +313,23 @@ public class HostMainActivity extends AppCompatActivity {
 
 
         //........................................................
-
+        //Set name and rating text
         final TextView fullname_text = (TextView) findViewById(R.id.name);
-
-        reference.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+        final TextView text_rates = findViewById(R.id.retestxt);
+        reference.child(ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User profile = snapshot.getValue(User.class);
                 if (profile != null) {
                     String fullname = profile.getFullName();
-                    String email = profile.getEmail();
-
                     fullname_text.setText(fullname);
+                    int rates=profile.getRates();
+                    if(rates==0)
+                        text_rates.setText("No rates yet");
+                    else if(rates == 1)
+                        text_rates.setText((int)(profile.getRating()*20)+"% rating, (1 rate)");
+                    else
+                        text_rates.setText((int)(profile.getRating()*20)+"% rating, ("+rates+" rates)");
                 }
             }
 

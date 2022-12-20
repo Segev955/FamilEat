@@ -24,6 +24,9 @@ package adapters;
         import androidx.recyclerview.widget.RecyclerView;
 
         import com.example.famileat.ChatActivity;
+        import com.example.famileat.EditProfileActivity;
+        import com.example.famileat.GuestMainActivity;
+        import com.example.famileat.HostMainActivity;
         import com.example.famileat.R;
         import com.google.android.gms.tasks.OnCompleteListener;
         import com.google.android.gms.tasks.OnFailureListener;
@@ -275,14 +278,36 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                                 .child(newdinner.getID()).setValue(newdinner).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(context, "Thank you for rating!", Toast.LENGTH_LONG).show();
-                                        ratingbar.setVisibility(View.GONE);
-                                        grade.setVisibility(View.GONE);
-                                        commandinput.setVisibility(View.GONE);
-                                        if (TextUtils.isEmpty(command))
-                                            commandtxt.setText("No command"+"\nGarde: "+rating*20);
-                                        else
-                                            commandtxt.setText("Your command: "+command+"\nGarde you rated: "+(int)(rating*20));
+                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+                                        reference.child(dinner.getHostUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                User host = snapshot.getValue(User.class);
+                                                if (host != null) {
+                                                    host =User.rate(host,rating);
+                                                    FirebaseDatabase.getInstance().getReference("Users")
+                                                            .child(dinner.getHostUid()).setValue(host).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    Toast.makeText(context, "Thank you for rating!", Toast.LENGTH_LONG).show();
+                                                                    ratingbar.setVisibility(View.GONE);
+                                                                    grade.setVisibility(View.GONE);
+                                                                    commandinput.setVisibility(View.GONE);
+                                                                    if (TextUtils.isEmpty(command))
+                                                                        commandtxt.setText("No command"+"\nGarde: "+rating*20);
+                                                                    else
+                                                                        commandtxt.setText("Your command: "+command+"\nGarde you rated: "+(int)(rating*20));
+                                                                }
+                                                            });
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
                                     }
                                 });
 
