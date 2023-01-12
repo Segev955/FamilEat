@@ -11,11 +11,11 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="60dp"
+        android:layout_margin="50dp"
         android:gravity="center"
         android:text="name"
         android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
     <TextView
@@ -24,13 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="90dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="90dp"
-        android:textColor="@color/ic_launcher_background"
+        android:textColor="#313860"
         android:layout_marginBottom="90dp"
         android:gravity="center"
         android:text="Host"
-        android:textSize="25dp"
+        android:textSize="15dp"
         android:textStyle="bold" />
 
 
@@ -38,13 +38,15 @@
         android:id="@+id/retestxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="90dp"
         android:text="No rates yet"
         android:textColor="#719380"
         android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_meal"
@@ -212,11 +214,12 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F4021F"
+        android:backgroundTint="#781924"
         android:drawableLeft="@drawable/ic_baseline_logout_24"
         android:layout_marginStart="10dp"
         android:text="Log out"
-        android:textSize="10dp"/>
+        android:textSize="10dp"
+        android:textColor="@color/white"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/past_btn"
         android:layout_width="wrap_content"
@@ -225,7 +228,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginStart="10dp"
         android:drawableLeft="@drawable/ic_baseline_food_bank_24"
-        android:text="past"
+        android:text="History"
         android:textColor="@color/black"
         android:textSize="10dp"
         android:textStyle="bold" />
