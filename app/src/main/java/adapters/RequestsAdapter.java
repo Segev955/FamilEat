@@ -83,7 +83,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
     public void onBindViewHolder(@NonNull RequestsAdapter.MyViewHolder holder, int position) {
         //Set request details
         Request request = list.get(position);
-        holder.time.setText(request.getDate()+"    "+request.getTime());
+        holder.date.setText(request.getDate());
+        holder.time.setText(request.getTime());
 
         //Set dinner details
         final Dinner[] dinner = new Dinner[1];
@@ -93,7 +94,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dinner[0] = snapshot.getValue(Dinner.class);
                 if(dinner[0] !=null){
-                    holder.title.setText("Request for "+dinner[0].getTitle());
+                    holder.title.setText("Request for: '"+dinner[0].getTitle()+"'");
                     holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner[0])));
                     holder.dinnerImage.setImageBitmap(bitmap);
 
@@ -297,7 +298,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         CardView reqbtn;
-        TextView title, time,requester, availables;
+        TextView title, time, date, requester, availables;
         Button accept,delete;
         ImageView dinnerImage;
 
@@ -309,6 +310,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
             delete = itemView.findViewById(R.id.delete);
             reqbtn = itemView.findViewById(R.id.reqbtn);
             title = itemView.findViewById(R.id.tvTitle);
+            date = itemView.findViewById(R.id.tvDate);
             time = itemView.findViewById(R.id.tvTime);
             requester = itemView.findViewById(R.id.tvRequester);
             availables = itemView.findViewById(R.id.tvAvailables);

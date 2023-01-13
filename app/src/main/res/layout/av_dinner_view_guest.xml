@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/cardback">
+        android:background="#E5EEF1">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -41,7 +41,6 @@
             android:layout_marginTop="53dp"
             android:background="@drawable/button"
             android:textColor="@color/black"
-            android:textAllCaps="false"
             android:text="Send Request"
             android:textSize="15dp"
             />
