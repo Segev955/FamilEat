@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">FamilEat</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string-array name="kosher">
+        <item>All</item>
+        <item>Kosher dairy</item>
+        <item>Kosher meat</item>
+        <item>Not kosher</item>
+    </string-array>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

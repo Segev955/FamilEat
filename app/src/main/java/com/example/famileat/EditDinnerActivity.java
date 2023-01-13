@@ -51,7 +51,7 @@ import adapters.HostsAdapter;
 
 public class EditDinnerActivity extends AppCompatActivity {
 
-    private Button location, submit, btnTime, uploadImage;
+    private Button submit, btnTime, uploadImage;
     private EditText text_title, text_details, text_date;
     private TextView location_text;
     private RadioGroup radio_kosher;
@@ -97,6 +97,7 @@ public class EditDinnerActivity extends AppCompatActivity {
         imgGallery = findViewById(R.id.imgGallery);
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
+        location_text = findViewById(R.id.location);
 
         reference = FirebaseDatabase.getInstance().getReference("Dinners");
         reference.child(HostsAdapter.currUid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,6 +110,7 @@ public class EditDinnerActivity extends AppCompatActivity {
                     text_date.setText(dinner.getDate());
                     btnTime.setText(dinner.getTime());
                     amont_t.setValue(dinner.getAmount());
+                    location_text.setText(dinner.getAddress());
                     if(dinner.getKosher().equals("Kosher dairy"))
                         dairy_r.setChecked(true);
                     else if(dinner.getKosher().equals("Kosher meat"))
@@ -219,6 +221,7 @@ public class EditDinnerActivity extends AppCompatActivity {
                 String title = text_title.getText().toString();
                 String date = text_date.getText().toString();
                 String time = btnTime.getText().toString();
+                String location = location_text.getText().toString();
                 String address = "Ariel University";
                 int amount = amont_t.getValue();
                 int select_kosher = radio_kosher.getCheckedRadioButtonId();
@@ -245,13 +248,13 @@ public class EditDinnerActivity extends AppCompatActivity {
                         Dinner.deletePicture(dinner.getPicture());
                     }
 
-                    updateDinner(title, date, time, address, amount, kosher, details, picName);
+                    updateDinner(title, date, time, address, amount, kosher, details, picName, location);
                 }
             }
         });
     }
 
-    private void updateDinner(String title, String date, String time, String address, int amount, String kosher, String details, String picture) {
+    private void updateDinner(String title, String date, String time, String address, int amount, String kosher, String details, String picture, String location) {
         dinner.setTitle(title);
         dinner.setDate(date);
         dinner.setTime(time);
@@ -260,6 +263,7 @@ public class EditDinnerActivity extends AppCompatActivity {
         dinner.setKosher(kosher);
         dinner.setDetails(details);
         dinner.setPicture(picture);
+        dinner.setAddress(location);
         FirebaseDatabase.getInstance().getReference("Dinners")
                 .child(dinner.getID()).setValue(dinner).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

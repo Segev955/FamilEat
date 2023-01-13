@@ -16,11 +16,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +48,7 @@ import adapters.GuestMyAdapter;
 import classes.User;
 import adapters.ChatAdapter;
 
-public class GuestMainActivity extends AppCompatActivity {
+public class GuestMainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button logout, editprofile, meals_btn, search, past;
     private TextView meals_txt;
     private EditText text_date;
@@ -54,11 +57,13 @@ public class GuestMainActivity extends AppCompatActivity {
     private DatabaseReference referenceD;
     private String ID;
     private RadioGroup radio_kosher, radio_gender;
-    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r, gender_r, male_r, female_r, both_r;
+//    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r, gender_r, male_r, female_r, both_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private RecyclerView recyclerView;
     private GuestAvAdapder avAdapter;
     private GuestMyAdapter myAdapter;
+    private Spinner kosher_select;
+    private String kosher_text;
     ArrayList<Dinner> av_dinnerList,my_dinnerList;
 
 
@@ -72,7 +77,17 @@ public class GuestMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_main);
 
         //.........................................................................................
-        //Set kosher radio buttons
+
+        //kosher filter
+        kosher_select = findViewById(R.id.kosher_select);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.kosher ,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        kosher_select.setAdapter(adapter);
+        kosher_select.setOnItemSelectedListener(this);
+        kosher_text = "All";
+
+
+/*        //Set kosher radio buttons
         meat_r = findViewById(R.id.meat);
         dairy_r = findViewById(R.id.dairy);
         notkosher_r = findViewById(R.id.noKosher);
@@ -85,7 +100,7 @@ public class GuestMainActivity extends AppCompatActivity {
         female_r = findViewById(R.id.female);
         both_r = findViewById(R.id.both);
         both_r.setChecked(true);
-        radio_gender = findViewById(R.id.gender);
+        radio_gender = findViewById(R.id.gender);*/
 
         //set Date Button:
         text_date = findViewById(R.id.date);
@@ -131,16 +146,9 @@ public class GuestMainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 av_dinnerList.clear();
                 my_dinnerList.clear();
-                int select_kosher = radio_kosher.getCheckedRadioButtonId();
-                String kosher = "All";
-                if (select_kosher != -1) {
-                    kosher_r = (RadioButton) findViewById(select_kosher);
-                    kosher = kosher_r.getText().toString();
-                }
-
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher.equals("All")||kosher.equals(dinner.getKosher()))) {
+                    if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher()))) {
                         if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
                             av_dinnerList.add(dinner);
                         if (Dinner.isAccepted(dinner, ID))
@@ -179,16 +187,10 @@ public class GuestMainActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             av_dinnerList.clear();
                             my_dinnerList.clear();
-                            int select_kosher = radio_kosher.getCheckedRadioButtonId();
-                            String kosher = "All";
-                            if (select_kosher != -1) {
-                                kosher_r = (RadioButton) findViewById(select_kosher);
-                                kosher = kosher_r.getText().toString();
-                            }
 
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                                if (Dinner.isRelevant(dinner, text_date.getText().toString()) && (kosher.equals("All") || kosher.equals(dinner.getKosher()))) {
+                                if (Dinner.isRelevant(dinner, text_date.getText().toString()) && (kosher_text.equals("All") || kosher_text.equals(dinner.getKosher()))) {
                                     if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
                                         av_dinnerList.add(dinner);
                                     if (Dinner.isAccepted(dinner, ID))
@@ -333,6 +335,17 @@ public class GuestMainActivity extends AppCompatActivity {
                 backPressed = false;
             }
         }, 2000);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        kosher_text = parent.getItemAtPosition(position).toString();
+        ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
     //..........................................................................................
 }

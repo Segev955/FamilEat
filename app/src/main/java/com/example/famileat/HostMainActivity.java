@@ -10,18 +10,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,19 +48,22 @@ import adapters.HostsAdapter;
 import classes.Request;
 import classes.User;
 
-public class HostMainActivity extends AppCompatActivity {
+public class HostMainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private Button logout, editprofile, new_meal, requests,search, past;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
     private EditText text_date;
-    private TextView text_hello;
+    private TextView name_text;
     private RadioGroup radio_kosher;
-    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
+//    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatabaseReference referenceD;
     private RecyclerView recyclerView;
     private HostsAdapter hostAdapter;
+    private Spinner kosher_select;
+    private String kosher_text, rate_text;
+    private AlertDialog alertDialog;
     ArrayList<Dinner> dinnerList;
 
     private static final String ONESIGNAL_APP_ID = "d165de36-ef1b-46ff-b69b-678b6637236e";
@@ -77,16 +85,40 @@ public class HostMainActivity extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference("Users");
         ID = user.getUid();
 
+        //kosher filter
+        kosher_select = findViewById(R.id.kosher_select);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.kosher ,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        kosher_select.setAdapter(adapter);
+        kosher_select.setOnItemSelectedListener(this);
+        kosher_text = "All";
+
+        name_text = findViewById(R.id.name);
+        name_text.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    alertDialog.dismiss();
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HostMainActivity.this);
+                    builder.setMessage(rate_text)
+                            .setCancelable(false);
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                return true;
+            }
+        });
 
 
-
-        //Set kosher radio buttons
+/*        //Set kosher radio buttons
         meat_r = findViewById(R.id.meat);
         dairy_r = findViewById(R.id.dairy);
         notkosher_r = findViewById(R.id.noKosher);
         all_r = findViewById(R.id.all);
         all_r.setChecked(true);
-        radio_kosher = findViewById(R.id.kosher);
+        radio_kosher = findViewById(R.id.kosher);*/
 
         //set Date Button:
         text_date = findViewById(R.id.date);
@@ -131,15 +163,9 @@ public class HostMainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dinnerList.clear();
-                int select_kosher = radio_kosher.getCheckedRadioButtonId();
-                String kosher = "All";
-                if (select_kosher != -1) {
-                    kosher_r = (RadioButton) findViewById(select_kosher);
-                    kosher = kosher_r.getText().toString();
-                }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher.equals("All")||kosher.equals(dinner.getKosher())))
+                    if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
                         dinnerList.add(dinner);
                 }
                 dinnerList=sortDinnersByDate(dinnerList);
@@ -232,16 +258,9 @@ public class HostMainActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             dinnerList.clear();
-                            int select_kosher = radio_kosher.getCheckedRadioButtonId();
-                            String kosher = "All";
-                            if (select_kosher != -1) {
-                                kosher_r = (RadioButton) findViewById(select_kosher);
-                                kosher = kosher_r.getText().toString();
-                            }
-
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                                if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher.equals("All")||kosher.equals(dinner.getKosher())))
+                                if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
                                     dinnerList.add(dinner);
 
                             }
@@ -315,7 +334,6 @@ public class HostMainActivity extends AppCompatActivity {
         //........................................................
         //Set name and rating text
         final TextView fullname_text = (TextView) findViewById(R.id.name);
-        final TextView text_rates = findViewById(R.id.retestxt);
         reference.child(ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -325,11 +343,11 @@ public class HostMainActivity extends AppCompatActivity {
                     fullname_text.setText(fullname);
                     int rates=profile.getRates();
                     if(rates==0)
-                        text_rates.setText("No rates yet");
+                        rate_text = "No rates yet";
                     else if(rates == 1)
-                        text_rates.setText((int)(profile.getRating()*20)+"% rating, (1 rate)");
+                        rate_text = (int)(profile.getRating()*20)+"% rating, (1 rate)";
                     else
-                        text_rates.setText((int)(profile.getRating()*20)+"% rating, ("+rates+" rates)");
+                        rate_text=(int)(profile.getRating()*20)+"% rating, ("+rates+" rates)";
                 }
             }
 
@@ -365,6 +383,17 @@ public class HostMainActivity extends AppCompatActivity {
                 backPressed = false;
             }
         }, 2000);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        kosher_text = parent.getItemAtPosition(position).toString();
+        ((TextView)parent.getChildAt(0)).setTextColor(Color.BLACK);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
     //..........................................................................................
 }

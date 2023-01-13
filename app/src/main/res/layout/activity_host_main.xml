@@ -37,19 +37,6 @@
         android:textStyle="bold" />
 
 
-    <TextView
-        android:id="@+id/retestxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="90dp"
-        android:text="No rates yet"
-        android:textColor="#719380"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_meal"
         android:layout_width="wrap_content"
@@ -68,10 +55,9 @@
         android:id="@+id/btnRequests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logout"
-        android:layout_marginLeft="215dp"
-        android:layout_marginTop="79dp"
-        android:layout_marginBottom="5dp"
+        android:layout_below="@id/past_btn"
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="1dp"
         android:backgroundTint="#30432E2E"
         android:text="requests"
         android:textColor="#674242"
@@ -80,13 +66,43 @@
         app:layout_constraintRight_toRightOf="@+id/new_meal"
         app:layout_constraintTop_toBottomOf="@+id/new_meal" />
 
+    <LinearLayout
+        android:id="@+id/kosher_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="150dp"
+        android:adjustViewBounds="true"
+        android:background="#30432E2E"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kosher filter: "
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/kosher_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/date_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="215dp"
-        android:layout_marginTop="190dp"
+        android:layout_below="@id/kosher_filter"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+
         android:text="Starting from: "
         android:textColor="@color/black"
         android:textSize="15dp"
@@ -96,10 +112,11 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/kosher_txt"
-        android:layout_marginStart="215dp"
+        android:layout_below="@id/kosher_filter"
+        android:layout_marginStart="110dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:background="#30432E2E"
         android:backgroundTint="#30432E2E"
         android:drawableLeft="@drawable/ic_baseline_date_range_24"
         android:drawablePadding="10dp"
@@ -109,77 +126,13 @@
         android:textColorHint="#674242"
         android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/kosher_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/new_meal"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Kosher selector: "
-        android:textColor="@color/black"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/kosher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/kosher_txt">
-
-
-        <RadioButton
-            android:id="@+id/all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/date"
-            android:text="All"
-            android:textColor="#674242"
-            android:textSize="10dp"
-            android:textStyle="bold" />
-
-        <RadioButton
-            android:id="@+id/dairy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/date"
-            android:layout_marginTop="-20dp"
-            android:text="Kosher dairy"
-            android:textColor="#674242"
-            android:textSize="10dp"
-            android:textStyle="bold" />
-
-        <RadioButton
-            android:id="@+id/meat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/date"
-            android:layout_marginTop="-20dp"
-            android:text="Kosher meat"
-            android:textColor="#674242"
-            android:textSize="10dp"
-            android:textStyle="bold" />
-
-        <RadioButton
-            android:id="@+id/noKosher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/date"
-            android:layout_marginTop="-20dp"
-            android:text="Not kosher"
-            android:textColor="#674242"
-            android:textSize="10dp"
-            android:textStyle="bold" />
-
-    </RadioGroup>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/date"
-        android:layout_marginLeft="215dp"
-        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="15dp"
         android:backgroundTint="#30432E2E"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:text="search"
