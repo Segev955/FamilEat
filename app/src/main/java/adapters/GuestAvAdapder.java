@@ -73,13 +73,14 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User host = snapshot.getValue(User.class);
-                int rates=host.getRates();
+                holder.host.setText(host.getFullName());
+                /*int rates=host.getRates();
                 if(rates==0)
                     holder.host.setText(host.getFullName()+"\n"+"No rates yet");
                 else if(rates==1)
                     holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating (1 rate)");
                 else
-                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating ("+rates+" rates)");
+                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating ("+rates+" rates)");*/
             }
 
             @Override
