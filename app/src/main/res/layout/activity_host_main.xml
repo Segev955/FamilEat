@@ -187,7 +187,7 @@
         android:layout_marginTop="1dp"
         android:backgroundTint="#30432E2E"
         android:drawableLeft="@drawable/ic_baseline_history_24"
-        android:text="History"
+        android:text="history"
         android:textColor="@color/black"
         android:textSize="8dp"
         android:textStyle="bold" />

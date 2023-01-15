@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,17 +36,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 import adapters.GuestAvAdapder;
+import adapters.PastGuestAdapter;
 import classes.Dinner;
 import adapters.GuestMyAdapter;
 import classes.User;
-import adapters.ChatAdapter;
 
 public class GuestMainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button logout, editprofile, meals_btn, search, past;
@@ -61,10 +59,11 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private RecyclerView recyclerView;
     private GuestAvAdapder avAdapter;
+    private PastGuestAdapter pastadapter;
     private GuestMyAdapter myAdapter;
     private Spinner kosher_select;
     private String kosher_text;
-    ArrayList<Dinner> av_dinnerList,my_dinnerList;
+    ArrayList<Dinner> av_dinnerList,my_dinnerList, past_dinnerList;
 
 
 
@@ -136,31 +135,17 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         av_dinnerList = new ArrayList<>();
         my_dinnerList = new ArrayList<>();
+        past_dinnerList = new ArrayList<>();
         myAdapter = new GuestMyAdapter(this, my_dinnerList, R.drawable.google);
         avAdapter = new GuestAvAdapder(this, av_dinnerList, R.drawable.google);
+        pastadapter = new PastGuestAdapter(this, past_dinnerList, R.drawable.google, new AlertDialog.Builder(this));
         recyclerView.setAdapter(avAdapter);
 
         referenceD.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                av_dinnerList.clear();
-                my_dinnerList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher()))) {
-                        if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
-                            av_dinnerList.add(dinner);
-                        if (Dinner.isAccepted(dinner, ID))
-                            my_dinnerList.add(dinner);
-                    }
-
-                }
-                date[0] = text_date.getText().toString();
-                av_dinnerList = sortDinnersByDate(av_dinnerList);
-                my_dinnerList = sortDinnersByDate(my_dinnerList);
-                myAdapter.notifyDataSetChanged();
-                avAdapter.notifyDataSetChanged();
+               refreshLists(snapshot, date);
 
             }
             @Override
@@ -185,24 +170,7 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            av_dinnerList.clear();
-                            my_dinnerList.clear();
-
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                                if (Dinner.isRelevant(dinner, text_date.getText().toString()) && (kosher_text.equals("All") || kosher_text.equals(dinner.getKosher()))) {
-                                    if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
-                                        av_dinnerList.add(dinner);
-                                    if (Dinner.isAccepted(dinner, ID))
-                                        my_dinnerList.add(dinner);
-                                }
-
-                            }
-                            date[0]=text_date.getText().toString();
-                            av_dinnerList = sortDinnersByDate(av_dinnerList);
-                            my_dinnerList = sortDinnersByDate(my_dinnerList);
-                            myAdapter.notifyDataSetChanged();
-                            avAdapter.notifyDataSetChanged();
+                            refreshLists(snapshot, date);
 
                         }
 
@@ -223,9 +191,15 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         past.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pastIntent = new Intent(GuestMainActivity.this, PastActivity.class);
-                pastIntent.putExtra("Type","Guest");
-                startActivity(pastIntent);
+//                Intent pastIntent = new Intent(GuestMainActivity.this, PastActivity.class);
+//                pastIntent.putExtra("Type","Guest");
+//                startActivity(pastIntent);
+                recyclerView.setAdapter(pastadapter);
+                meals_txt.setText("History Meals:");
+                past.setVisibility(View.GONE);
+
+
+
             }
         });
         //logout .................................................
@@ -269,6 +243,7 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         meals_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                past.setVisibility(View.VISIBLE);
                 if(meals_btn.getText().equals("my meals")){
                     meals_btn.setText("available meals");
                     meals_txt.setText("My Meals:");
@@ -307,12 +282,38 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
             }
         });
     }
-    public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list)
+
+    private void refreshLists(DataSnapshot snapshot, String[] date) {
+        av_dinnerList.clear();
+        my_dinnerList.clear();
+        past_dinnerList.clear();
+        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+            Dinner dinner = dataSnapshot.getValue(Dinner.class);
+            if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher()))) {
+                if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
+                    av_dinnerList.add(dinner);
+                if (Dinner.isAccepted(dinner, ID))
+                    my_dinnerList.add(dinner);
+            }
+            if(!Dinner.isRelevant(dinner,"") && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
+                past_dinnerList.add(dinner);
+
+        }
+        date[0] = text_date.getText().toString();
+        av_dinnerList = sortDinnersByDate(av_dinnerList,1);
+        my_dinnerList = sortDinnersByDate(my_dinnerList, 1);
+        past_dinnerList = sortDinnersByDate(past_dinnerList, -1);
+        myAdapter.notifyDataSetChanged();
+        avAdapter.notifyDataSetChanged();
+        pastadapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list, int flip)
     {
         Collections.sort(list, new Comparator<Dinner>() {
             @Override
             public int compare(Dinner dinner, Dinner t1) {
-                return dinner.compareTo(t1);
+                return flip*dinner.compareTo(t1);
             }
         });
         return list;

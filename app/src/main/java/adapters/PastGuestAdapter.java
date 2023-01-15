@@ -142,8 +142,6 @@ public class PastGuestAdapter extends RecyclerView.Adapter<PastGuestAdapter.MyVi
                 EditText commandinput;
                 RatingBar ratingbar;
 
-
-
                 title = contactPopuoView.findViewById(R.id.tvTitle);
                 address = contactPopuoView.findViewById(R.id.tvAddress);
                 date = contactPopuoView.findViewById(R.id.tvDate);

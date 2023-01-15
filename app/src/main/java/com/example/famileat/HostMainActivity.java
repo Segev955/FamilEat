@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -24,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +41,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import adapters.PastHostAdapter;
 import classes.Dinner;
 import adapters.HostsAdapter;
 import classes.Request;
@@ -54,17 +53,18 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
     private DatabaseReference reference;
     private String ID;
     private EditText text_date;
-    private TextView name_text;
+    private TextView name_text, historytxt;
     private RadioGroup radio_kosher;
 //    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatabaseReference referenceD;
     private RecyclerView recyclerView;
     private HostsAdapter hostAdapter;
+    private PastHostAdapter pastAdapter;
     private Spinner kosher_select;
     private String kosher_text, rate_text;
     private AlertDialog alertDialog;
-    ArrayList<Dinner> dinnerList;
+    ArrayList<Dinner> dinnerList, pastlist;
 
     private static final String ONESIGNAL_APP_ID = "d165de36-ef1b-46ff-b69b-678b6637236e";
 
@@ -92,8 +92,9 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         kosher_select.setAdapter(adapter);
         kosher_select.setOnItemSelectedListener(this);
         kosher_text = "All";
-
+        historytxt = findViewById(R.id.mymealstxt);
         name_text = findViewById(R.id.name);
+
         name_text.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -152,24 +153,21 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dinnerList = new ArrayList<>();
+        pastlist = new ArrayList<>();
 
         //Set host adapter..............................................
         dialog_builder = new AlertDialog.Builder(this);
         hostAdapter = new HostsAdapter(this,dinnerList, R.drawable.google, dialog_builder);
         recyclerView.setAdapter(hostAdapter);
 
+        //Set past adapter..............................................
+        pastAdapter = new PastHostAdapter(this,pastlist, R.drawable.google, dialog_builder);
+
         referenceD.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dinnerList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
-                        dinnerList.add(dinner);
-                }
-                dinnerList=sortDinnersByDate(dinnerList);
-                hostAdapter.notifyDataSetChanged();
+               refreshLists(snapshot);
 
             }
 
@@ -222,9 +220,17 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         past.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pastIntent = new Intent(HostMainActivity.this, PastActivity.class);
-                pastIntent.putExtra("Type","Host");
-                startActivity(pastIntent);
+                if(past.getText().toString().equals("history")) {
+                    recyclerView.setAdapter(pastAdapter);
+                    past.setText("my meals");
+                    historytxt.setText("History");
+                }
+                else {
+                    recyclerView.setAdapter(hostAdapter);
+                    past.setText("history");
+                    historytxt.setText("My Meals");
+
+                }
             }
         });
 
@@ -257,16 +263,7 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            dinnerList.clear();
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                                if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
-                                    dinnerList.add(dinner);
-
-                            }
-                            date[0]=text_date.getText().toString();
-                            dinnerList = sortDinnersByDate(dinnerList);
-                            hostAdapter.notifyDataSetChanged();
+                            refreshLists(snapshot);
 
                         }
 
@@ -357,12 +354,29 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
             }
         });
     }
-    public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list)
+
+    private void refreshLists(DataSnapshot snapshot) {
+        dinnerList.clear();
+        pastlist.clear();
+        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+            Dinner dinner = dataSnapshot.getValue(Dinner.class);
+            if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
+                dinnerList.add(dinner);
+            if(!Dinner.isRelevant(dinner,text_date.getText().toString()) && !Dinner.isRelevant(dinner,"") && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
+                pastlist.add(dinner);
+        }
+        dinnerList=sortDinnersByDate(dinnerList, 1);
+        pastlist = sortDinnersByDate(pastlist, -1);
+        hostAdapter.notifyDataSetChanged();
+        pastAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list, int flip)
     {
         Collections.sort(list, new Comparator<Dinner>() {
             @Override
             public int compare(Dinner dinner, Dinner t1) {
-                return dinner.compareTo(t1);
+                return flip*dinner.compareTo(t1);
             }
         });
         return list;
