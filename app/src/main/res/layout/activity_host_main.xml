@@ -51,18 +51,31 @@
         android:textColorHint="#674242"
         android:textSize="8dp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRequests"
+    <TextView
+        android:id="@+id/request_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/past_btn"
-        android:layout_marginStart="215dp"
-        android:layout_marginTop="1dp"
-        android:backgroundTint="#30432E2E"
-        android:text="requests"
-        android:textColor="#674242"
+        android:layout_marginLeft="355dp"
+        android:layout_marginTop="-5dp"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRequests"
+        android:layout_width="55dp"
+        android:layout_height="44dp"
+        android:layout_below="@id/past_btn"
+        android:layout_marginStart="315dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#E4F9FA"
+        android:text="🔔"
+        android:textColor="@color/black"
         android:textColorHint="#674242"
-        android:textSize="8dp"
+        android:textSize="20dp"
         app:layout_constraintRight_toRightOf="@+id/new_meal"
         app:layout_constraintTop_toBottomOf="@+id/new_meal" />
 

@@ -51,12 +51,12 @@ import classes.Request;
 import classes.User;
 
 public class HostMainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
-    private Button logout, editprofile, new_meal, requests,search, past;
+    private Button logout, editprofile, new_meal, btnRequests,search, past;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
     private EditText text_date;
-    private TextView name_text, historytxt;
+    private TextView name_text, historytxt, requestNumTxt;
     private RadioGroup radio_kosher;
 //    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -198,14 +198,16 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
 
                 }
                 if (sum == 0) {
-                    requests.setText("requests");
-                    requests.setVisibility(View.GONE);
-                    requests.setBackgroundColor(0x988E8F);
+                    requestNumTxt.setText("");
+                    requestNumTxt.setVisibility(View.GONE);
+                    requestNumTxt.setBackgroundColor(0x988E8F);
+                    btnRequests.setBackgroundColor(0x988E8F);
                 }
                 else {
-                    requests.setVisibility(View.VISIBLE);
-                    requests.setText("requests (" + sum + ")");
-                    requests.setBackgroundColor(0xff99cc00);
+                    requestNumTxt.setVisibility(View.VISIBLE);
+                    requestNumTxt.setText(" "+sum+" ");
+                    requestNumTxt.setBackgroundColor(0xff99cc00);
+                    btnRequests.setBackgroundColor(0xff99cc00);
                 }
                 sum = 0;
             }
@@ -238,64 +240,65 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         });
 
         //Requests button............................................
-        requests = findViewById(R.id.btnRequests);
+        btnRequests = findViewById(R.id.btnRequests);
+        requestNumTxt = findViewById(R.id.request_txt);
         Context context;
-        requests.setOnClickListener(new View.OnClickListener() {
+        btnRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(requests.getText().equals("requests"))
-//                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
-//                else
-     //               startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
-                AlertDialog.Builder requestOptions = new AlertDialog.Builder(HostMainActivity.this);;
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View contactPopuoView = inflater.inflate(R.layout.requests_list, null);
-                AlertDialog options;
+                if(requestNumTxt.getText().equals(""))
+                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
+                else {
+                    AlertDialog.Builder requestOptions = new AlertDialog.Builder(HostMainActivity.this);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View contactPopuoView = inflater.inflate(R.layout.requests_list, null);
+                    AlertDialog options;
 
-                DatabaseReference referenceR;
+                    DatabaseReference referenceR;
 
 
-                //Requests List: ...........................................................................
-                RecyclerView recyclerView = contactPopuoView.findViewById(R.id.requestsList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
-                referenceR = FirebaseDatabase.getInstance().getReference("Requests");
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
-                ArrayList<Request> requestList = new ArrayList<>();
+                    //Requests List: ...........................................................................
+                    RecyclerView recyclerView = contactPopuoView.findViewById(R.id.requestsList);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+                    referenceR = FirebaseDatabase.getInstance().getReference("Requests");
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+                    ArrayList<Request> requestList = new ArrayList<>();
 
-                //Set request adapter..............................................
-                RequestsAdapter requestAdapter = new RequestsAdapter(contactPopuoView.getContext(),requestList, R.drawable.google);
-                recyclerView.setAdapter(requestAdapter);
+                    //Set request adapter..............................................
+                    RequestsAdapter requestAdapter = new RequestsAdapter(contactPopuoView.getContext(), requestList, R.drawable.google);
+                    recyclerView.setAdapter(requestAdapter);
 
-                referenceR.addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        requestList.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                            Request request = dataSnapshot.getValue(Request.class);
-                            assert request != null;
-                            if(request.getHostUid().equals(ID))
-                                requestList.add(request);
+                    referenceR.addValueEventListener(new ValueEventListener() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            requestList.clear();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Request request = dataSnapshot.getValue(Request.class);
+                                assert request != null;
+                                if (request.getHostUid().equals(ID))
+                                    requestList.add(request);
+                            }
+                            if (requestList.size() == 0) {
+                                startActivity(new Intent(contactPopuoView.getContext(), HostMainActivity.class));
+                            }
+                            requestAdapter.notifyDataSetChanged();
+
                         }
-                        if (requestList.size()==0){
-                            Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(contactPopuoView.getContext(), HostMainActivity.class));
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
-                        requestAdapter.notifyDataSetChanged();
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                    });
+                    requestOptions.setView(contactPopuoView);
+                    options = requestOptions.create();
+                    options.show();
+                }
                 //.........................................................................................
 
-                requestOptions.setView(contactPopuoView);
-                options = requestOptions.create();
-                options.show();
+
 
 
             }
