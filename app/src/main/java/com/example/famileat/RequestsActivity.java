@@ -95,58 +95,58 @@ public class RequestsActivity extends AppCompatActivity {
         });
         //.........................................................................................
 
-        //logout .................................................
-        logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("remember", "false");
-                editor.apply();
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(RequestsActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(RequestsActivity.this, StartActivity.class));
-                finish();
-            }
-        });
-        //........................................................
-        //new meal............................................
-        new_meal = findViewById(R.id.new_meal);
-        new_meal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(RequestsActivity.this, SubmitDinnerActivity.class));
-            }
-        });
-        //........................................................
-        //edit profile............................................
-        editprofile = findViewById(R.id.edit_profile);
-        editprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(RequestsActivity.this, EditProfileActivity.class));
-            }
-        });
-        //........................................................
-
-        final TextView fullname_text = (TextView) findViewById(R.id.name);
-
-        reference.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User profile = snapshot.getValue(User.class);
-                if (profile != null) {
-                    String fullname = profile.getFullName();
-                    fullname_text.setText(fullname);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        //logout .................................................
+//        logout = findViewById(R.id.logout);
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putString("remember", "false");
+//                editor.apply();
+//                FirebaseAuth.getInstance().signOut();
+//                Toast.makeText(RequestsActivity.this,"Logged out!",Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(RequestsActivity.this, StartActivity.class));
+//                finish();
+//            }
+//        });
+//        //........................................................
+//        //new meal............................................
+//        new_meal = findViewById(R.id.new_meal);
+//        new_meal.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(RequestsActivity.this, SubmitDinnerActivity.class));
+//            }
+//        });
+//        //........................................................
+//        //edit profile............................................
+//        editprofile = findViewById(R.id.edit_profile);
+//        editprofile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(RequestsActivity.this, EditProfileActivity.class));
+//            }
+//        });
+//        //........................................................
+//
+//        final TextView fullname_text = (TextView) findViewById(R.id.name);
+//
+//        reference.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                User profile = snapshot.getValue(User.class);
+//                if (profile != null) {
+//                    String fullname = profile.getFullName();
+//                    fullname_text.setText(fullname);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
 
     }

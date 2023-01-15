@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import adapters.PastHostAdapter;
+import adapters.RequestsAdapter;
 import classes.Dinner;
 import adapters.HostsAdapter;
 import classes.Request;
@@ -236,13 +239,65 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
 
         //Requests button............................................
         requests = findViewById(R.id.btnRequests);
+        Context context;
         requests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(requests.getText().equals("requests"))
-                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
-                else
-                    startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
+//                if(requests.getText().equals("requests"))
+//                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
+//                else
+     //               startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
+                AlertDialog.Builder requestOptions = new AlertDialog.Builder(HostMainActivity.this);;
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View contactPopuoView = inflater.inflate(R.layout.requests_list, null);
+                AlertDialog options;
+
+                DatabaseReference referenceR;
+
+
+                //Requests List: ...........................................................................
+                RecyclerView recyclerView = contactPopuoView.findViewById(R.id.requestsList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+                referenceR = FirebaseDatabase.getInstance().getReference("Requests");
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(contactPopuoView.getContext()));
+                ArrayList<Request> requestList = new ArrayList<>();
+
+                //Set request adapter..............................................
+                RequestsAdapter requestAdapter = new RequestsAdapter(contactPopuoView.getContext(),requestList, R.drawable.google);
+                recyclerView.setAdapter(requestAdapter);
+
+                referenceR.addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        requestList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            Request request = dataSnapshot.getValue(Request.class);
+                            assert request != null;
+                            if(request.getHostUid().equals(ID))
+                                requestList.add(request);
+                        }
+                        if (requestList.size()==0){
+                            Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(contactPopuoView.getContext(), HostMainActivity.class));
+                        }
+                        requestAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                //.........................................................................................
+
+                requestOptions.setView(contactPopuoView);
+                options = requestOptions.create();
+                options.show();
+
+
             }
         });
 
@@ -315,17 +370,6 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         });
         //........................................................
 
-        //Requests button............................................
-        requests = findViewById(R.id.btnRequests);
-        requests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(requests.getText().equals("requests"))
-                    Toast.makeText(HostMainActivity.this,"You have no requests!",Toast.LENGTH_SHORT).show();
-                else
-                    startActivity(new Intent(HostMainActivity.this, RequestsActivity.class));
-            }
-        });
 
 
         //........................................................
