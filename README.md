@@ -49,15 +49,34 @@ This screen can be entered from both a host and a guest user, you can edit your 
 ### Host main screen:
 This screen is the screen that host type users go to after logging in, this is the home screen for hosts.<br>
 In this screen there are options of adding a new meal, editing a profile and logging out.<br>
-The meals created by the host are displayed on the screen, clicking on a meal opens up more details about the meal and additional options for the meal.<br>
-<br><img src="https://user-images.githubusercontent.com/86108478/212750367-d9632f83-926e-423c-a3e9-ce44a7b43abc.jpg" alt="drawing" width="200"/>
-
-### Dinner options:
-By clicking on a meal, the details of the meal open up and options for editing and deleting appear..<br>
-The meals created by the host are displayed on the screen, clicking on a meal opens up more details about the meal and additional options for the meal.<br>
-<br><img src="https://user-images.githubusercontent.com/86108478/212750949-508e0e18-c5b0-4a88-ba42-09a8d325ba22.jpg" alt="drawing" width="200"/>
+The meals created by the host are displayed on the screen, there is a filter option in the meal display according to kosher and date. <br>The host has the option from this page to view his past meals.<br>clicking on a meal opens up more details about the meal and additional options for the meal.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212753073-73843907-fee2-4aa6-a473-8cb3be767cfe.jpg" alt="drawing" width="200"/>
 
 ### Submit dinner screen
 On this screen, a host can enter a new meal into the system by entering the details of the meal, which are title, date, time, number of guests, kosher, photo and free text.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/212751229-b2f8a125-d251-4def-9178-58cbe26833e5.jpg" width="200"/>
+
+### Dinner filter:
+In this example, the use of filters is shown, in the kosher filter we chose "Kosher Dairy" and in "Starting From" we selected a date and after clicking "SEARCH" only dairy meals dated 1/28/23 and later will appear.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212752942-4b344057-3a02-4c49-920d-6f90914ab65f.jpg" alt="drawing" width="200"/>
+
+### Dinner options:
+By clicking on a meal, the details of the meal open up and options for chat, editing and deleting appear.<br>
+Clicking on delete meal will delete the meal and all its data.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212750949-508e0e18-c5b0-4a88-ba42-09a8d325ba22.jpg" alt="drawing" width="200"/>
+
+### Edit Dinner:
+By clicking on a "EDIT DINNER", a form for editing the meal will open with the meal details entered in advance, the details can be edited and if everything is correct in the inputs, the meal data will change.<br>
+Clicking on delete meal will delete the meal and all its data.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212754640-5a6cb0ff-c783-4e5d-8d78-ffaf0496feef.jpg" alt="drawing" width="200"/>
+
+
+### Dinner Chat:
+By clicking on "CHAT", a group chat screen opens for all participants of the meal.<br>
+You can write messages that will appear to all participants in the meal, it also shows the date and time the message was sent, who sent the message and if he is the Host of the meal or or being a Guest.<br>
+Only the host has an option to clear the chat.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212755837-48d5af62-d66f-41dd-8de8-60743e815a91.jpg" alt="drawing" width="200"/>
+
+
+
 ## Guests screens:
