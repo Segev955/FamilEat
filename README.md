@@ -77,6 +77,25 @@ You can write messages that will appear to all participants in the meal, it also
 Only the host has an option to clear the chat.<br>
 <br><img src="https://user-images.githubusercontent.com/86108478/212755837-48d5af62-d66f-41dd-8de8-60743e815a91.jpg" alt="drawing" width="200"/>
 
+### Requests:
+When the Host receives a request to join to a meal, the bell above will be marked in green, and above it will appear the number of requests the Host has.<br>
+By pressing the bell, a window will open in which the content of the request is displayed, for which meal and who the requester is, the Host can decide whether to approve the request or refuse it by clicking "ACCEPT" or "REJECT".<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212758478-a5921271-b094-4a48-9dfe-e986c66c3b71.jpg" alt="drawing" width="200"/>
+
 
 
 ## Guests screens:
+### Guest main screen:
+This screen is the screen that guest type users go to after logging in, this is the home screen for guests.<br>
+In this screen there are options editing a profile and logging out.<br>
+The meals shown on the screen are the available meals whose time has not yet passed, you can click on "SEND REQUEST" to send the host a request to join the meal, and "CANCEL REQUEST" to cancel the sent request.<br>By clicking on "MY MEALS", the meals that will be displayed are the meals that the guest has been approved for by the host, there is a filter option in the meal display according to kosher and date. <br>The guest has the option from this page to view his past meals.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212757533-beff8865-0e60-4d2a-97e3-7984c52d141e.jpg" alt="drawing" width="200"/>
+
+### Dinner filter:
+In this example, the use of filters is shown, in the kosher filter we chose "Not Kosher" and in "Starting From" we selected a date and after clicking "SEARCH" only dairy meals dated 6/3/23 and later will appear.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212759343-2fd47eda-cfae-474e-a126-a39e0e400816.jpg" alt="drawing" width="200"/>
+
+### Guest "My Meals":
+By clicking on "My meals" the meals that the guest has been approved for by the host and whose time has not yet passed will appear on the screen, for these meals the guest will be invited.<br>
+In this mode, in each meal there is the option to enter the group chat, and by clicking "exit the meal" you can leave the meal and cancel your participation in it.
+<br><img src="https://user-images.githubusercontent.com/86108478/212760335-5aafaced-8259-48eb-beb6-c71d4d526561.jpg" alt="drawing" width="200"/>
