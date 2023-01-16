@@ -99,3 +99,9 @@ In this example, the use of filters is shown, in the kosher filter we chose "Not
 By clicking on "My meals" the meals that the guest has been approved for by the host and whose time has not yet passed will appear on the screen, for these meals the guest will be invited.<br>
 In this mode, in each meal there is the option to enter the group chat, and by clicking "exit the meal" you can leave the meal and cancel your participation in it.
 <br><img src="https://user-images.githubusercontent.com/86108478/212760335-5aafaced-8259-48eb-beb6-c71d4d526561.jpg" alt="drawing" width="200"/>
+
+### Dinner Chat:
+By clicking on "CHAT", a group chat screen opens for all participants of the meal.<br>
+You can write messages that will appear to all participants in the meal, it also shows the date and time the message was sent, who sent the message and if he is the Host of the meal or or being a Guest.<br>
+Guests has no option to clear the chat.<br>
+<br><img src="https://user-images.githubusercontent.com/86108478/212761065-263d6e0d-d929-4399-a3fb-692489cfe266.jpg" alt="drawing" width="200"/>
