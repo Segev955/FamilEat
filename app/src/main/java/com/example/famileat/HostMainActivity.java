@@ -55,6 +55,7 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
     private FirebaseUser user;
     private DatabaseReference reference;
     private String ID;
+    private Boolean history= false;
     private EditText text_date;
     private TextView name_text, historytxt, requestNumTxt;
     private RadioGroup radio_kosher;
@@ -114,15 +115,6 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
                 return true;
             }
         });
-
-
-/*        //Set kosher radio buttons
-        meat_r = findViewById(R.id.meat);
-        dairy_r = findViewById(R.id.dairy);
-        notkosher_r = findViewById(R.id.noKosher);
-        all_r = findViewById(R.id.all);
-        all_r.setChecked(true);
-        radio_kosher = findViewById(R.id.kosher);*/
 
         //set Date Button:
         text_date = findViewById(R.id.date);
@@ -225,12 +217,14 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         past.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(past.getText().toString().equals("history")) {
+                if(!history) {
+                    history = true;
                     recyclerView.setAdapter(pastAdapter);
                     past.setText("my meals");
                     historytxt.setText("History");
                 }
                 else {
+                    history = false;
                     recyclerView.setAdapter(hostAdapter);
                     past.setText("history");
                     historytxt.setText("My Meals");
@@ -310,7 +304,7 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59");
+                String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59",history);
                 if(!msg.equals("accept")){
                     text_date.setText(date[0]);
                     Toast.makeText(HostMainActivity.this,msg,Toast.LENGTH_SHORT).show();
@@ -407,15 +401,18 @@ public class HostMainActivity extends AppCompatActivity implements AdapterView.O
         pastlist.clear();
         for (DataSnapshot dataSnapshot : snapshot.getChildren()){
             Dinner dinner = dataSnapshot.getValue(Dinner.class);
-            if(Dinner.isRelevant(dinner,text_date.getText().toString()) && dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())))
-                dinnerList.add(dinner);
-            if(!Dinner.isRelevant(dinner,text_date.getText().toString()) && !Dinner.isRelevant(dinner,"") && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
-                pastlist.add(dinner);
+            if(dinner.getHostUid().equals(ID) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher()))) {
+                if (Dinner.isRelevant(dinner, text_date.getText().toString(), false))
+                    dinnerList.add(dinner);
+                else if (Dinner.isRelevant(dinner, text_date.getText().toString(), true))
+                    pastlist.add(dinner);
+            }
         }
-        dinnerList=sortDinnersByDate(dinnerList, 1);
-        pastlist = sortDinnersByDate(pastlist, -1);
+        dinnerList = sortDinnersByDate(dinnerList, 1);
         hostAdapter.notifyDataSetChanged();
+        pastlist = sortDinnersByDate(pastlist, -1);
         pastAdapter.notifyDataSetChanged();
+
     }
 
     public ArrayList<Dinner> sortDinnersByDate(ArrayList<Dinner> list, int flip)

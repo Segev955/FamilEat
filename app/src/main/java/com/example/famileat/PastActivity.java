@@ -97,7 +97,7 @@ public class PastActivity extends AppCompatActivity {
                 dinnerList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Dinner dinner = dataSnapshot.getValue(Dinner.class);
-                    if(!Dinner.isRelevant(dinner,"") && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
+                    if(!Dinner.isRelevant(dinner,"", true) && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
                         dinnerList.add(dinner);
                 }
                 dinnerList=sortDinnersByDate(dinnerList);

@@ -54,6 +54,7 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
     private DatabaseReference reference;
     private DatabaseReference referenceD;
     private String ID;
+    private Boolean history = false;
     private RadioGroup radio_kosher, radio_gender;
 //    private RadioButton kosher_r, meat_r, dairy_r, notkosher_r, all_r, gender_r, male_r, female_r, both_r;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -84,22 +85,6 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         kosher_select.setAdapter(adapter);
         kosher_select.setOnItemSelectedListener(this);
         kosher_text = "All";
-
-
-/*        //Set kosher radio buttons
-        meat_r = findViewById(R.id.meat);
-        dairy_r = findViewById(R.id.dairy);
-        notkosher_r = findViewById(R.id.noKosher);
-        all_r = findViewById(R.id.all);
-        all_r.setChecked(true);
-        radio_kosher = findViewById(R.id.kosher);
-
-        //Set gender radio buttons
-        male_r = findViewById(R.id.male);
-        female_r = findViewById(R.id.female);
-        both_r = findViewById(R.id.both);
-        both_r.setChecked(true);
-        radio_gender = findViewById(R.id.gender);*/
 
         //set Date Button:
         text_date = findViewById(R.id.date);
@@ -159,7 +144,7 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59");
+                String msg=Dinner.check_date_time(text_date.getText().toString(),"23:59", history);
                 if(!msg.equals("accept")){
                     text_date.setText(date[0]);
                     Toast.makeText(GuestMainActivity.this,msg,Toast.LENGTH_SHORT).show();
@@ -191,11 +176,9 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         past.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent pastIntent = new Intent(GuestMainActivity.this, PastActivity.class);
-//                pastIntent.putExtra("Type","Guest");
-//                startActivity(pastIntent);
+                history = true;
                 recyclerView.setAdapter(pastadapter);
-                meals_txt.setText("History Meals:");
+                meals_txt.setText("History Meals:");// effect the seract button don't chage!
                 past.setVisibility(View.GONE);
 
 
@@ -244,6 +227,7 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View view) {
                 past.setVisibility(View.VISIBLE);
+                history = false;
                 if(meals_btn.getText().equals("my meals")){
                     meals_btn.setText("available meals");
                     meals_txt.setText("My Meals:");
@@ -289,14 +273,17 @@ public class GuestMainActivity extends AppCompatActivity implements AdapterView.
         past_dinnerList.clear();
         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
             Dinner dinner = dataSnapshot.getValue(Dinner.class);
-            if (Dinner.isRelevant(dinner,text_date.getText().toString()) && (kosher_text.equals("All")||kosher_text.equals(dinner.getKosher()))) {
-                if (Dinner.isAvailable(dinner) && !Dinner.isAccepted(dinner, ID))
-                    av_dinnerList.add(dinner);
-                if (Dinner.isAccepted(dinner, ID))
-                    my_dinnerList.add(dinner);
+            if(kosher_text.equals("All")||kosher_text.equals(dinner.getKosher())) {
+                if (Dinner.isRelevant(dinner, text_date.getText().toString(), false)) {
+                    assert dinner != null;
+                    if (Dinner.isAccepted(dinner, ID))
+                        my_dinnerList.add(dinner);
+                    else if(Dinner.isAvailable(dinner))
+                        av_dinnerList.add(dinner);
+                }
+                if (Dinner.isRelevant(dinner, text_date.getText().toString(), true) && Dinner.isAccepted(dinner, ID))
+                    past_dinnerList.add(dinner);
             }
-            if(!Dinner.isRelevant(dinner,"") && (dinner.getHostUid().equals(ID)||Dinner.isAccepted(dinner,ID)))
-                past_dinnerList.add(dinner);
 
         }
         date[0] = text_date.getText().toString();

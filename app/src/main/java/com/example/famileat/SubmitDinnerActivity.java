@@ -199,7 +199,7 @@ public class SubmitDinnerActivity extends AppCompatActivity {
                 if (!(valid_ans=Dinner.check_title(title)).equals("accept")) {
                     Toast.makeText(SubmitDinnerActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_title.requestFocus();
-                } else if (!(valid_ans= Dinner.check_date_time(date,time)).equals("accept")) {
+                } else if (!(valid_ans= Dinner.check_date_time(date,time,false)).equals("accept")) {
                     Toast.makeText(SubmitDinnerActivity.this, valid_ans, Toast.LENGTH_SHORT).show();
                     text_date.requestFocus();
                 } else {

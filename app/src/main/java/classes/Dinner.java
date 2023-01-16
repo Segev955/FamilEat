@@ -272,7 +272,7 @@ public class Dinner implements Comparable<Dinner> {
      * @param  time    time that want to put
      * @return         String: accept/not
      */
-    public static String check_date_time(String date, String time) {
+    public static String check_date_time(String date, String time, boolean history) {
         //date
         if (TextUtils.isEmpty(date))
             return "Please enter date (dd/mm/yyyy).";
@@ -293,14 +293,17 @@ public class Dinner implements Comparable<Dinner> {
             nowm = LocalDate.now().getMonth().getValue();
             nowd = LocalDate.now().getDayOfMonth();
         }
-        if (year < nowy || year > nowy+3)
+        if ((!history&&year < nowy) || year > nowy+3)
             return "Year not valid";
         if (month < 1 || month > 12)
             return "Month not valid";
         if (day < 1 || day > 31 || (day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) || (month == 2 && (day > 29 || (day == 29 && (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0))))))
             return "Day not valid";
-        if (year == nowy &&(month<nowm||(month==nowm&&day<nowd)))
+        if (!history&&(year == nowy &&(month<nowm||(month==nowm&&day<nowd))))
             return "The date has already passed.";
+
+        if (history&&(year>nowy || (year == nowy &&(month>nowm||(month==nowm&&day>nowd)))))
+            return "The date has not passed yet.";
 
         //time
         if (TextUtils.isEmpty(time))
@@ -367,21 +370,33 @@ public class Dinner implements Comparable<Dinner> {
      * @param date
      * @return         (boolean) True/False
      */
-    public static boolean isRelevant(Dinner dinner, String date)
+    public static boolean isRelevant(Dinner dinner, String date, Boolean history)
     {
-        if (check_date_time(date,"23:59").equals("accept")){
+        if (check_date_time(date,"23:59",history).equals("accept")){
             String[] splitdin = dinner.getDate().split("/");
             String[] splitsel = date.split("/");
-            if(Integer.parseInt(splitdin[2])<Integer.parseInt(splitsel[2]))
-                return false;
-            if(Integer.parseInt(splitdin[2])==Integer.parseInt(splitsel[2]))
-                if(Integer.parseInt(splitdin[1])<Integer.parseInt(splitsel[1]))
+            if (!history) {
+                if (Integer.parseInt(splitdin[2]) < Integer.parseInt(splitsel[2]))
                     return false;
-            if(Integer.parseInt(splitdin[1])==Integer.parseInt(splitsel[1]))
-                if(Integer.parseInt(splitdin[0])<Integer.parseInt(splitsel[0]))
+                if (Integer.parseInt(splitdin[2]) == Integer.parseInt(splitsel[2]))
+                    if (Integer.parseInt(splitdin[1]) < Integer.parseInt(splitsel[1]))
+                        return false;
+                if (Integer.parseInt(splitdin[1]) == Integer.parseInt(splitsel[1]))
+                    if (Integer.parseInt(splitdin[0]) < Integer.parseInt(splitsel[0]))
+                        return false;
+            }
+            else {
+                if (Integer.parseInt(splitdin[2]) > Integer.parseInt(splitsel[2]))
                     return false;
+                if (Integer.parseInt(splitdin[2]) == Integer.parseInt(splitsel[2]))
+                    if (Integer.parseInt(splitdin[1]) > Integer.parseInt(splitsel[1]))
+                        return false;
+                if (Integer.parseInt(splitdin[1]) == Integer.parseInt(splitsel[1]))
+                    if (Integer.parseInt(splitdin[0]) > Integer.parseInt(splitsel[0]))
+                        return false;
+            }
         }
-        return check_date_time(dinner.getDate(),dinner.getTime()).equals("accept");
+        return check_date_time(dinner.getDate(),dinner.getTime(),history).equals("accept");
     }
     /**
      * checks if the User id is in (requested to dinner) list
