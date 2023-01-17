@@ -63,14 +63,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String[] message = list.get(position).split("\n");
-        holder.type.setText(message[0]);
-        holder.name.setText(message[2]);
-        holder.date.setText(message[1]);
+        holder.l_type.setText(message[0]);
+        holder.r_type.setText(message[0]);
+        holder.l_name.setText(message[2]);
+        holder.r_name.setText(message[2]);
+        holder.l_date.setText(message[1]);
+        holder.r_date.setText(message[1]);
         String msg="";
         for (int i = 3; i < message.length; i++) {
             msg+=message[i]+"\n";
         }
-        holder.message.setText(msg);
+        holder.l_message.setText(msg);
+        holder.r_message.setText(msg);
+        if(holder.l_type.getText().equals("Host"))
+            holder.leftSide();
+        else
+            holder.rightSide();
     }
 
     @Override
@@ -80,15 +88,41 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView message, type, name, date;
+        TextView l_message, l_type, l_name, l_date,r_message, r_type, r_name, r_date;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            message = itemView.findViewById(R.id.msgtxt);
-            name = itemView.findViewById(R.id.nametxt);
-            type = itemView.findViewById(R.id.typetxt);
-            date = itemView.findViewById(R.id.datetxt);
+            l_message = itemView.findViewById(R.id.l_msgtxt);
+            l_name = itemView.findViewById(R.id.l_nametxt);
+            l_type = itemView.findViewById(R.id.l_typetxt);
+            l_date = itemView.findViewById(R.id.l_datetxt);
+            r_message = itemView.findViewById(R.id.r_msgtxt);
+            r_name = itemView.findViewById(R.id.r_nametxt);
+            r_type = itemView.findViewById(R.id.r_typetxt);
+            r_date = itemView.findViewById(R.id.r_datetxt);
+
+
+        }
+        private void leftSide(){
+            l_message.setVisibility(View.VISIBLE);
+            l_name.setVisibility(View.VISIBLE);
+            l_type.setVisibility(View.VISIBLE);
+            l_date.setVisibility(View.VISIBLE);
+            r_message.setVisibility(View.GONE);
+            r_name.setVisibility(View.GONE);
+            r_type.setVisibility(View.GONE);
+            r_date.setVisibility(View.GONE);
+        }
+        private void rightSide() {
+            r_message.setVisibility(View.VISIBLE);
+            r_name.setVisibility(View.VISIBLE);
+            r_type.setVisibility(View.VISIBLE);
+            r_date.setVisibility(View.VISIBLE);
+            l_message.setVisibility(View.GONE);
+            l_name.setVisibility(View.GONE);
+            l_type.setVisibility(View.GONE);
+            l_date.setVisibility(View.GONE);
 
         }
     }
