@@ -10,21 +10,19 @@
 
 
 # General information: 
-In this application you can register as a host user or guest user, the only place where you can choose the type of user is on the registration screen. <br>
-After registration, you will be required to verify your account using a link that will be sent to the email account you specified during registration, with this email address you will connect to the application afterwards.<br>
-All information about the users and the meals is stored in Google's realtime database Firebase which serves as the main server of the application.<br>
+In this application, you can register as a host user or guest user, the only place where you can choose the type of user is on the registration screen.<br>
+After registration, you will be required to verify your account using a link that will be sent to the email account you specified during registration, with this email address you will connect to the application afterward.<br>
+All information about the users and the meals is stored in Google's real-time database Firebase which serves as the main server of the application.<br>
 The minimum age to use the application is 16.
 
 ### Types of users:
 #### Host:
-a user of the host type has the option of creating a new meal, viewing and editing the meals he created, viewing requests from users to join meals, the option to decide whether to approve or delete the request and contacting his meal guests.
+a user of the host type has the option of creating a new meal, viewing and editing the meals he created, viewing requests from users to join meals, and the option to decide whether to approve or delete the request and contacting his meal guests.
 #### Guest:
-A guest type user has the option to view all the meals that the hosts have posted, choose which meal he wants to join and send a request to join.
-A guest will be able to view his meals (the meals he sent a request and the host approved)
-and contact the hosts of his meals.<br>
+A guest-type user has the option to view all the meals that the hosts have posted, choose which meal he wants to join, and send a request to join. A guest will be able to view his meals (the meals he sent a request for and the host approved) and contact the hosts of his meals.<br>
 
 # Application Review
-All information regarding the server, database and application screens is in this [wiki](https://github.com/Segev955/FamilEat/wiki/FamilEat-Application-Review) file.<br>
+All information regarding the server, database, and application screens is in this [wiki](https://github.com/Segev955/FamilEat/wiki/FamilEat-Application-Review) file.<br>
 # System analysis
 All information regarding the initiation document, the system requirements and the system analysis is in this [wiki](https://github.com/Segev955/FamilEat/wiki/System-analysis) file.<br>
 # Download 
