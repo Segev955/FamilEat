@@ -325,8 +325,12 @@ public class Dinner implements Comparable<Dinner> {
         final Calendar c = Calendar.getInstance();
         int nowho = c.get(Calendar.HOUR_OF_DAY);
         int nowmi = c.get(Calendar.MINUTE);
-        if ( (year == nowy && month == nowm && day == nowd)  && (hour<nowho||(hour==nowho&&minute<nowmi)) )
-            return "The time has already passed.";
+        if(year == nowy && month == nowm && day == nowd) {
+            if (!history &&  (hour < nowho || (hour == nowho && minute < nowmi)))
+                return "The time has already passed.";
+            else if (history  && (hour > nowho || (hour == nowho && minute > nowmi)))
+                return "The time has not passed yet.";
+        }
         return "accept";
 
     }
