@@ -22,7 +22,18 @@ a user of the host type has the option of creating a new meal, viewing and editi
 A guest type user has the option to view all the meals that the hosts have posted, choose which meal he wants to join and send a request to join.
 A guest will be able to view his meals (the meals he sent a request and the host approved)
 and contact the hosts of his meals.<br>
-## Download the [APK](https://github.com/Segev955/FamilEat/files/10434132/FamilEat.zip) to your android device and start using the application.
-### We are waiting for you :)
 
+# Application Review
+All information regarding the server, database and application screens is in this [wiki](https://github.com/Segev955/FamilEat/wiki/FamilEat-Application-Review) file.<br>
+# System analysis
+All information regarding the initiation document, the system requirements and the system analysis is in this [wiki](https://github.com/Segev955/FamilEat/wiki/System-analysis) file.<br>
+# Download 
+*Download the [ZIP](https://github.com/Segev955/FamilEat/files/10434132/FamilEat.zip) file.<br> 
+*Extract the APK file to your android device.<br> 
+*Open the APK on your device.<br>
+*Install the application.<br>
+*Start using the application.
 
+![lunchdinner](https://user-images.githubusercontent.com/86108478/212881018-cebbeacf-0537-45bf-b423-7084a91e4491.gif)
+
+## We are waiting for you :)
