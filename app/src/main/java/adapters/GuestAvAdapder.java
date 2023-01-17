@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +46,7 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
     int proImage;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private String rate_text;
 
     public GuestAvAdapder(Context context, ArrayList<Dinner> list , int proImage) {
         this.context = context;
@@ -74,13 +76,13 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User host = snapshot.getValue(User.class);
                 holder.host.setText(host.getFullName());
-                /*int rates=host.getRates();
-                if(rates==0)
-                    holder.host.setText(host.getFullName()+"\n"+"No rates yet");
-                else if(rates==1)
-                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating (1 rate)");
+                int rates = host.getRates();
+                if (rates == 0)
+                    rate_text = "No rates yet";
+                else if (rates == 1)
+                    rate_text = (int) (host.getRating() * 20) + "% rating, (1 rate)";
                 else
-                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating ("+rates+" rates)");*/
+                    rate_text = (int) (host.getRating() * 20) + "% rating, (" + rates + " rates)";
             }
 
             @Override
@@ -95,6 +97,13 @@ public class GuestAvAdapder extends RecyclerView.Adapter<GuestAvAdapder.MyViewHo
         holder.kosher.setText(dinner.getKosher());
         final String[] Rid = new String[1];
 
+        //rate
+        holder.host.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context.getApplicationContext(), rate_text, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //Set join button
         DatabaseReference referenceR = FirebaseDatabase.getInstance().getReference("Requests");

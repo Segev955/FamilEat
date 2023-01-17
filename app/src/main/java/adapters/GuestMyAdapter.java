@@ -1,11 +1,13 @@
 package adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famileat.ChatActivity;
+import com.example.famileat.HostMainActivity;
 import com.example.famileat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,8 +52,9 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
     int proImage;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private String rate_text;
 
-    public GuestMyAdapter(Context context, ArrayList<Dinner> list , int proImage) {
+    public GuestMyAdapter(Context context, ArrayList<Dinner> list, int proImage) {
         this.context = context;
         this.list = list;
         this.proImage = proImage;
@@ -59,7 +63,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
     @NonNull
     @Override
     public GuestMyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.my_dinner_view_guest,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.my_dinner_view_guest, parent, false);
 
         return new GuestMyAdapter.MyViewHolder(v);
     }
@@ -68,7 +72,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull GuestMyAdapter.MyViewHolder holder, int position) {
         Dinner dinner = list.get(position);
-        String currUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         holder.title.setText(dinner.getTitle());
         //Set host
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(dinner.getHostUid());
@@ -77,13 +81,13 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User host = snapshot.getValue(User.class);
                 holder.host.setText(host.getFullName());
-/*                int rates=host.getRates();
-                if(rates==0)
-                    holder.host.setText(host.getFullName()+"\n"+"No rates yet");
-                else if(rates==1)
-                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating (1 rate)");
+                int rates = host.getRates();
+                if (rates == 0)
+                    rate_text = "No rates yet";
+                else if (rates == 1)
+                    rate_text = (int) (host.getRating() * 20) + "% rating, (1 rate)";
                 else
-                    holder.host.setText(host.getFullName()+"\n"+(int)host.getRating()*20+"% rating ("+rates+" rates)");*/
+                    rate_text = (int) (host.getRating() * 20) + "% rating, (" + rates + " rates)";
             }
 
             @Override
@@ -97,14 +101,22 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
         holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
         holder.kosher.setText(dinner.getKosher());
         final String[] Rid = new String[1];
+        //rate
+        holder.host.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context.getApplicationContext(), rate_text, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         //Set chat button
         holder.chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent chatIntent = new Intent(context.getApplicationContext(), ChatActivity.class);
-                chatIntent.putExtra("Did",dinner.getID());
-                chatIntent.putExtra("State","Alive");
+                chatIntent.putExtra("Did", dinner.getID());
+                chatIntent.putExtra("State", "Alive");
                 context.startActivity(chatIntent);
             }
         });
@@ -112,8 +124,8 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
         holder.exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dinner newdinner=Dinner.removeGuest(dinner,currUid);
-                if (newdinner!=null) {
+                Dinner newdinner = Dinner.removeGuest(dinner, currUid);
+                if (newdinner != null) {
                     DatabaseReference dinnerReference = FirebaseDatabase.getInstance().getReference().child("Dinners").child(newdinner.getID());
                     dinnerReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
