@@ -46,8 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private FirebaseStorage storage;
     private StorageReference storageReference;
     Bitmap bitmap;
-
-    public ChatAdapter(Context context, List<String> list, int proImage) {
+    public ChatAdapter(Context context, List<String> list , int proImage) {
         this.context = context;
         this.list = list;
         this.proImage = proImage;
@@ -56,7 +55,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     @NonNull
     @Override
     public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.message_view, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.message_view,parent,false);
         return new ChatAdapter.MyViewHolder(v);
     }
 
@@ -70,13 +69,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         holder.r_name.setText(message[2]);
         holder.l_date.setText(message[1]);
         holder.r_date.setText(message[1]);
-        String msg = "";
+        String msg="";
         for (int i = 3; i < message.length; i++) {
-            msg += message[i] + "\n";
+            msg+=message[i]+"\n";
         }
         holder.l_message.setText(msg);
         holder.r_message.setText(msg);
-        if (holder.l_type.getText().equals("Host"))
+        if(holder.l_type.getText().equals("Host"))
             holder.leftSide();
         else
             holder.rightSide();
@@ -89,7 +88,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView l_message, l_type, l_name, l_date, r_message, r_type, r_name, r_date;
+        TextView l_message, l_type, l_name, l_date,r_message, r_type, r_name, r_date;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -105,8 +104,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
 
         }
-
-        private void leftSide() {
+        private void leftSide(){
             l_message.setVisibility(View.VISIBLE);
             l_name.setVisibility(View.VISIBLE);
             l_type.setVisibility(View.VISIBLE);
@@ -116,7 +114,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             r_type.setVisibility(View.GONE);
             r_date.setVisibility(View.GONE);
         }
-
         private void rightSide() {
             r_message.setVisibility(View.VISIBLE);
             r_name.setVisibility(View.VISIBLE);

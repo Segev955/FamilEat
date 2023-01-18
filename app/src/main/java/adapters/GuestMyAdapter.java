@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,7 +50,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
 
     ArrayList<Dinner> list;
 
-    int proImage;
+    int proImage, rates;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private String rate_text;
@@ -81,13 +82,7 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User host = snapshot.getValue(User.class);
                 holder.host.setText(host.getFullName());
-                int rates = host.getRates();
-                if (rates == 0)
-                    rate_text = "No rates yet";
-                else if (rates == 1)
-                    rate_text = (int) (host.getRating() * 20) + "% rating, (1 rate)";
-                else
-                    rate_text = (int) (host.getRating() * 20) + "% rating, (" + rates + " rates)";
+
             }
 
             @Override
@@ -101,11 +96,40 @@ public class GuestMyAdapter extends RecyclerView.Adapter<GuestMyAdapter.MyViewHo
         holder.availables.setText(Integer.toString(Dinner.numOfAvailables(dinner)));
         holder.kosher.setText(dinner.getKosher());
         final String[] Rid = new String[1];
+
+
         //rate
         holder.host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context.getApplicationContext(), rate_text, Toast.LENGTH_SHORT).show();
+                DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(dinner.getHostUid());
+                userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User host = snapshot.getValue(User.class);
+                        rates = host.getRates();
+                        if (rates == 0)
+                            rate_text = host.getFullName() + ": No rates yet";
+                        else if (rates == 1)
+                            rate_text = host.getFullName() + ": " + (int) (host.getRating() * 20) + "% rating, (1 rate)";
+                        else
+                            rate_text = host.getFullName() + ": " + (int) (host.getRating() * 20) + "% rating, (" + rates + " rates)";
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                if(!TextUtils.isEmpty(rate_text)) {
+                    Toast.makeText(context.getApplicationContext(), rate_text, Toast.LENGTH_SHORT).show();
+
+                }
+                rate_text = "";
+
+
+
+
             }
         });
 
